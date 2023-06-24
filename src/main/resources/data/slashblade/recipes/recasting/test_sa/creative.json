@@ -1,0 +1,55 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+        {
+            "item": "minecraft:barrier"
+        }
+    ],
+    "result": {
+        "item": "slashblade:slashblade",
+        "nbt": {
+            "ForgeCaps": {
+                "slashblade:bladestate": {
+                    "Energy": 0,
+                    "State": {
+                        "isSealed": 0,
+                        "isNoScabbard": 0,
+                        "translationKey": "item.slashblade.test.recasting",
+                        "isDestructable": 0,
+                        "SummonedSwordColor": 16025767,
+                        "currentCombo": "arts_rapid_slash",
+                        "RepairCounter": 0,
+                        "Damage": 0.0,
+                        "rarityType": 3,
+                        "ShareTag": {
+                            "translationKey": "114514",
+                            "isBroken": "false"
+                        },
+                        "ComboRoot": "standby",
+                        "lastPosHash": "",
+                        "RangeAttackType": "none",
+                        "isDefaultBewitched": 0,
+                        "SpecialAttackType": "none",
+                        "TextureName": "yamazakura:model/yamazakura/yamazakura_yayoi_sakura.png",
+                        "ModelName": "yamazakura:model/yamazakura/sakura.obj",
+                        "baseAttackModifier": 6.0,
+                        "StandbyRenderType": 2
+                    }
+                },
+                "recasting:sa_se_capability" : {
+                    "com.til.recasting.common.capability.ISA": {
+                        "sa_register" : "epidemic_summoned_sword_sa_register"
+                    }
+                }
+            },
+            "id": "slashblade:slashblade",
+            "Count": 1,
+            "tag": {
+                "ShareTag": {
+                    "translationKey": "114514",
+                    "isBroken": "false"
+                }
+            }
+        }
+    }
+}

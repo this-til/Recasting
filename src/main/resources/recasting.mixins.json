@@ -1,0 +1,13 @@
+{
+  "required": false,
+  "minVersion": "0.7",
+  "package": "com.til.recasting.common.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "JudgementCutMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "refmap": "recasting.refmap.json"
+}
