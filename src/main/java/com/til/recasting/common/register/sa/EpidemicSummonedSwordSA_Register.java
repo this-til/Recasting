@@ -4,6 +4,7 @@ import com.til.glowing_fire_glow.common.config.ConfigField;
 import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
 import com.til.glowing_fire_glow.common.register.VoluntarilyRegister;
 import com.til.recasting.common.capability.ISA;
+import com.til.recasting.common.entity.SummondSwordEntity;
 import com.til.recasting.common.register.target_selector.DefaultTargetSelectorRegister;
 import com.til.recasting.common.register.target_selector.TargetSelectorRegister;
 import mods.flammpfeil.slashblade.SlashBlade;
@@ -26,6 +27,7 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
 import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Stream;
@@ -43,16 +45,28 @@ public class EpidemicSummonedSwordSA_Register extends SA_Register {
     protected int number;
 
 
-
     @Override
     public void trigger(LivingEntity livingEntity, ItemStack itemStack, ISlashBladeState slashBladeState, ISA isa) {
         World worldIn = livingEntity.world;
         RayTraceResult rayTraceResult;
+        @Nullable
         Entity targetEntity = slashBladeState.getTargetEntity(worldIn);
         rayTraceResult = targetEntity == null ? targetSelectorRegister.selector(livingEntity) : new EntityRayTraceResult(targetEntity);
 
         for (int i = 0; i < number; i++) {
-            EntityAbstractSummonedSword ss = new EntityAbstractSummonedSword(SlashBlade.RegistryEvents.SummonedSword, worldIn);
+
+            SummondSwordEntity summondSwordEntity = new SummondSwordEntity(, worldIn, livingEntity);
+            Vector3d pos = livingEntity.getEyePosition(1.0f)
+                    .add(VectorHelper.getVectorForRotation(0.0f, livingEntity.getYaw(0) + 90).scale(livingEntity.getRNG().nextBoolean() ? 1 : -1));
+            summondSwordEntity.setTryAttackEntity(targetEntity);
+            Vector3d dir = rayTraceResult.getHitVec().subtract(pos).normalize();
+            summondSwordEntity.setPositionAndRotation(pos.getX(), pos.getY(), pos.getZ(), livingEntity.rotationYaw, livingEntity.rotationPitch);
+            summondSwordEntity.lookAt(dir);
+            summondSwordEntity.setColor(slashBladeState.getColorCode());
+            summondSwordEntity.setDelay(i);
+            worldIn.addEntity(summondSwordEntity);
+
+/*            EntityAbstractSummonedSword ss = new EntityAbstractSummonedSword(SlashBlade.RegistryEvents.SummonedSword, worldIn);
             Vector3d pos = livingEntity.getEyePosition(1.0f)
                     .add(VectorHelper.getVectorForRotation(0.0f, livingEntity.getYaw(0) + 90).scale(livingEntity.getRNG().nextBoolean() ? 1 : -1));
             ss.setPosition(pos.x, pos.y, pos.z);
@@ -61,7 +75,7 @@ public class EpidemicSummonedSwordSA_Register extends SA_Register {
             ss.setShooter(livingEntity);
             ss.setColor(slashBladeState.getColorCode());
             ss.setDelay(i);
-            worldIn.addEntity(ss);
+            worldIn.addEntity(ss);*/
         }
 
         livingEntity.playSound(SoundEvents.ITEM_CHORUS_FRUIT_TELEPORT, 0.2F, 1.45F);
