@@ -5,5 +5,5 @@ import com.til.glowing_fire_glow.common.register.RegisterManage;
 /**
  * @author til
  */
-public class AllSE extends RegisterManage<SE_Register> {
+public class AllSE_Register extends RegisterManage<SE_Register> {
 }

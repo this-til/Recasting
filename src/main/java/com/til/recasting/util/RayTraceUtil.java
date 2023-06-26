@@ -17,7 +17,7 @@ public class RayTraceUtil {
     }*/
 
     public static Vector3d getPosition(Entity owner) {
-        return new Vector3d(owner.prevPosX, owner.prevPosY + owner.getEyeHeight(), owner.prevPosZ);
+        return new Vector3d(owner.getPosX(), owner.getPosY() + owner.getEyeHeight(), owner.getPosZ());
     }
 
     public static Vector3d getLook(Entity owner, float rotMax) {

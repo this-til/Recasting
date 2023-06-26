@@ -1,8 +1,10 @@
 package com.til.recasting.common.register.target_selector;
 
 import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
+import com.til.glowing_fire_glow.common.register.VoluntarilyRegister;
 import com.til.recasting.common.register.entity_predicate.DefaultEntityPredicateRegister;
 
+@VoluntarilyRegister
 public class DefaultSummondSwordTargetSelectorRegister extends TargetSelectorRegister {
 
     @VoluntarilyAssignment
