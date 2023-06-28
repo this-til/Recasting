@@ -6,6 +6,9 @@ import com.til.recasting.common.capability.ISA;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 
+/**
+ * @author til
+ */
 @VoluntarilyRegister
 public class SA_CapabilityRegister extends OriginalCapabilityRegister<ISA> {
 

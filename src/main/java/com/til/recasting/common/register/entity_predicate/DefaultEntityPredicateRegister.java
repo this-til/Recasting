@@ -14,5 +14,6 @@ public class DefaultEntityPredicateRegister extends LikeOriginalEntityPredicateR
         friendlyFire = true;
         skipAttackChecks = true;
         allowInvulnerable = true;
+        isLivingEntity = true;
     }
 }

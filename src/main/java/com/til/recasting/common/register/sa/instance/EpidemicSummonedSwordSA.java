@@ -1,18 +1,19 @@
-package com.til.recasting.common.register.sa;
+package com.til.recasting.common.register.sa.instance;
 
 import com.til.glowing_fire_glow.common.config.ConfigField;
 import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
 import com.til.glowing_fire_glow.common.register.VoluntarilyRegister;
-import com.til.recasting.common.capability.ISA;
+import com.til.recasting.common.capability.SlashBladePack;
 import com.til.recasting.common.entity.SummondSwordEntity;
 import com.til.recasting.common.register.entity_type.SummondSwordEntityTypeRegister;
+import com.til.recasting.common.register.sa.SA_Register;
 import com.til.recasting.common.register.target_selector.DefaultTargetSelectorRegister;
 import com.til.recasting.common.register.target_selector.TargetSelectorRegister;
-import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
+import com.til.recasting.util.RayTraceUtil;
 import mods.flammpfeil.slashblade.util.VectorHelper;
+import net.minecraft.command.arguments.EntityAnchorArgument;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
@@ -25,7 +26,7 @@ import javax.annotation.Nullable;
  * 疾袭幻影剑
  */
 @VoluntarilyRegister
-public class EpidemicSummonedSwordSA_Register extends SA_Register {
+public class EpidemicSummonedSwordSA extends SA_Register {
 
 
     @ConfigField
@@ -39,26 +40,27 @@ public class EpidemicSummonedSwordSA_Register extends SA_Register {
     protected SummondSwordEntityTypeRegister summondSwordEntityTypeRegister;
 
     @Override
-    public void trigger(LivingEntity livingEntity, ItemStack itemStack, ISlashBladeState slashBladeState, ISA isa) {
+    public void trigger(LivingEntity livingEntity, SlashBladePack slashBladePack) {
         World worldIn = livingEntity.world;
         RayTraceResult rayTraceResult;
 
         @Nullable
-        Entity targetEntity = slashBladeState.getTargetEntity(worldIn);
+        Entity targetEntity = slashBladePack.slashBladeState.getTargetEntity(worldIn);
         rayTraceResult = targetEntity == null ? targetSelectorRegister.selector(livingEntity) : new EntityRayTraceResult(targetEntity);
+
+        Vector3d attackPos = targetEntity == null ? rayTraceResult.getHitVec() : RayTraceUtil.getPosition(targetEntity);
 
         Vector3d pos = livingEntity.getEyePosition(1.0f)
                 .add(VectorHelper.getVectorForRotation(0.0f, livingEntity.getYaw(0) + 90).scale(livingEntity.getRNG().nextBoolean() ? 1 : -1));
 
-        Vector3d dir = rayTraceResult.getHitVec().subtract(pos).normalize();
+        Vector3d dir = attackPos.subtract(pos).normalize();
 
         for (int i = 0; i < number; i++) {
             SummondSwordEntity summondSwordEntity = new SummondSwordEntity(summondSwordEntityTypeRegister.getEntityType(), worldIn, livingEntity);
-            summondSwordEntity.setTryAttackEntity(targetEntity);
             summondSwordEntity.setPosition(pos.getX(), pos.getY(), pos.getZ());
-            summondSwordEntity.shoot(dir.getX(), dir.getY(), dir.getZ(), 3, 0);
-            summondSwordEntity.setColor(slashBladeState.getColorCode());
-            summondSwordEntity.setInterval(5 + i);
+            summondSwordEntity.lookAt(dir);
+            summondSwordEntity.setColor(slashBladePack.slashBladeState.getColorCode());
+            summondSwordEntity.setStartDelay(5 + i);
             summondSwordEntity.setLifeTime(100 + 5 + i);
             worldIn.addEntity(summondSwordEntity);
 

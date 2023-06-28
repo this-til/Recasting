@@ -4,6 +4,7 @@
   "package": "com.til.recasting.common.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+    "AttackManagerMixin",
     "JudgementCutMixin"
   ],
   "injectors": {

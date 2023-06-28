@@ -21,6 +21,9 @@ public abstract class LikeOriginalEntityPredicateRegister extends EntityPredicat
     @ConfigField
     protected boolean useVisibilityModifier;
 
+    @ConfigField
+    protected boolean isLivingEntity;
+
     @Override
     public boolean canTarget(@Nullable Entity attacker, Entity target) {
         if (attacker == target) {
@@ -38,6 +41,10 @@ public abstract class LikeOriginalEntityPredicateRegister extends EntityPredicat
 
         if (attacker == null) {
             return true;
+        }
+
+        if (isLivingEntity && !(target instanceof LivingEntity)) {
+            return false;
         }
 
         if (!this.skipAttackChecks && attacker instanceof LivingEntity && target instanceof LivingEntity) {
@@ -68,7 +75,6 @@ public abstract class LikeOriginalEntityPredicateRegister extends EntityPredicat
 
         return true;
     }
-
 
 
 }

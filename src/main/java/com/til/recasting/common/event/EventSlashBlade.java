@@ -1,5 +1,7 @@
 package com.til.recasting.common.event;
 
+import com.til.recasting.common.capability.SlashBladePack;
+import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.eventbus.api.Event;
@@ -10,10 +12,10 @@ import net.minecraftforge.eventbus.api.Event;
 public abstract class EventSlashBlade extends Event {
 
     public final LivingEntity livingEntity;
-    public final ItemStack itemStack;
+    public final SlashBladePack slashBladePack;
 
-    public EventSlashBlade(LivingEntity livingEntity, ItemStack itemStack) {
+    public EventSlashBlade(LivingEntity livingEntity, SlashBladePack slashBladePack) {
         this.livingEntity = livingEntity;
-        this.itemStack = itemStack;
+        this.slashBladePack = slashBladePack;
     }
 }

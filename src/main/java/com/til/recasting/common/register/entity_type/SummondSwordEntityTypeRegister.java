@@ -15,4 +15,10 @@ public class SummondSwordEntityTypeRegister extends EntityTypeRegister<SummondSw
     protected SummondSwordEntity create(EntityType<SummondSwordEntity> summondSwordEntityEntityType, World world) {
         return new SummondSwordEntity(summondSwordEntityEntityType, world, null);
     }
+
+    @Override
+    public void defaultConfig() {
+        super.defaultConfig();
+        updateInterval = 20;
+    }
 }

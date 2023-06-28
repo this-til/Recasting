@@ -7,6 +7,9 @@ import com.til.recasting.common.capability.ISE;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 
+/**
+ * @author til
+ */
 @VoluntarilyRegister
 public class SE_CapabilityRegister extends OriginalCapabilityRegister<ISE> {
 
