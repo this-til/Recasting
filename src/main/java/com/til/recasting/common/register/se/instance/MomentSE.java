@@ -13,6 +13,8 @@ import com.til.recasting.util.RayTraceUtil;
 import mods.flammpfeil.slashblade.specialattack.JudgementCut;
 import net.minecraft.command.arguments.EntityAnchorArgument;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvents;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 /***
@@ -38,10 +40,12 @@ public class MomentSE extends SE_Register {
         SummondSwordEntity summondSwordEntity = new SummondSwordEntity(summondSwordEntityTypeRegister.getEntityType(), event.livingEntity.world, event.livingEntity);
         summondSwordEntity.setColor(event.slashBladePack.slashBladeState.getColorCode());
         summondSwordEntity.setDamage(attack.of(se_pack.getLevel()));
+        summondSwordEntity.setDelay(20);
         if (targetEntity != null) {
-            summondSwordEntity.lookAt(RayTraceUtil.getPosition(targetEntity));
+            summondSwordEntity.lookAt(RayTraceUtil.getPosition(targetEntity), false);
         }
         event.livingEntity.world.addEntity(summondSwordEntity);
+        event.livingEntity.playSound(SoundEvents.ITEM_CHORUS_FRUIT_TELEPORT, 0.2F, 1.45F);
     }
 
 

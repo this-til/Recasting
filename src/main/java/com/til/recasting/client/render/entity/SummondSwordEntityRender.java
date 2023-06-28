@@ -37,6 +37,9 @@ public class SummondSwordEntityRender<T extends SummondSwordEntity> extends Enti
     public void render(T entity, float entityYaw, float partialTicks, MatrixStack matrixStack, IRenderTypeBuffer bufferIn, int packedLightIn) {
 
         try (MSAutoCloser msac = MSAutoCloser.pushMatrix(matrixStack)) {
+
+
+
           /*  matrixStack.rotate(new Quaternion(
                     MathHelper.lerp(partialTicks, entity.prevRotationPitch, entity.rotationPitch),
                     MathHelper.lerp(partialTicks, entity.prevRotationYaw, entity.rotationYaw),
@@ -51,15 +54,18 @@ public class SummondSwordEntityRender<T extends SummondSwordEntity> extends Enti
             //                    MathHelper.lerp(partialTicks, entity.prevRotationYaw, entity.rotationYaw),
             //                    entity.getRoll());
 
+            //matrixStack.rotate(Vector3f.YP.rotationDegrees(MathHelper.lerp(partialTicks, entity.prevRotationYaw, entity.rotationYaw) - 90.0F));
+            //matrixStack.rotate(Vector3f.ZP.rotationDegrees(MathHelper.lerp(partialTicks, entity.prevRotationPitch, entity.rotationPitch)));
+            //matrixStack.rotate(Vector3f.XP.rotationDegrees(entity.getRoll()));
+
             matrixStack.rotate(Vector3f.YP.rotationDegrees(MathHelper.lerp(partialTicks, entity.prevRotationYaw, entity.rotationYaw) - 90.0F));
             matrixStack.rotate(Vector3f.ZP.rotationDegrees(MathHelper.lerp(partialTicks, entity.prevRotationPitch, entity.rotationPitch)));
-
             matrixStack.rotate(Vector3f.XP.rotationDegrees(entity.getRoll()));
 
-            float scale = 0.0075f;
-            matrixStack.scale(scale,scale,scale);
-            matrixStack.rotate(Vector3f.YP.rotationDegrees(90.0F));
 
+            float scale = 0.0075f;
+            matrixStack.scale(scale, scale, scale);
+            matrixStack.rotate(Vector3f.YP.rotationDegrees(90.0F));
 
             WavefrontObject model = BladeModelManager.getInstance().getModel(entity.getModel());
             BladeRenderState.setCol(entity.getColor(), false);

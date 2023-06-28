@@ -63,6 +63,7 @@ public class SummondSwordEntity extends Entity implements IShootable {
 
 
     protected int ticksInGround;
+    protected int tickInHit;
     protected boolean inGround;
     protected BlockState inBlockState;
     protected int ticksInAir;
@@ -78,6 +79,8 @@ public class SummondSwordEntity extends Entity implements IShootable {
     protected float hitYaw;
     protected float hitPitch;
 
+    protected float attackYaw;
+    protected float attackPitch;
 
     static final int ON_GROUND_LIFE_TIME = 20 * 5;
 
@@ -114,12 +117,11 @@ public class SummondSwordEntity extends Entity implements IShootable {
             y *= dist;
             z *= dist;
             setRawPosition(shooting.getPosX() + x, shooting.getPosY() + y, shooting.getPosZ() + z);
-            rotationYaw = shooting.rotationYaw;
-            rotationPitch = shooting.rotationPitch;
-            this.prevRotationYaw = this.rotationYaw;
-            this.prevRotationPitch = this.rotationPitch;
+            attackYaw = shooting.rotationYaw;
+            attackPitch = shooting.rotationPitch;
+            updateMotion(1);
+            lookAt(getMotion(), true, true);
             setRotation(rotationYaw, rotationPitch);
-            updateMotion(getSeep());
         }
 
     }
@@ -139,7 +141,7 @@ public class SummondSwordEntity extends Entity implements IShootable {
         this.dataManager.register(PIERCE, (byte) 0);
         this.dataManager.register(MODEL, "");
         this.dataManager.register(TEXTURE, "");
-        this.dataManager.register(DELAY, 10);
+        this.dataManager.register(DELAY, 20);
         this.dataManager.register(START_DELAY, 0);
 
     }
@@ -157,35 +159,34 @@ public class SummondSwordEntity extends Entity implements IShootable {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 
-    public void lookAt(Vector3d target) {
-        lookAt(target, true);
+    public void lookAt(Vector3d target, boolean isDistance) {
+        lookAt(target, isDistance, true);
     }
 
 
-    public void lookAt(Vector3d target, boolean prevSynchronous) {
-        double d0 = target.x - getPosX();
-        double d1 = target.y - getPosY();
-        double d2 = target.z - getPosZ();
+    public void lookAt(Vector3d target, boolean isDistance, boolean prevSynchronous) {
+        Vector3d distance = isDistance ? target : target.subtract(getPositionVec());
+        distance = distance.normalize();
+        double d0 = distance.x;
+        double d1 = distance.y;
+        double d2 = distance.z;
         double d3 = MathHelper.sqrt(d0 * d0 + d2 * d2);
 
-        //this.rotationYaw = MathHelper.wrapDegrees((float) (MathHelper.atan2(d2, d0) * (double) (180F / (float) Math.PI)) - 90.0F);
-        //this.rotationPitch = MathHelper.wrapDegrees((float) (-(MathHelper.atan2(d1, d3) * (double) (180F / (float) Math.PI))));
+        this.attackPitch = MathHelper.wrapDegrees((float) (-(MathHelper.atan2(d1, d3) * (double) (180F / (float) Math.PI))));
+        this.attackYaw = MathHelper.wrapDegrees((float) (MathHelper.atan2(d2, d0) * (double) (180F / (float) Math.PI)) - 90.0F);
 
-        //this.rotationYaw = (float) (MathHelper.atan2(mx, mz) * (double) (180F / (float) Math.PI));
-        //this.rotationPitch = (float) (MathHelper.atan2(my, (double) f4) * (double) (180F / (float) Math.PI));
-
+        this.rotationPitch = MathHelper.wrapDegrees((float) ((MathHelper.atan2(d1, d3)) * (double) (180F / (float) Math.PI)));
         this.rotationYaw = MathHelper.wrapDegrees((float) (MathHelper.atan2(d0, d2) * (double) (180F / (float) Math.PI)));
-        this.rotationPitch = MathHelper.wrapDegrees((float) ((MathHelper.atan2(d1, d3) * (double) (180F / (float) Math.PI))));
         if (prevSynchronous) {
             this.prevRotationPitch = this.rotationPitch;
             this.prevRotationYaw = this.rotationYaw;
         }
-        updateMotion(getSeep());
     }
 
+
     public void updateMotion(float seep) {
-        float fYawDtoR = (rotationYaw / 180F) * (float) Math.PI;
-        float fPitDtoR = (rotationPitch / 180F) * (float) Math.PI;
+        float fYawDtoR = (attackYaw / 180F) * (float) Math.PI;
+        float fPitDtoR = (attackPitch / 180F) * (float) Math.PI;
         float motionX = -MathHelper.sin(fYawDtoR) * MathHelper.cos(fPitDtoR) * seep;
         float motionY = -MathHelper.sin(fPitDtoR) * seep;
         float motionZ = MathHelper.cos(fYawDtoR) * MathHelper.cos(fPitDtoR) * seep;
@@ -215,7 +216,7 @@ public class SummondSwordEntity extends Entity implements IShootable {
         this.setMotion(vec3d);
         float f = MathHelper.sqrt(horizontalMag(vec3d));
         this.rotationYaw = (float) (MathHelper.atan2(vec3d.x, vec3d.z) * (double) (180F / (float) Math.PI));
-        this.rotationPitch = (float) (MathHelper.atan2(vec3d.y, (double) f) * (double) (180F / (float) Math.PI));
+        this.rotationPitch = (float) (MathHelper.atan2(vec3d.y, f) * (double) (180F / (float) Math.PI));
         this.prevRotationYaw = this.rotationYaw;
         this.prevRotationPitch = this.rotationPitch;
         this.ticksInGround = 0;
@@ -236,6 +237,9 @@ public class SummondSwordEntity extends Entity implements IShootable {
     @Override
     @OnlyIn(Dist.CLIENT)
     public void setPositionAndRotationDirect(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean teleport) {
+        if (getHitEntity() != null) {
+            return;
+        }
         this.setPosition(x, y, z);
         this.setRotation(yaw, pitch);
     }
@@ -243,6 +247,9 @@ public class SummondSwordEntity extends Entity implements IShootable {
     @Override
     @OnlyIn(Dist.CLIENT)
     public void setVelocity(double x, double y, double z) {
+        if (getHitEntity() != null) {
+            return;
+        }
         this.setMotion(x, y, z);
         if (this.prevRotationPitch == 0.0F && this.prevRotationYaw == 0.0F) {
             float f = MathHelper.sqrt(x * x + z * z);
@@ -343,34 +350,32 @@ public class SummondSwordEntity extends Entity implements IShootable {
             } else {
 
                 //this.setPosition(hits.getPosX(), hits.getPosY() + hits.getEyeHeight() * 0.5f, hits.getPosZ());
+                double posX = hits.getPosX() + (this.hitX * Math.cos(Math.toRadians(hits.rotationYaw)) - this.hitZ * Math.sin(Math.toRadians(hits.rotationYaw)));
+                double posY = hits.getPosY() + this.hitY;
+                double posZ = hits.getPosZ() + (this.hitX * Math.sin(Math.toRadians(hits.rotationYaw)) + this.hitZ * Math.cos(Math.toRadians(hits.rotationYaw)));
 
-                if (!world.isRemote) {
-                    double posX = hits.getPosX() + (this.hitX * Math.cos(Math.toRadians(hits.rotationYaw)) - this.hitZ * Math.sin(Math.toRadians(hits.rotationYaw)));
-                    double posY = hits.getPosY() + this.hitY;
-                    double posZ = hits.getPosZ() + (this.hitX * Math.sin(Math.toRadians(hits.rotationYaw)) + this.hitZ * Math.cos(Math.toRadians(hits.rotationYaw)));
-
-                    setRawPosition(posX, posY, posZ);
+                setRawPosition(posX, posY, posZ);
 
 
-                    rotationPitch = hits.rotationPitch + this.hitPitch;
-                    rotationYaw = hits.rotationYaw + this.hitYaw;
-                    setRotation(rotationYaw, rotationPitch);
-                    normalizeRotation();
+                rotationPitch = hits.rotationPitch + this.hitPitch;
+                rotationYaw = hits.rotationYaw + this.hitYaw;
+                setRotation(rotationYaw, rotationPitch);
+                normalizeRotation();
+
+                tickInHit++;
+                if (tickInHit > getDelay()) {
+                    this.burst();
                 }
 
-
-                int delay = getDelay();
-                delay--;
-                setDelay(delay);
-
-                if (!this.world.isRemote && delay < 0) this.burst();
             }
 
             return;
         }
 
-        setSeep(getSeep() * getAcceleration());
-        updateMotion(getSeep());
+        if (!world.isRemote) {
+            setSeep(getSeep() * getAcceleration());
+            updateMotion(getSeep());
+        }
 
         boolean disallowedHitBlock = this.isNoClip();
 
@@ -425,6 +430,7 @@ public class SummondSwordEntity extends Entity implements IShootable {
                 }
 
                 if (raytraceresult != null && raytraceresult.getType() == RayTraceResult.Type.ENTITY) {
+                    assert raytraceresult instanceof EntityRayTraceResult;
                     Entity entity = ((EntityRayTraceResult) raytraceresult).getEntity();
                     Entity entity1 = this.getShooter();
                     if (entity instanceof PlayerEntity && entity1 instanceof PlayerEntity && !((PlayerEntity) entity1).canAttackPlayer((PlayerEntity) entity)) {
@@ -457,14 +463,10 @@ public class SummondSwordEntity extends Entity implements IShootable {
 
             this.setPosition(this.getPosX() + mx, this.getPosY() + my, this.getPosZ() + mz);
 
-           /* float f4 = MathHelper.sqrt(horizontalMag(motionVec));
-            if (disallowedHitBlock) {
-                this.rotationYaw = (float) (MathHelper.atan2(-mx, -mz) * (double) (180F / (float) Math.PI));
-            } else {
-                this.rotationYaw = (float) (MathHelper.atan2(mx, mz) * (double) (180F / (float) Math.PI));
-            }
+/*            float f4 = MathHelper.sqrt(horizontalMag(motionVec));
+            this.rotationYaw = (float) (MathHelper.atan2(mx, mz) * (double) (180F / (float) Math.PI));
+            this.rotationPitch = (float) (MathHelper.atan2(my, f4) * (double) (180F / (float) Math.PI));
 
-            this.rotationPitch = (float) (MathHelper.atan2(my, (double) f4) * (double) (180F / (float) Math.PI));
             while (this.rotationPitch - this.prevRotationPitch < -180.0F) {
                 this.prevRotationPitch -= 360.0F;
             }
@@ -481,9 +483,8 @@ public class SummondSwordEntity extends Entity implements IShootable {
                 this.prevRotationYaw += 360.0F;
             }
 
-            this.rotationPitch = MathHelper.lerp(0.2F, this.prevRotationPitch, this.rotationPitch);
-            this.rotationYaw = MathHelper.lerp(0.2F, this.prevRotationYaw, this.rotationYaw);*/
-
+            this.rotationPitch = MathHelper.lerp(0.5F, this.prevRotationPitch, this.rotationPitch);
+            this.rotationYaw = MathHelper.lerp(0.5F, this.prevRotationYaw, this.rotationYaw);*/
             if (this.isInWater()) {
                 for (int j = 0; j < 4; ++j) {
                     float f3 = 0.25F;
@@ -507,7 +508,7 @@ public class SummondSwordEntity extends Entity implements IShootable {
 
     protected void tryDespawn() {
         ++this.ticksInGround;
-        if (ON_GROUND_LIFE_TIME <= this.ticksInGround) {
+        if (this.ticksInGround >= getDelay()) {
             this.burst();
         }
 
@@ -572,23 +573,20 @@ public class SummondSwordEntity extends Entity implements IShootable {
             }
             ((LivingEntity) shooter).setLastAttackedEntity(hits);
         }
+        targetEntity.attackEntityFrom(damagesource, (float) i);
 
+        Entity hits = targetEntity;
+        if (targetEntity instanceof PartEntity) {
+            hits = ((PartEntity<?>) targetEntity).getParent();
+        }
+        this.hitYaw = this.rotationYaw - hits.rotationYaw;
+        this.hitPitch = this.rotationPitch - hits.rotationPitch;
+        this.hitX = this.getPosX() - hits.getPosX();
+        this.hitY = this.getPosY() - hits.getPosY();
+        this.hitZ = this.getPosZ() - hits.getPosZ();
 
         if (!world.isRemote) {
-            targetEntity.hurtResistantTime = 0;
-
-            targetEntity.attackEntityFrom(damagesource, (float) i);
-            Entity hits = targetEntity;
-            if (targetEntity instanceof PartEntity) {
-                hits = ((PartEntity) targetEntity).getParent();
-            }
-
-            this.hitYaw = this.rotationYaw - hits.rotationYaw;
-            this.hitPitch = this.rotationPitch - hits.rotationPitch;
-            this.hitX = this.getPosX() - hits.getPosX();
-            this.hitY = this.getPosY() - hits.getPosY();
-            this.hitZ = this.getPosZ() - hits.getPosZ();
-
+            hits.hurtResistantTime = 0;
             hits.setMotion(0, 0.1, 0);
 
             if (hits instanceof LivingEntity) {
@@ -773,10 +771,7 @@ public class SummondSwordEntity extends Entity implements IShootable {
     public void setHitEntity(Entity hitEntity) {
         if (hitEntity != this) {
             this.dataManager.set(HIT_ENTITY_ID, hitEntity.getEntityId());
-
             this.dataManager.set(OFFSET_YAW, this.rand.nextFloat() * 360);
-
-            this.setDelay(20 * 5);
         }
     }
 

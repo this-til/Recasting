@@ -53,12 +53,10 @@ public class EpidemicSummonedSwordSA extends SA_Register {
         Vector3d pos = livingEntity.getEyePosition(1.0f)
                 .add(VectorHelper.getVectorForRotation(0.0f, livingEntity.getYaw(0) + 90).scale(livingEntity.getRNG().nextBoolean() ? 1 : -1));
 
-        Vector3d dir = attackPos.subtract(pos).normalize();
-
         for (int i = 0; i < number; i++) {
             SummondSwordEntity summondSwordEntity = new SummondSwordEntity(summondSwordEntityTypeRegister.getEntityType(), worldIn, livingEntity);
             summondSwordEntity.setPosition(pos.getX(), pos.getY(), pos.getZ());
-            summondSwordEntity.lookAt(dir);
+            summondSwordEntity.lookAt(attackPos, false);
             summondSwordEntity.setColor(slashBladePack.slashBladeState.getColorCode());
             summondSwordEntity.setStartDelay(5 + i);
             summondSwordEntity.setLifeTime(100 + 5 + i);
