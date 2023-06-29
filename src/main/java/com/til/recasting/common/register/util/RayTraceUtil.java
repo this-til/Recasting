@@ -1,4 +1,4 @@
-package com.til.recasting.util;
+package com.til.recasting.common.register.util;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;

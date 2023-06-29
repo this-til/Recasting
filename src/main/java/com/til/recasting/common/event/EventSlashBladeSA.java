@@ -2,6 +2,7 @@ package com.til.recasting.common.event;
 
 import com.til.recasting.common.capability.ISA;
 import com.til.recasting.common.capability.SlashBladePack;
+import com.til.recasting.common.capability.UseSlashBladeEntityPack;
 import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
@@ -11,7 +12,7 @@ import net.minecraft.item.ItemStack;
  */
 public class EventSlashBladeSA extends EventSlashBlade {
 
-    public EventSlashBladeSA(LivingEntity livingEntity, SlashBladePack slashBladePack) {
-        super(livingEntity, slashBladePack);
+    public EventSlashBladeSA(UseSlashBladeEntityPack pack) {
+        super(pack);
     }
 }

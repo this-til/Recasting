@@ -4,6 +4,7 @@ import com.til.glowing_fire_glow.common.capability.CapabilityProvider;
 import com.til.glowing_fire_glow.common.main.IWorldComponent;
 import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
 import com.til.recasting.Recasting;
+import com.til.recasting.common.register.capability.ISlashBladeStateSupplement_CapabilityRegister;
 import com.til.recasting.common.register.capability.SA_CapabilityRegister;
 import com.til.recasting.common.register.capability.SE_CapabilityRegister;
 import com.til.recasting.common.register.sa.instance.EpidemicSummonedSwordSA;
@@ -27,6 +28,9 @@ public class CapabilityEvent implements IWorldComponent {
 
     @VoluntarilyAssignment
     protected SE_CapabilityRegister se_capabilityRegister;
+
+    @VoluntarilyAssignment
+    protected ISlashBladeStateSupplement_CapabilityRegister slashBladeStateSupplement_capabilityRegister;
 
 
     @VoluntarilyAssignment
@@ -55,6 +59,7 @@ public class CapabilityEvent implements IWorldComponent {
             ise.getPack(seRegister).setLevel(5);
         }
         capabilityProvider.addCapability(se_capabilityRegister.getCapability(), ise);
+        capabilityProvider.addCapability(slashBladeStateSupplement_capabilityRegister.getCapability(), new ISlashBladeStateSupplement.SlashBladeStateSupplement());
 
         event.addCapability(SA_SE_CAPABILITY, capabilityProvider);
     }

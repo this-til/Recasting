@@ -5,7 +5,6 @@ import com.til.glowing_fire_glow.common.main.IWorldComponent;
 import com.til.recasting.common.capability.SlashBladePack;
 import com.til.recasting.common.entity.SummondSwordEntity;
 import com.til.recasting.common.register.entity_type.SummondSwordEntityTypeRegister;
-import com.til.recasting.util.RayTraceUtil;
 import mods.flammpfeil.slashblade.event.InputCommandEvent;
 import mods.flammpfeil.slashblade.util.InputCommand;
 import mods.flammpfeil.slashblade.util.VectorHelper;
@@ -17,7 +16,6 @@ import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import org.spongepowered.asm.mixin.Overwrite;
 
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -67,7 +65,7 @@ public class SummonedSwordArtsManage implements IWorldComponent {
                     sender);
             summondSwordEntity.setColor(slashBladePack.slashBladeState.getColorCode());
             //todo 伤害评估器
-            summondSwordEntity.setDamage(1);
+            summondSwordEntity.setDamage(0.45);
             summondSwordEntity.setDelay(100);
             if (targetEntity != null) {
                 summondSwordEntity.lookAt(RayTraceUtil.getPosition(targetEntity), false);
@@ -113,7 +111,7 @@ public class SummonedSwordArtsManage implements IWorldComponent {
                             player);
                     summondSwordEntity.setColor(slashBladePack.slashBladeState.getColorCode());
                     //todo 伤害评估器
-                    summondSwordEntity.setDamage(1);
+                    summondSwordEntity.setDamage(0.3);
                     summondSwordEntity.setDelay(100);
                     summondSwordEntity.setStartDelay(12 + (dir / 2) * 2);
 

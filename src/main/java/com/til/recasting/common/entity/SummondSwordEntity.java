@@ -1,5 +1,7 @@
 package com.til.recasting.common.entity;
 
+import com.til.recasting.common.register.util.AttackManager;
+import com.til.recasting.common.register.util.HitAssessment;
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import mods.flammpfeil.slashblade.SlashBlade;
 import mods.flammpfeil.slashblade.ability.StunManager;
@@ -7,7 +9,6 @@ import mods.flammpfeil.slashblade.entity.IShootable;
 import mods.flammpfeil.slashblade.util.EnumSetConverter;
 import mods.flammpfeil.slashblade.util.TargetSelector;
 import net.minecraft.block.BlockState;
-import net.minecraft.command.arguments.EntityAnchorArgument;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -40,9 +41,9 @@ import javax.annotation.Nullable;
 import java.util.EnumSet;
 import java.util.List;
 
-public class SummondSwordEntity extends Entity implements IShootable {
+public class SummondSwordEntity extends Entity {
     public static final ResourceLocation DEFAULT_MODEL_NAME = new ResourceLocation(SlashBlade.modid, "model/util/ss.obj");
-    public static final ResourceLocation RESOURCE_LOCATION = new ResourceLocation(SlashBlade.modid, "model/util/ss.png");
+    public static final ResourceLocation DEFAULT_TEXTURE_NAME = new ResourceLocation(SlashBlade.modid, "model/util/ss.png");
 
 
     protected static final DataParameter<Integer> MAX_LIFE = EntityDataManager.createKey(SummondSwordEntity.class, DataSerializers.VARINT);
@@ -70,7 +71,7 @@ public class SummondSwordEntity extends Entity implements IShootable {
     protected double damage = 1.0D;
 
     protected IntOpenHashSet alreadyHits;
-    protected Entity shooting;
+    protected LivingEntity shooting;
     protected Entity hitEntity = null;
 
     protected double hitX;
@@ -78,11 +79,10 @@ public class SummondSwordEntity extends Entity implements IShootable {
     protected double hitZ;
     protected float hitYaw;
     protected float hitPitch;
+    protected boolean recordAttackPos;
 
     protected float attackYaw;
     protected float attackPitch;
-
-    static final int ON_GROUND_LIFE_TIME = 20 * 5;
 
     protected SoundEvent hitEntitySound = SoundEvents.ITEM_TRIDENT_HIT;
     protected SoundEvent hitEntityPlayerSound = SoundEvents.ITEM_TRIDENT_HIT;
@@ -100,13 +100,14 @@ public class SummondSwordEntity extends Entity implements IShootable {
         return this.hitGroundSound;
     }
 
-    public SummondSwordEntity(EntityType<? extends SummondSwordEntity> entityTypeIn, World worldIn, Entity shooting) {
+    public SummondSwordEntity(EntityType<? extends SummondSwordEntity> entityTypeIn, World worldIn, LivingEntity shooting) {
         super(entityTypeIn, worldIn);
         this.setNoGravity(true);
-        setShooter(shooting);
+
 
         //设定初始角度等信息
         if (shooting != null) {
+            setShooter(shooting);
             float dist = 2.0f;
             double ran = (rand.nextFloat() - 0.5) * 2.0;
             double yaw = Math.toRadians(-shooting.rotationYaw + 90);
@@ -209,7 +210,7 @@ public class SummondSwordEntity extends Entity implements IShootable {
     }
 
 
-    @Deprecated
+/*    @Deprecated
     @Override
     public void shoot(double x, double y, double z, float velocity, float inaccuracy) {
         Vector3d vec3d = (new Vector3d(x, y, z)).normalize().add(this.rand.nextGaussian() * (double) 0.0075F * (double) inaccuracy, this.rand.nextGaussian() * (double) 0.0075F * (double) inaccuracy, this.rand.nextGaussian() * (double) 0.0075F * (double) inaccuracy).scale((double) velocity);
@@ -220,7 +221,7 @@ public class SummondSwordEntity extends Entity implements IShootable {
         this.prevRotationYaw = this.rotationYaw;
         this.prevRotationPitch = this.rotationPitch;
         this.ticksInGround = 0;
-    }
+    }*/
 
     @Override
     @OnlyIn(Dist.CLIENT)
@@ -297,8 +298,11 @@ public class SummondSwordEntity extends Entity implements IShootable {
 
 
     public void setIsCritical(boolean value) {
-        if (value) setFlags(FlagsState.Critical);
-        else removeFlags(FlagsState.Critical);
+        if (value) {
+            setFlags(FlagsState.Critical);
+        } else {
+            removeFlags(FlagsState.Critical);
+        }
     }
 
     public boolean getIsCritical() {
@@ -308,8 +312,11 @@ public class SummondSwordEntity extends Entity implements IShootable {
 
     public void setNoClip(boolean value) {
         this.noClip = value;
-        if (value) setFlags(FlagsState.NoClip);
-        else removeFlags(FlagsState.NoClip);
+        if (value) {
+            setFlags(FlagsState.NoClip);
+        } else {
+            removeFlags(FlagsState.NoClip);
+        }
     }
 
     //disallowedHitBlock
@@ -348,6 +355,15 @@ public class SummondSwordEntity extends Entity implements IShootable {
             if (!hits.isAlive()) {
                 this.burst();
             } else {
+
+                if (!recordAttackPos) {
+                    recordAttackPos = true;
+                    this.hitYaw = this.rotationYaw - hits.rotationYaw;
+                    this.hitPitch = this.rotationPitch - hits.rotationPitch;
+                    this.hitX = this.getPosX() - hits.getPosX();
+                    this.hitY = this.getPosY() - hits.getPosY();
+                    this.hitZ = this.getPosZ() - hits.getPosZ();
+                }
 
                 //this.setPosition(hits.getPosX(), hits.getPosY() + hits.getEyeHeight() * 0.5f, hits.getPosZ());
                 double posX = hits.getPosX() + (this.hitX * Math.cos(Math.toRadians(hits.rotationYaw)) - this.hitZ * Math.sin(Math.toRadians(hits.rotationYaw)));
@@ -502,7 +518,9 @@ public class SummondSwordEntity extends Entity implements IShootable {
         }
 
 
-        if (!this.world.isRemote && ticksInGround <= 0 && getLifeTime() < this.ticksExisted) this.remove();
+        if (!this.world.isRemote && ticksInGround <= 0 && getLifeTime() < this.ticksExisted) {
+            this.remove();
+        }
 
     }
 
@@ -561,31 +579,14 @@ public class SummondSwordEntity extends Entity implements IShootable {
         }
 
         if (this.getIsCritical()) {
-            i += this.rand.nextInt(i / 2 + 2);
+            i *= 1.5;
         }
-
-        Entity shooter = this.getShooter();
-        DamageSource damagesource = new EntityDamageSource("directMagic", this.getShooter()).setDamageBypassesArmor().setMagicDamage();
-        if (shooter instanceof LivingEntity) {
+        if (!world.isRemote) {
+            AttackManager.doAttack(getShooter(), targetEntity, i, true, true);
             Entity hits = targetEntity;
             if (targetEntity instanceof PartEntity) {
                 hits = ((PartEntity<?>) targetEntity).getParent();
             }
-            ((LivingEntity) shooter).setLastAttackedEntity(hits);
-        }
-        targetEntity.attackEntityFrom(damagesource, (float) i);
-
-        Entity hits = targetEntity;
-        if (targetEntity instanceof PartEntity) {
-            hits = ((PartEntity<?>) targetEntity).getParent();
-        }
-        this.hitYaw = this.rotationYaw - hits.rotationYaw;
-        this.hitPitch = this.rotationPitch - hits.rotationPitch;
-        this.hitX = this.getPosX() - hits.getPosX();
-        this.hitY = this.getPosY() - hits.getPosY();
-        this.hitZ = this.getPosZ() - hits.getPosZ();
-
-        if (!world.isRemote) {
             hits.hurtResistantTime = 0;
             hits.setMotion(0, 0.1, 0);
 
@@ -601,18 +602,12 @@ public class SummondSwordEntity extends Entity implements IShootable {
                 }
 
 
-                if (!this.world.isRemote && shooter instanceof LivingEntity) {
-                    EnchantmentHelper.applyThornEnchantments(targetLivingEntity, shooter);
-                    EnchantmentHelper.applyArthropodEnchantments((LivingEntity) shooter, targetLivingEntity);
-                }
-
+                EnchantmentHelper.applyThornEnchantments(targetLivingEntity, getShooter());
+                EnchantmentHelper.applyArthropodEnchantments(getShooter(), targetLivingEntity);
                 //this.arrowHit(targetLivingEntity);
 
                 affectEntity(targetLivingEntity, getPotionEffects(), 1.0f);
-
-                if (targetLivingEntity != shooter && targetLivingEntity instanceof PlayerEntity && shooter instanceof ServerPlayerEntity) {
-                    ((ServerPlayerEntity) shooter).playSound(this.getHitEntityPlayerSound(), SoundCategory.PLAYERS, 0.18F, 0.45F);
-                }
+                //getShooter().playSound(this.getHitEntityPlayerSound(), 0.18F, 0.45F);
             }
 
             this.playSound(this.getHitEntitySound(), 1.0F, 1.2F / (this.rand.nextFloat() * 0.2F + 0.9F));
@@ -684,20 +679,21 @@ public class SummondSwordEntity extends Entity implements IShootable {
         return ProjectileHelper.rayTraceEntities(this.world, this, p_213866_1_, p_213866_2_, this.getBoundingBox().expand(this.getMotion()).grow(1.0D), (p_213871_1_) -> !p_213871_1_.isSpectator() && p_213871_1_.isAlive() && p_213871_1_.canBeCollidedWith() && (p_213871_1_ != this.getShooter() || this.ticksInAir >= 5) && (this.alreadyHits == null || !this.alreadyHits.contains(p_213871_1_.getEntityId())));
     }
 
-    @Override
-    public Entity getShooter() {
+    public LivingEntity getShooter() {
         if (this.shooting == null) {
             int id = this.dataManager.get(SHOOTING_ENTITY_ID);
             if (id != 0) {
-                this.shooting = this.getEntityWorld().getEntityByID(id);
+                Entity entity = this.getEntityWorld().getEntityByID(id);
+                if (entity instanceof LivingEntity) {
+                    this.shooting = (LivingEntity) entity;
+                }
             }
         }
 
         return this.shooting;
     }
 
-    @Override
-    public void setShooter(Entity shooter) {
+    public void setShooter(LivingEntity shooter) {
         if (shooter != null) {
             this.dataManager.set(SHOOTING_ENTITY_ID, shooter.getEntityId());
         }
@@ -708,7 +704,9 @@ public class SummondSwordEntity extends Entity implements IShootable {
     public List<EffectInstance> getPotionEffects() {
         List<EffectInstance> effects = PotionUtils.getEffectsFromTag(this.getPersistentData());
 
-        if (effects.isEmpty()) effects.add(new EffectInstance(Effects.POISON, 1, 1));
+        if (effects.isEmpty()) {
+            effects.add(new EffectInstance(Effects.POISON, 1, 1));
+        }
 
         return effects;
     }
@@ -717,8 +715,9 @@ public class SummondSwordEntity extends Entity implements IShootable {
         this.playSound(SoundEvents.BLOCK_GLASS_BREAK, 1.0F, 1.2F / (this.rand.nextFloat() * 0.2F + 0.9F));
 
         if (!this.world.isRemote) {
-            if (this.world instanceof ServerWorld)
+            if (this.world instanceof ServerWorld) {
                 ((ServerWorld) this.world).spawnParticle(ParticleTypes.CRIT, this.getPosX(), this.getPosY(), this.getPosZ(), 16, 0.5, 0.5, 0.5, 0.25f);
+            }
 
             this.burst(getPotionEffects(), null);
         }
@@ -732,10 +731,7 @@ public class SummondSwordEntity extends Entity implements IShootable {
 
 
     public void burst(List<EffectInstance> effects, @Nullable Entity focusEntity) {
-        AxisAlignedBB axisalignedbb = this.getBoundingBox().grow(4.0D, 2.0D, 4.0D);
-        List<Entity> list = TargetSelector.getTargettableEntitiesWithinAABB(this.world, 2, this);
-        //this.world.getEntitiesWithinAABB(LivingEntity.class, axisalignedbb);
-
+        List<Entity> list = HitAssessment.getTargettableEntitiesWithinAABB(this.world, getShooter(), 2, this);
         list.stream().filter(e -> e instanceof LivingEntity).map(e -> (LivingEntity) e).forEach(e -> {
             double distanceSq = this.getDistanceSq(e);
             if (distanceSq < 9.0D) {
@@ -743,7 +739,6 @@ public class SummondSwordEntity extends Entity implements IShootable {
                 if (e == focusEntity) {
                     factor = 1.0D;
                 }
-
                 affectEntity(e, effects, factor);
             }
         });
@@ -765,7 +760,9 @@ public class SummondSwordEntity extends Entity implements IShootable {
     }
 
     private void resetAlreadyHits() {
-        if (this.alreadyHits != null) alreadyHits.clear();
+        if (this.alreadyHits != null) {
+            alreadyHits.clear();
+        }
     }
 
     public void setHitEntity(Entity hitEntity) {
@@ -802,7 +799,6 @@ public class SummondSwordEntity extends Entity implements IShootable {
         this.damage = damageIn;
     }
 
-    @Override
     public double getDamage() {
         return this.damage;
     }
@@ -849,7 +845,7 @@ public class SummondSwordEntity extends Entity implements IShootable {
         if (texture == null) {
             String textureString = dataManager.get(TEXTURE);
             if (textureString.isEmpty()) {
-                texture = RESOURCE_LOCATION;
+                texture = DEFAULT_TEXTURE_NAME;
             }
         }
         return texture;

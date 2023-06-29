@@ -20,6 +20,8 @@ public class CooperateWithSE extends SE_Register {
     @ConfigField
     protected NumberPack probability;
 
+    @ConfigField
+    protected NumberPack attack;
 
     @ConfigField
     protected int delay;
@@ -29,21 +31,23 @@ public class CooperateWithSE extends SE_Register {
 
     @SubscribeEvent
     protected void onEventSlashBladeDoSlash(EventSlashBladeDoSlash event) {
-        if (!event.slashBladePack.ise.hasSE(this)) {
+        if (!event.pack.slashBladePack.ise.hasSE(this)) {
             return;
         }
-        ISE.SE_Pack se_pack = event.slashBladePack.ise.getPack(this);
-        if (event.livingEntity.getRNG().nextDouble() >= probability.of(se_pack.getLevel())) {
+        ISE.SE_Pack se_pack = event.pack.slashBladePack.ise.getPack(this);
+        if (event.pack.entity.getRNG().nextDouble() >= probability.of(se_pack.getLevel())) {
             return;
         }
-        commonPlanRun.add(delay, () -> AttackManager.doSlash(event.livingEntity, event.roll));
-
+        commonPlanRun.add(delay, () -> {
+            AttackManager.doSlash(event.pack.entity, event.roll, event.colorCode, event.centerOffset, event.mute, event.critical, event.damage * attack.of(se_pack.getLevel()), event.knockback);
+        });
     }
 
     @Override
     public void defaultConfig() {
         super.defaultConfig();
         probability = new NumberPack(0, 0.1);
+        attack = new NumberPack(0, 0.2);
         delay = 10;
     }
 }

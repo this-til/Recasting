@@ -25,14 +25,14 @@ public class OverloadSE extends SE_Register {
 
     @SubscribeEvent
     protected void onEventSlashBladeDoSlash(EventSlashBladeDoSlash event) {
-        if (!event.slashBladePack.ise.hasSE(this)) {
+        if (!event.pack.slashBladePack.ise.hasSE(this)) {
             return;
         }
-        ISE.SE_Pack se_pack = event.slashBladePack.ise.getPack(this);
-        if (event.livingEntity.getRNG().nextDouble() >= probability.of(se_pack.getLevel())) {
+        ISE.SE_Pack se_pack = event.pack.slashBladePack.ise.getPack(this);
+        if (event.pack.entity.getRNG().nextDouble() >= probability.of(se_pack.getLevel())) {
             return;
         }
-        JudgementCut.doJudgementCut(event.livingEntity);
+        JudgementCut.doJudgementCut(event.pack.entity);
     }
 
     @Override

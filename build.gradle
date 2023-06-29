@@ -158,6 +158,11 @@ dependencies {
     //拔刀剑2
     implementation fg.deobf('curse.maven:SlashBlade2-241596:3601907');
 
+    implementation fg.deobf('curse.maven:FileDetails-245733:3144151');
+
+    //implementation fg.deobf('curse.maven:CustomNPCs-221826:3665351');
+
+
     implementation fileTree(dir: 'libs', include: '*.jar')
 
 }

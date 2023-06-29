@@ -9,11 +9,8 @@ import com.til.recasting.common.entity.SummondSwordEntity;
 import com.til.recasting.common.event.EventSlashBladeDoSlash;
 import com.til.recasting.common.register.entity_type.SummondSwordEntityTypeRegister;
 import com.til.recasting.common.register.se.SE_Register;
-import com.til.recasting.util.RayTraceUtil;
-import mods.flammpfeil.slashblade.specialattack.JudgementCut;
-import net.minecraft.command.arguments.EntityAnchorArgument;
+import com.til.recasting.common.register.util.RayTraceUtil;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
@@ -32,20 +29,21 @@ public class MomentSE extends SE_Register {
 
     @SubscribeEvent
     protected void onEventSlashBladeDoSlash(EventSlashBladeDoSlash event) {
-        if (!event.slashBladePack.ise.hasSE(this)) {
+        if (!event.pack.slashBladePack.ise.hasSE(this)) {
             return;
         }
-        ISE.SE_Pack se_pack = event.slashBladePack.ise.getPack(this);
-        Entity targetEntity = event.slashBladePack.slashBladeState.getTargetEntity(event.livingEntity.world);
-        SummondSwordEntity summondSwordEntity = new SummondSwordEntity(summondSwordEntityTypeRegister.getEntityType(), event.livingEntity.world, event.livingEntity);
-        summondSwordEntity.setColor(event.slashBladePack.slashBladeState.getColorCode());
+        ISE.SE_Pack se_pack = event.pack.slashBladePack.ise.getPack(this);
+        Entity targetEntity = event.pack.slashBladePack.slashBladeState.getTargetEntity(event.pack.entity.world);
+        SummondSwordEntity summondSwordEntity = new SummondSwordEntity(summondSwordEntityTypeRegister.getEntityType(), event.pack.entity.world, event.pack.entity);
+        event.pack.slashBladePack.iSlashBladeStateSupplement.decorate(summondSwordEntity);
+        summondSwordEntity.setColor(event.pack.slashBladePack.slashBladeState.getColorCode());
         summondSwordEntity.setDamage(attack.of(se_pack.getLevel()));
         summondSwordEntity.setDelay(20);
         if (targetEntity != null) {
             summondSwordEntity.lookAt(RayTraceUtil.getPosition(targetEntity), false);
         }
-        event.livingEntity.world.addEntity(summondSwordEntity);
-        event.livingEntity.playSound(SoundEvents.ITEM_CHORUS_FRUIT_TELEPORT, 0.2F, 1.45F);
+        event.pack.entity.world.addEntity(summondSwordEntity);
+        event.pack.entity.playSound(SoundEvents.ITEM_CHORUS_FRUIT_TELEPORT, 0.2F, 1.45F);
     }
 
 
