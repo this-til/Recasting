@@ -32,6 +32,9 @@ import javax.annotation.Nullable;
 import java.util.EnumSet;
 import java.util.List;
 
+/**
+ * @author til
+ */
 public class SlashEffectEntity extends Entity {
     static private final ResourceLocation DEFAULT_MODEL_NAME = new ResourceLocation(SlashBlade.modid, "model/util/slash.obj");
     static private final ResourceLocation DEFAULT_TEXTURE_NAME = new ResourceLocation(SlashBlade.modid, "model/util/slash.png");
@@ -42,8 +45,6 @@ public class SlashEffectEntity extends Entity {
     protected static final DataParameter<Float> ROTATION_OFFSET = EntityDataManager.createKey(SlashEffectEntity.class, DataSerializers.FLOAT);
     protected static final DataParameter<Float> ROTATION_ROLL = EntityDataManager.createKey(SlashEffectEntity.class, DataSerializers.FLOAT);
     protected static final DataParameter<Float> BASESIZE = EntityDataManager.createKey(SlashEffectEntity.class, DataSerializers.FLOAT);
-    protected static final DataParameter<Float> RANGE = EntityDataManager.createKey(SlashEffectEntity.class, DataSerializers.FLOAT);
-
     protected static final DataParameter<String> MODEL = EntityDataManager.createKey(SlashEffectEntity.class, DataSerializers.STRING);
     protected static final DataParameter<String> TEXTURE = EntityDataManager.createKey(SlashEffectEntity.class, DataSerializers.STRING);
 
@@ -85,7 +86,6 @@ public class SlashEffectEntity extends Entity {
         this.dataManager.register(ROTATION_OFFSET, 0.0f);
         this.dataManager.register(ROTATION_ROLL, 0.0f);
         this.dataManager.register(BASESIZE, 1.0f);
-        this.dataManager.register(RANGE,  2f);
         this.dataManager.register(MODEL, "");
         this.dataManager.register(TEXTURE, "");
     }
@@ -156,7 +156,7 @@ public class SlashEffectEntity extends Entity {
 
             Vector3d normal3d = new Vector3d(normal.getX(), normal.getY(), normal.getZ());
 
-            BlockRayTraceResult rayResult = this.getEntityWorld().rayTraceBlocks(new RayTraceContext(start.add(normal3d.scale(1.5)), start.add(normal3d.scale(3)), RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.ANY, null));
+            BlockRayTraceResult rayResult = this.getEntityWorld().rayTraceBlocks(new RayTraceContext(start.add(normal3d.scale(1.5 * getBaseSize())), start.add(normal3d.scale(3 * getBaseSize())), RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.ANY, null));
 
             if (rayResult.getType() == RayTraceResult.Type.BLOCK) {
                 FallHandler.spawnLandingParticle(this, rayResult.getHitVec(), normal3d, 3);
@@ -167,7 +167,7 @@ public class SlashEffectEntity extends Entity {
             if (this.ticksExisted % 2 == 0) {
                 boolean forceHit = true;
                 float ratio = (float) damage * (getIsCritical() ? 1.1f : 1.0f);
-                List<Entity> hits = AttackManager.areaAttack(getShooter(), this, this.action.action, ratio, forceHit, false, true, alreadyHits);
+                List<Entity> hits = AttackManager.areaAttack(getShooter(), this, this.action.action, getBaseSize() * 4, ratio, forceHit, false, true, alreadyHits);
                 if (!this.doCycleHit()) {
                     alreadyHits.addAll(hits);
                 }
@@ -362,15 +362,6 @@ public class SlashEffectEntity extends Entity {
 
     public void setCycleHit(boolean cycleHit) {
         this.cycleHit = cycleHit;
-    }
-
-
-    public float getRange() {
-        return this.dataManager.get(RANGE);
-    }
-
-    public void setRange(float range) {
-        this.dataManager.set(RANGE, range);
     }
 
     @Nullable

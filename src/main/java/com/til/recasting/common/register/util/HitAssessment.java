@@ -1,6 +1,9 @@
 package com.til.recasting.common.register.util;
 
 import com.google.common.collect.Lists;
+import com.til.glowing_fire_glow.common.register.StaticVoluntarilyAssignment;
+import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
+import com.til.recasting.common.register.entity_predicate.DefaultEntityPredicateRegister;
 import mods.flammpfeil.slashblade.entity.IShootable;
 import mods.flammpfeil.slashblade.util.TargetSelector;
 import net.minecraft.entity.Entity;
@@ -16,9 +19,13 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 
+@StaticVoluntarilyAssignment
 public class HitAssessment {
 
-    public static <E extends Entity> List<Entity> getTargettableEntitiesWithinAABB(World world, LivingEntity shooter, double reach, E owner) {
+    @VoluntarilyAssignment
+    protected static DefaultEntityPredicateRegister defaultEntityPredicateRegister;
+
+    public static List<Entity> getTargettableEntitiesWithinAABB(World world, LivingEntity shooter, Entity owner, double reach) {
         AxisAlignedBB aabb = owner.getBoundingBox().grow(reach);
 
         List<Entity> list1 = Lists.newArrayList();
@@ -28,10 +35,9 @@ public class HitAssessment {
                 .filter(e -> (e.getDistanceSq(owner) < (reach * reach)))
                 .collect(Collectors.toList()));
 
-        EntityPredicate predicate = TargetSelector.getAreaAttackPredicate(0); //reach check has already been completed
 
         list1.addAll(world.getEntitiesWithinAABB(LivingEntity.class, aabb, null).stream()
-                .filter(t -> predicate.canTarget(shooter, t))
+                .filter(t -> defaultEntityPredicateRegister.canTarget(shooter, t))
                 .collect(Collectors.toList()));
 
         return list1;

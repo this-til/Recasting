@@ -14,7 +14,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 /***
  * 过载
- * 挥刀的时候有小概率触发SA
+ * 挥刀的时候有小概率触发审判
  */
 @VoluntarilyRegister
 public class OverloadSE extends SE_Register {
@@ -38,6 +38,6 @@ public class OverloadSE extends SE_Register {
     @Override
     public void defaultConfig() {
         super.defaultConfig();
-        probability = new NumberPack(0, 0.01);
+        probability = new NumberPack(0, 0.03);
     }
 }

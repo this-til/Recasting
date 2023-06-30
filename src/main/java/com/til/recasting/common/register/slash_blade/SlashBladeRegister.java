@@ -4,7 +4,6 @@ import com.til.glowing_fire_glow.common.config.ConfigField;
 import com.til.glowing_fire_glow.common.register.RegisterBasics;
 import com.til.glowing_fire_glow.util.Delayed;
 import com.til.recasting.common.capability.SlashBladePack;
-import com.til.recasting.common.item.RecastingSlashBlade;
 import mods.flammpfeil.slashblade.SlashBlade;
 import mods.flammpfeil.slashblade.client.renderer.SlashBladeTEISR;
 import mods.flammpfeil.slashblade.init.SBItems;

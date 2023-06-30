@@ -10,9 +10,8 @@ import com.til.recasting.common.register.capability.SE_CapabilityRegister;
 import com.til.recasting.common.register.sa.instance.EpidemicSummonedSwordSA;
 import com.til.recasting.common.register.se.AllSE_Register;
 import com.til.recasting.common.register.se.SE_Register;
-import com.til.recasting.common.register.se.instance.CooperateWithSE;
-import com.til.recasting.common.register.se.instance.OverloadSE;
 import mods.flammpfeil.slashblade.item.ItemSlashBlade;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
@@ -20,7 +19,9 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 public class CapabilityEvent implements IWorldComponent {
 
-    public static final ResourceLocation SA_SE_CAPABILITY = new ResourceLocation(Recasting.MOD_ID, "sa_se_capability");
+    public static final ResourceLocation SLASH_BLADE_CAPABILITY = new ResourceLocation(Recasting.MOD_ID, "slash_blade_capability");
+
+    public static final ResourceLocation CAPABILITY = new ResourceLocation(Recasting.MOD_ID, "capability");
 
     @VoluntarilyAssignment
     protected SA_CapabilityRegister sa_capabilityRegister;
@@ -44,6 +45,7 @@ public class CapabilityEvent implements IWorldComponent {
     @SubscribeEvent
     protected void onAttachCapabilitiesEvent_itemStack(AttachCapabilitiesEvent<ItemStack> event) {
 
+
         if (!(event.getObject().getItem() instanceof ItemSlashBlade)) {
             return;
         }
@@ -61,7 +63,23 @@ public class CapabilityEvent implements IWorldComponent {
         capabilityProvider.addCapability(se_capabilityRegister.getCapability(), ise);
         capabilityProvider.addCapability(slashBladeStateSupplement_capabilityRegister.getCapability(), new ISlashBladeStateSupplement.SlashBladeStateSupplement());
 
-        event.addCapability(SA_SE_CAPABILITY, capabilityProvider);
+        event.addCapability(SLASH_BLADE_CAPABILITY, capabilityProvider);
+    }
+
+    @SubscribeEvent
+    protected void onAttachCapabilitiesEvent_itemStack_2(AttachCapabilitiesEvent<ItemStack> event) {
+        ItemStack itemStack = event.getObject();
+        if (!(itemStack.getItem() instanceof ICustomCapability)) {
+            return;
+        }
+
+        CapabilityProvider capabilityProvider = new CapabilityProvider();
+        ((ICustomCapability) itemStack.getItem()).customCapability(itemStack, capabilityProvider);
+        event.addCapability(CAPABILITY, capabilityProvider);
+    }
+
+    public interface ICustomCapability {
+        void customCapability(ItemStack itemStack, CapabilityProvider capabilityProvider);
     }
 
 }

@@ -1,5 +1,8 @@
 package com.til.recasting.common.entity;
 
+import com.til.glowing_fire_glow.common.register.StaticVoluntarilyAssignment;
+import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
+import com.til.recasting.common.register.entity_predicate.DefaultEntityPredicateRegister;
 import com.til.recasting.common.register.util.AttackManager;
 import com.til.recasting.common.register.util.HitAssessment;
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
@@ -41,7 +44,12 @@ import javax.annotation.Nullable;
 import java.util.EnumSet;
 import java.util.List;
 
+@StaticVoluntarilyAssignment
 public class SummondSwordEntity extends Entity {
+
+    @VoluntarilyAssignment
+    public static DefaultEntityPredicateRegister defaultEntityPredicateRegister;
+
     public static final ResourceLocation DEFAULT_MODEL_NAME = new ResourceLocation(SlashBlade.modid, "model/util/ss.obj");
     public static final ResourceLocation DEFAULT_TEXTURE_NAME = new ResourceLocation(SlashBlade.modid, "model/util/ss.png");
 
@@ -254,7 +262,7 @@ public class SummondSwordEntity extends Entity {
         this.setMotion(x, y, z);
         if (this.prevRotationPitch == 0.0F && this.prevRotationYaw == 0.0F) {
             float f = MathHelper.sqrt(x * x + z * z);
-            this.rotationPitch = (float) (MathHelper.atan2(y, (double) f) * (double) (180F / (float) Math.PI));
+            this.rotationPitch = (float) (MathHelper.atan2(y, f) * (double) (180F / (float) Math.PI));
             this.rotationYaw = (float) (MathHelper.atan2(x, z) * (double) (180F / (float) Math.PI));
             this.prevRotationPitch = this.rotationPitch;
             this.prevRotationYaw = this.rotationYaw;
@@ -676,7 +684,14 @@ public class SummondSwordEntity extends Entity {
 
     @Nullable
     protected EntityRayTraceResult getRayTrace(Vector3d p_213866_1_, Vector3d p_213866_2_) {
-        return ProjectileHelper.rayTraceEntities(this.world, this, p_213866_1_, p_213866_2_, this.getBoundingBox().expand(this.getMotion()).grow(1.0D), (p_213871_1_) -> !p_213871_1_.isSpectator() && p_213871_1_.isAlive() && p_213871_1_.canBeCollidedWith() && (p_213871_1_ != this.getShooter() || this.ticksInAir >= 5) && (this.alreadyHits == null || !this.alreadyHits.contains(p_213871_1_.getEntityId())));
+        return ProjectileHelper.rayTraceEntities(
+                this.world,
+                this,
+                p_213866_1_,
+                p_213866_2_,
+                this.getBoundingBox().expand(this.getMotion()).grow(1.0D),
+                entity -> defaultEntityPredicateRegister.canTarget(getShooter(), entity));
+        // (p_213871_1_) -> !p_213871_1_.isSpectator() && p_213871_1_.isAlive() && p_213871_1_.canBeCollidedWith() && (p_213871_1_ != this.getShooter() || this.ticksInAir >= 5) && (this.alreadyHits == null || !this.alreadyHits.contains(p_213871_1_.getEntityId())));
     }
 
     public LivingEntity getShooter() {
@@ -731,7 +746,7 @@ public class SummondSwordEntity extends Entity {
 
 
     public void burst(List<EffectInstance> effects, @Nullable Entity focusEntity) {
-        List<Entity> list = HitAssessment.getTargettableEntitiesWithinAABB(this.world, getShooter(), 2, this);
+        List<Entity> list = HitAssessment.getTargettableEntitiesWithinAABB(this.world, getShooter(), this, 2);
         list.stream().filter(e -> e instanceof LivingEntity).map(e -> (LivingEntity) e).forEach(e -> {
             double distanceSq = this.getDistanceSq(e);
             if (distanceSq < 9.0D) {

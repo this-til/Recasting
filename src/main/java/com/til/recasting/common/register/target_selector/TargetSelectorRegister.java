@@ -38,7 +38,6 @@ public abstract class TargetSelectorRegister extends RegisterBasics {
         Vector3d end = start.add(dir.scale(range));
         boolean hasOtherExclude = otherExclude != null && otherExclude.length > 0;
         List<Entity> otherEntityLift = hasOtherExclude ? Arrays.asList(otherExclude) : null;
-        ;
 
         RayTraceResult raytraceresult = entity.world.rayTraceBlocks(new RayTraceContext(start, end, RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, entity));
 

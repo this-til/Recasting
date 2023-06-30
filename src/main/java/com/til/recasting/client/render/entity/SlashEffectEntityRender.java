@@ -69,7 +69,7 @@ public class SlashEffectEntityRender<T extends SlashEffectEntity> extends Entity
 
             matrixStackIn.scale(1, 0.25f, 1);
 
-            float baseScale = 0.6f * entity.getRange();
+            float baseScale = 1.2f;
             matrixStackIn.scale(baseScale, baseScale, baseScale);
 
             float yscale = 0.03f;

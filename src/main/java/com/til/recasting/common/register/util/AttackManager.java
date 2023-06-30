@@ -25,11 +25,12 @@ import java.util.function.Consumer;
  */
 public class AttackManager {
 
-    public static List<Entity> areaAttack(LivingEntity playerIn, Entity slashEffectEntity, Consumer<LivingEntity> beforeHit, float ratio, boolean forceHit, boolean resetHit, boolean mute, List<Entity> exclude) {
+    public static List<Entity> areaAttack(LivingEntity playerIn, Entity slashEffectEntity, Consumer<LivingEntity> beforeHit, float range, float ratio, boolean forceHit, boolean resetHit, boolean mute, List<Entity> exclude) {
         UseSlashBladeEntityPack useSlashBladeEntityPack = new UseSlashBladeEntityPack(playerIn);
         if (useSlashBladeEntityPack.isEffective()) {
-            EventSlashBladeAreaAttack eventSlashBladeAreaAttack = new EventSlashBladeAreaAttack(useSlashBladeEntityPack, slashEffectEntity, beforeHit, ratio, forceHit, resetHit, mute, exclude);
+            EventSlashBladeAreaAttack eventSlashBladeAreaAttack = new EventSlashBladeAreaAttack(useSlashBladeEntityPack, slashEffectEntity, beforeHit, range, ratio, forceHit, resetHit, mute, exclude);
             MinecraftForge.EVENT_BUS.post(eventSlashBladeAreaAttack);
+            range = eventSlashBladeAreaAttack.range;
             beforeHit = eventSlashBladeAreaAttack.beforeHit;
             ratio = eventSlashBladeAreaAttack.ratio;
             forceHit = eventSlashBladeAreaAttack.forceHit;
@@ -39,8 +40,8 @@ public class AttackManager {
         }
 
         List<Entity> founds;
-        float modifiedRatio =  EnchantmentHelper.getSweepingDamageRatio(playerIn) * ratio;
-        founds = TargetSelector.getTargettableEntitiesWithinAABB(playerIn.world, playerIn);
+        float modifiedRatio = EnchantmentHelper.getSweepingDamageRatio(playerIn) * ratio;
+        founds = HitAssessment.getTargettableEntitiesWithinAABB(playerIn.world, playerIn, slashEffectEntity, range);
         if (exclude != null) {
             founds.removeAll(exclude);
         }

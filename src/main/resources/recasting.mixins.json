@@ -6,7 +6,9 @@
   "mixins": [
     "AttackManagerMixin",
     "JudgementCutMixin",
-    "SummonedSwordArtsMixin"
+    "LockOnManagerMixin",
+    "SummonedSwordArtsMixin",
+    "UntouchableMixin"
   ],
   "injectors": {
     "defaultRequire": 1

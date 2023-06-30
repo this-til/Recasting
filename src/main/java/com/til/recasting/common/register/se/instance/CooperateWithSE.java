@@ -1,6 +1,7 @@
 package com.til.recasting.common.register.se.instance;
 
 import com.til.glowing_fire_glow.common.CommonPlanRun;
+import com.til.glowing_fire_glow.common.capability.time_run.TimerCell;
 import com.til.glowing_fire_glow.common.config.ConfigField;
 import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
 import com.til.glowing_fire_glow.common.register.VoluntarilyRegister;
@@ -38,9 +39,9 @@ public class CooperateWithSE extends SE_Register {
         if (event.pack.entity.getRNG().nextDouble() >= probability.of(se_pack.getLevel())) {
             return;
         }
-        commonPlanRun.add(delay, () -> {
-            AttackManager.doSlash(event.pack.entity, event.roll, event.colorCode, event.centerOffset, event.mute, event.critical, event.damage * attack.of(se_pack.getLevel()), event.knockback);
-        });
+        event.pack.timeRun.addTimerCell(new TimerCell(
+                () -> AttackManager.doSlash(event.pack.entity, event.roll, event.colorCode, event.centerOffset, event.mute, event.critical, event.damage * attack.of(se_pack.getLevel()), event.knockback),
+                delay, 0));
     }
 
     @Override
