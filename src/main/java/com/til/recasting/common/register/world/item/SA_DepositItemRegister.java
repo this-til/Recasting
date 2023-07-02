@@ -4,6 +4,8 @@ import com.til.glowing_fire_glow.common.capability.CapabilityProvider;
 import com.til.glowing_fire_glow.common.register.StaticVoluntarilyAssignment;
 import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
 import com.til.glowing_fire_glow.common.register.VoluntarilyRegister;
+import com.til.glowing_fire_glow.common.register.world.item.ItemRegister;
+import com.til.glowing_fire_glow.util.StringUtil;
 import com.til.recasting.common.capability.CapabilityEvent;
 import com.til.recasting.common.capability.IItemSA;
 import com.til.recasting.common.capability.IItemSE;
@@ -12,14 +14,23 @@ import com.til.recasting.common.register.capability.ItemSE_CapabilityRegister;
 import com.til.recasting.common.register.sa.AllSARegister;
 import com.til.recasting.common.register.sa.SA_Register;
 import com.til.recasting.common.register.se.SE_Register;
+import com.til.recasting.common.register.util.StringFinal;
+import mods.flammpfeil.slashblade.SlashBlade;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.World;
+
+import javax.annotation.Nullable;
+import java.util.List;
 
 @StaticVoluntarilyAssignment
-@VoluntarilyRegister
-public class SA_DepositItemRegister {
+@VoluntarilyRegister(priority = 10)
+public class SA_DepositItemRegister extends ItemRegister {
 
     @VoluntarilyAssignment
     protected static ItemSA_CapabilityRegister itemSA_capabilityRegister;
@@ -27,13 +38,16 @@ public class SA_DepositItemRegister {
     @VoluntarilyAssignment
     protected static AllSARegister allSARegister;
 
-    public static class SE_DepositItem extends Item implements CapabilityEvent.ICustomCapability {
+    @Override
+    protected Item initItem() {
+        return new SA_DepositItem(new Item.Properties().group(SlashBlade.SLASHBLADE));
+    }
 
-        protected final SE_DepositItemRegister se_depositItemRegister;
+    public static class SA_DepositItem extends Item implements CapabilityEvent.ICustomCapability {
 
-        public SE_DepositItem(Properties properties, SE_DepositItemRegister se_depositItemRegister) {
+
+        public SA_DepositItem(Properties properties) {
             super(properties);
-            this.se_depositItemRegister = se_depositItemRegister;
         }
 
         @Override
@@ -41,6 +55,19 @@ public class SA_DepositItemRegister {
             capabilityProvider.addCapability(itemSA_capabilityRegister.getCapability(), new IItemSA.ItemSA());
         }
 
+        @Override
+        public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+            super.addInformation(stack, worldIn, tooltip, flagIn);
+            stack.getCapability(itemSA_capabilityRegister.getCapability()).ifPresent(pack -> {
+                SA_Register sa_register = pack.getSA();
+                tooltip.add(new TranslationTextComponent("SA:%s",
+                        sa_register == null ? "null" : new TranslationTextComponent(StringUtil.formatLang(pack.getSA().getName()))));
+                if (sa_register != null ) {
+                    tooltip.add(new TranslationTextComponent("  %s",
+                            new TranslationTextComponent(StringUtil.formatLang(sa_register.getName().getNamespace(), sa_register.getName().getPath(), StringFinal.INTRODUCE))));
+                }
+            });
+        }
 
         @Override
         public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items) {
@@ -53,6 +80,12 @@ public class SA_DepositItemRegister {
                 items.add(itemStack);
             }
         }
+
+        @Override
+        public boolean hasEffect(ItemStack stack) {
+            return true;
+        }
+
     }
 
 }

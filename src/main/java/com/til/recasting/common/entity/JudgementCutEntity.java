@@ -205,6 +205,11 @@ public class JudgementCutEntity extends Entity {
     public void tick() {
         super.tick();
 
+        if (!world.isRemote && getShooter() == null) {
+            this.remove();
+            return;
+        }
+
         if (ticksExisted < 8 && ticksExisted % 2 == 0) {
             this.playSound(livingEntitySound, 0.2F, 0.5F + 0.25f * this.rand.nextFloat());
         }

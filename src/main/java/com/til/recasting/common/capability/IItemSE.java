@@ -4,6 +4,7 @@ import com.til.glowing_fire_glow.common.save.SaveField;
 import com.til.recasting.common.register.se.SE_Register;
 
 import java.util.Random;
+import java.util.Set;
 
 /**
  * @author til
@@ -31,15 +32,22 @@ public interface IItemSE {
     /***
      * 尝试升级
      */
-    default void tryUp(SlashBladePack slashBladePack) {
+    default boolean tryUp(SlashBladePack slashBladePack) {
         ISE.SE_Pack se_pack = slashBladePack.ise.getPack(getSE());
         float successRate = getBasicsSuccessRate();
-        successRate = successRate / se_pack.getLevel() + 1;
+        int allLevel = 1;
+        for (ISE.SE_Pack value : slashBladePack.ise.getAllSE().values()) {
+            allLevel += value.getLevel();
+        }
+        successRate = successRate / allLevel + 1;
         if (RANDOM.nextDouble() < successRate) {
             se_pack.setLevel(se_pack.getLevel() + 1);
-        } else if (!isProtect()) {
+            return true;
+        }
+        if (!isProtect()) {
             se_pack.setLevel(se_pack.getLevel() - 1);
         }
+        return false;
     }
 
     class ItemSE implements IItemSE {

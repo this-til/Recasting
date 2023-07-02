@@ -1,0 +1,35 @@
+{
+  "recasting.cooperate_with_se": "同协",
+  "recasting.cooperate_with_se.introduce": "挥刀的时候有概率再次进行挥刀",
+  "recasting.impact_se": "冲击",
+  "recasting.impact_se.introduce": "造成伤害有几率召唤幻影剑造成瞬间伤害",
+  "recasting.moment_se": "须臾",
+  "recasting.moment_se.introduce": "挥刀时召唤幻影剑协同攻击",
+  "recasting.overload_se": "过载",
+  "recasting.overload_se.introduce": "挥刀的时候有小概率触发审判",
+  "recasting.storm_se": "风暴",
+  "recasting.storm_se.introduce": "触发审判时，召唤幻影剑进行攻击",
+  "recasting.storm_variant_se": "风暴·变体",
+  "recasting.storm_variant_se.introduce": "触发审判时，召唤幻影剑进行攻击",
+
+  "item.recasting.item.se_deposit_1_item_register": "SE结晶",
+  "item.recasting.item.se_deposit_2_item_register": "SE结晶",
+  "item.recasting.item.se_deposit_3_item_register": "SE结晶",
+  "item.recasting.item.se_deposit_4_item_register": "SE结晶",
+  "item.recasting.item.se_deposit_5_item_register": "SE结晶",
+  "item.recasting.item.sa_deposit_item_register": "SA结晶",
+
+  "item.recasting.item.soul_1_item_register" : "耀魂聚合物",
+  "item.recasting.item.soul_2_item_register" : "耀魂剑体",
+  "item.recasting.item.soul_3_item_register" : "耀魂刀体",
+  "item.recasting.item.soul_4_item_register" : "耀魂异构体",
+  "item.recasting.item.soul_5_item_register" : "耀魂立方体",
+  "item.recasting.item.soul_6_item_register" : "耀魂多态体",
+  "item.recasting.item.soul_7_item_register" : "耀魂离散体",
+  "item.recasting.item.soul_8_item_register" : "耀魂立方变体",
+
+  "recasting.basics_success_rate": "基础成功率",
+  "recasting.protect.true": "强化失败不会降低等级",
+  "recasting.protect.false": "强化失败将会降低等级"
+
+}

@@ -8,6 +8,9 @@ import com.til.recasting.common.register.entity_type.SummondSwordEntityTypeRegis
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+/**
+ * @author til
+ */
 @OnlyIn(Dist.CLIENT)
 @VoluntarilyRegister
 public class SummondSwordEntityRenderRegister extends IndependenceEntityRenderRegister<SummondSwordEntity, SummondSwordEntityTypeRegister, SummondSwordEntityRender<?>> {

@@ -5,6 +5,9 @@
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "AttackManagerMixin",
+    "BladeMaterialTooltipsMixin",
+    "BladeStandEntityMixin",
+    "ItemSlashBladeMixin",
     "JudgementCutMixin",
     "LockOnManagerMixin",
     "SummonedSwordArtsMixin",

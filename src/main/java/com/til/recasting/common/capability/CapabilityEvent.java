@@ -33,11 +33,6 @@ public class CapabilityEvent implements IWorldComponent {
     @VoluntarilyAssignment
     protected ISlashBladeStateSupplement_CapabilityRegister slashBladeStateSupplement_capabilityRegister;
 
-
-    @VoluntarilyAssignment
-    protected EpidemicSummonedSwordSA epidemicSummonedSwordSA_register;
-
-
     @VoluntarilyAssignment
     protected AllSE_Register se_register;
 
@@ -53,13 +48,9 @@ public class CapabilityEvent implements IWorldComponent {
         CapabilityProvider capabilityProvider = new CapabilityProvider();
 
         ISA as = new ISA.SA();
-        as.setSA(epidemicSummonedSwordSA_register);
         capabilityProvider.addCapability(sa_capabilityRegister.getCapability(), as);
 
         ISE ise = new ISE.SE();
-        for (SE_Register seRegister : se_register.forAll()) {
-            ise.getPack(seRegister).setLevel(5);
-        }
         capabilityProvider.addCapability(se_capabilityRegister.getCapability(), ise);
         capabilityProvider.addCapability(slashBladeStateSupplement_capabilityRegister.getCapability(), new ISlashBladeStateSupplement.SlashBladeStateSupplement());
 

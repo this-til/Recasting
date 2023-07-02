@@ -24,18 +24,10 @@ import java.util.function.Supplier;
 public class AllSlashBladeRegister extends RegisterManage<SlashBladeRegister> {
 
     @Override
-    public void init(InitType initType) {
-        switch (initType) {
-            case NEW:
-                GlowingFireGlow.getInstance().modEventBus.addListener(EventPriority.HIGHEST, this::onModelBakeEvent);
-                break;
-            case FML_COMMON_SETUP:
-                break;
-            case FML_DEDICATED_SERVER_SETUP:
-                break;
-            case FML_CLIENT_SETUP:
-                break;
-        }
+    public void initNew() {
+        super.initNew();
+        GlowingFireGlow.getInstance().modEventBus.addListener(EventPriority.HIGHEST, this::onModelBakeEvent);
+
     }
 
     @OnlyIn(Dist.CLIENT)

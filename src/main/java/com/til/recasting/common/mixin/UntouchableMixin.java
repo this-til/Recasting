@@ -24,7 +24,10 @@ public class UntouchableMixin {
     }
 
 
-    @SubscribeEvent
+    /**
+     * @author
+     * @reason
+     */
     @Overwrite
     public void onLivingDeath(LivingDeathEvent event) {
     }

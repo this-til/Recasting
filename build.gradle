@@ -160,6 +160,8 @@ dependencies {
 
     implementation fg.deobf('curse.maven:FileDetails-245733:3144151');
 
+    implementation fg.deobf('curse.maven:JEI-238222:4371666');
+
     //implementation fg.deobf('curse.maven:CustomNPCs-221826:3665351');
 
 
