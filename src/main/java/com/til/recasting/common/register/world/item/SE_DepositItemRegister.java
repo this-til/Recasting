@@ -100,7 +100,7 @@ public abstract class SE_DepositItemRegister extends ItemRegister {
                             tooltip.add(new TranslationTextComponent("SE:%s    maxLevel:%s",
                                     new TranslationTextComponent(StringUtil.formatLang(se_register.getName())),
                                     se_register.getMaxLevel()));
-                            tooltip.add(new TranslationTextComponent("    %s",
+                            tooltip.add(new TranslationTextComponent("§8%s",
                                     new TranslationTextComponent(StringUtil.formatLang(se_register.getName().getNamespace(), se_register.getName().getPath(), StringFinal.INTRODUCE))));
                         }
                         NumberFormat fmt = NumberFormat.getPercentInstance();

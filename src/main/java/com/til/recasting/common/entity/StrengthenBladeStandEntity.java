@@ -9,6 +9,8 @@ import com.til.recasting.common.capability.SlashBladePack;
 import com.til.recasting.common.register.capability.ItemSA_CapabilityRegister;
 import com.til.recasting.common.register.capability.ItemSE_CapabilityRegister;
 import com.til.recasting.common.register.entity_type.StrengthenBladeStandEntityTypeRegister;
+import com.til.recasting.common.register.sa.AllSARegister;
+import com.til.recasting.common.register.sa.SA_Register;
 import com.til.recasting.common.register.se.SE_Register;
 import mods.flammpfeil.slashblade.SlashBlade;
 import mods.flammpfeil.slashblade.entity.BladeStandEntity;
@@ -26,11 +28,16 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
+import java.util.Objects;
+
 /**
  * @author til
  */
 @StaticVoluntarilyAssignment
 public class StrengthenBladeStandEntity extends BladeStandEntity {
+
+    @VoluntarilyAssignment
+    protected static AllSARegister allSARegister;
 
     @VoluntarilyAssignment
     protected static ItemSA_CapabilityRegister itemSA_capabilityRegister;
@@ -76,9 +83,16 @@ public class StrengthenBladeStandEntity extends BladeStandEntity {
             return ActionResultType.PASS;
         }
 
+
         if (iItemSA != null) {
+            SA_Register sa_register = allSARegister.getSA_Register(slashBladePack.slashBladeState.getSlashArts());
+            if (Objects.equals(sa_register, iItemSA.getSA())) {
+                return ActionResultType.SUCCESS;
+            }
             iItemSA.tryReplace(slashBladePack);
+            setDisplayedItem(slashBladePack.itemStack);
             itemstack.shrink(1);
+            player.setHeldItem(Hand.MAIN_HAND, itemstack);
             playSound(SoundEvents.BLOCK_GLASS_BREAK, 1f, 1f);
             ((ServerWorld) world).spawnParticle(ParticleTypes.CRIT, this.getPosX(), this.getPosY(), this.getPosZ(), 16, 0.5, 0.5, 0.5, 0.25f);
             return ActionResultType.SUCCESS;
@@ -91,10 +105,12 @@ public class StrengthenBladeStandEntity extends BladeStandEntity {
                 return ActionResultType.SUCCESS;
             }
             if (iItemSE.tryUp(slashBladePack)) {
+                setDisplayedItem(slashBladePack.itemStack);
                 playSound(SoundEvents.BLOCK_GLASS_BREAK, 1f, 1f);
                 ((ServerWorld) world).spawnParticle(ParticleTypes.CRIT, this.getPosX(), this.getPosY(), this.getPosZ(), 16, 0.5, 0.5, 0.5, 0.25f);
             }
             itemstack.shrink(1);
+            player.setHeldItem(Hand.MAIN_HAND, itemstack);
             return ActionResultType.SUCCESS;
         }
 

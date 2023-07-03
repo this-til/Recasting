@@ -5,13 +5,9 @@ import com.til.glowing_fire_glow.common.main.IWorldComponent;
 import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
 import com.til.recasting.Recasting;
 import com.til.recasting.common.register.capability.ISlashBladeStateSupplement_CapabilityRegister;
-import com.til.recasting.common.register.capability.SA_CapabilityRegister;
 import com.til.recasting.common.register.capability.SE_CapabilityRegister;
-import com.til.recasting.common.register.sa.instance.EpidemicSummonedSwordSA;
 import com.til.recasting.common.register.se.AllSE_Register;
-import com.til.recasting.common.register.se.SE_Register;
 import mods.flammpfeil.slashblade.item.ItemSlashBlade;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
@@ -22,9 +18,6 @@ public class CapabilityEvent implements IWorldComponent {
     public static final ResourceLocation SLASH_BLADE_CAPABILITY = new ResourceLocation(Recasting.MOD_ID, "slash_blade_capability");
 
     public static final ResourceLocation CAPABILITY = new ResourceLocation(Recasting.MOD_ID, "capability");
-
-    @VoluntarilyAssignment
-    protected SA_CapabilityRegister sa_capabilityRegister;
 
 
     @VoluntarilyAssignment
@@ -47,11 +40,7 @@ public class CapabilityEvent implements IWorldComponent {
 
         CapabilityProvider capabilityProvider = new CapabilityProvider();
 
-        ISA as = new ISA.SA();
-        capabilityProvider.addCapability(sa_capabilityRegister.getCapability(), as);
-
-        ISE ise = new ISE.SE();
-        capabilityProvider.addCapability(se_capabilityRegister.getCapability(), ise);
+        capabilityProvider.addCapability(se_capabilityRegister.getCapability(), new ISE.SE());
         capabilityProvider.addCapability(slashBladeStateSupplement_capabilityRegister.getCapability(), new ISlashBladeStateSupplement.SlashBladeStateSupplement());
 
         event.addCapability(SLASH_BLADE_CAPABILITY, capabilityProvider);

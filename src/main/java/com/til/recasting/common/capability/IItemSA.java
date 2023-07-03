@@ -12,10 +12,7 @@ public interface IItemSA {
      * 尝试更好
      */
     default void tryReplace(SlashBladePack slashBladePack) {
-        slashBladePack.isa.setSA(getSA());
-        //todo 状态的sa动作切换
-
-
+        slashBladePack.slashBladeState.setSlashArtsKey(getSA().getSlashArts().getName());
     }
 
     class ItemSA implements IItemSA {

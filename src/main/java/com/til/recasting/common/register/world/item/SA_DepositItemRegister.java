@@ -63,7 +63,7 @@ public class SA_DepositItemRegister extends ItemRegister {
                 tooltip.add(new TranslationTextComponent("SA:%s",
                         sa_register == null ? "null" : new TranslationTextComponent(StringUtil.formatLang(pack.getSA().getName()))));
                 if (sa_register != null ) {
-                    tooltip.add(new TranslationTextComponent("  %s",
+                    tooltip.add(new TranslationTextComponent("§8%s",
                             new TranslationTextComponent(StringUtil.formatLang(sa_register.getName().getNamespace(), sa_register.getName().getPath(), StringFinal.INTRODUCE))));
                 }
             });

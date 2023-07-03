@@ -12,6 +12,10 @@ import javax.annotation.Nullable;
  * 一个对应ISlashBladeState的补充状态
  */
 public interface ISlashBladeStateSupplement {
+    ResourceLocation getSlashBladeName();
+
+    void setSlashBladeName(ResourceLocation slashBladeName);
+
     @Nullable
     ResourceLocation getSummondSwordModel();
 
@@ -34,6 +38,8 @@ public interface ISlashBladeStateSupplement {
     class SlashBladeStateSupplement implements ISlashBladeStateSupplement {
 
         @ConfigField
+        protected ResourceLocation slashBladeName;
+        @ConfigField
         @Nullable
         protected ResourceLocation summondSwordModel;
         @ConfigField
@@ -42,6 +48,16 @@ public interface ISlashBladeStateSupplement {
         @ConfigField
         @Nullable
         protected ResourceLocation slashEffectTexture;
+
+        @Override
+        public ResourceLocation getSlashBladeName() {
+            return slashBladeName;
+        }
+
+        @Override
+        public void setSlashBladeName(ResourceLocation slashBladeName) {
+            this.slashBladeName = slashBladeName;
+        }
 
         @Nullable
         @Override
