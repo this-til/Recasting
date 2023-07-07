@@ -69,12 +69,6 @@ public abstract class SE_DepositItemRegister extends ItemRegister {
         public SE_DepositItem(Properties properties, SE_DepositItemRegister se_depositItemRegister) {
             super(properties);
             this.se_depositItemRegister = se_depositItemRegister;
-
-            /*this.addPropertyOverride(new ResourceLocation("energy"), (stack, world, entity) ->
-            {
-                LazyOptional<IEnergyStorage> lazyOptional = stack.getCapability(CapabilityEnergy.ENERGY);
-                return lazyOptional.map(e -> (float) e.getEnergyStored() / e.getMaxEnergyStored()).orElse(0.0F);
-            });*/
         }
 
         @Override

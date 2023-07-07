@@ -12,13 +12,16 @@ import com.til.recasting.common.register.entity_type.StrengthenBladeStandEntityT
 import com.til.recasting.common.register.sa.AllSARegister;
 import com.til.recasting.common.register.sa.SA_Register;
 import com.til.recasting.common.register.se.SE_Register;
-import mods.flammpfeil.slashblade.SlashBlade;
 import mods.flammpfeil.slashblade.entity.BladeStandEntity;
 import mods.flammpfeil.slashblade.init.SBItems;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.item.ItemFrameEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
@@ -48,10 +51,17 @@ public class StrengthenBladeStandEntity extends BladeStandEntity {
     @VoluntarilyAssignment
     protected static StrengthenBladeStandEntityTypeRegister strengthenBladeStandEntityTypeRegister;
 
+    protected static final DataParameter<Direction> DIRECTION = EntityDataManager.createKey(StrengthenBladeStandEntity.class, DataSerializers.DIRECTION);
 
     public StrengthenBladeStandEntity(EntityType<? extends BladeStandEntity> entityType, World world) {
         super(entityType, world);
         setInvulnerable(true);
+    }
+
+    @Override
+    protected void registerData() {
+        super.registerData();
+        this.dataManager.register(DIRECTION, Direction.NORTH);
     }
 
     @Override
@@ -108,6 +118,9 @@ public class StrengthenBladeStandEntity extends BladeStandEntity {
                 setDisplayedItem(slashBladePack.itemStack);
                 playSound(SoundEvents.BLOCK_GLASS_BREAK, 1f, 1f);
                 ((ServerWorld) world).spawnParticle(ParticleTypes.CRIT, this.getPosX(), this.getPosY(), this.getPosZ(), 16, 0.5, 0.5, 0.5, 0.25f);
+            } else {
+                playSound(SoundEvents.BLOCK_GLASS_BREAK, 1f, 1f);
+                ((ServerWorld) world).spawnParticle(ParticleTypes.CLOUD, this.getPosX(), this.getPosY(), this.getPosZ(), 16, 0.5, 0.5, 0.5, 0.25f);
             }
             itemstack.shrink(1);
             player.setHeldItem(Hand.MAIN_HAND, itemstack);
@@ -115,6 +128,31 @@ public class StrengthenBladeStandEntity extends BladeStandEntity {
         }
 
         return ActionResultType.PASS;
+    }
+
+    public void setLock(Direction direction) {
+
+
+        switch (direction) {
+
+            case DOWN:
+            case UP:
+                return;
+            case NORTH:
+                setItemRotation(0);
+                break;
+            case SOUTH:
+                setItemRotation(180);
+                break;
+            case WEST:
+                setItemRotation(90);
+                break;
+            case EAST:
+                setItemRotation(-90);
+                break;
+        }
+
+        this.dataManager.set(DIRECTION, direction);
     }
 
     public static BladeStandEntity createInstanceFromPos(World worldIn, BlockPos placePos, Direction dir, Item type) {

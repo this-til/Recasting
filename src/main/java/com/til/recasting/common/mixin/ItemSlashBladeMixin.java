@@ -8,6 +8,8 @@ import com.til.recasting.common.capability.SlashBladePack;
 import com.til.recasting.common.register.sa.AllSARegister;
 import com.til.recasting.common.register.sa.SA_Register;
 import com.til.recasting.common.register.se.SE_Register;
+import com.til.recasting.common.register.slash_blade.AllSlashBladeRegister;
+import com.til.recasting.common.register.slash_blade.SlashBladeRegister;
 import com.til.recasting.common.register.util.StringFinal;
 import mods.flammpfeil.slashblade.SlashBlade;
 import mods.flammpfeil.slashblade.item.ItemSlashBlade;
@@ -28,6 +30,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.DistExecutor;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -69,8 +72,8 @@ public class ItemSlashBladeMixin {
             return;
         }
 
-        tooltip.add(new TranslationTextComponent("name:%s", slashBladePack.iSlashBladeStateSupplement.getSlashBladeName()));
-        tooltip.add(new StringTextComponent(""));
+        //tooltip.add(new TranslationTextComponent("name:%s", slashBladePack.iSlashBladeStateSupplement.getSlashBladeName()));
+        //tooltip.add(new StringTextComponent(""));
 
         SA_Register sa_register = GlowingFireGlow.getInstance().getWorldComponent(AllSARegister.class).getSA_Register(slashBladePack.slashBladeState.getSlashArts());
         if (sa_register != null) {
@@ -105,11 +108,23 @@ public class ItemSlashBladeMixin {
 
     }
 
+    @Inject(method = "fillItemGroup",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/util/NonNullList;addAll(Ljava/util/Collection;)Z",
+                    opcode = 1
+            ))
+    public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items, CallbackInfo callbackInfo) {
+        for (SlashBladeRegister slashBladeRegister : GlowingFireGlow.getInstance().getWorldComponent(AllSlashBladeRegister.class).forAll()) {
+            items.add(slashBladeRegister.getDefaultItemStack());
+        }
+    }
+
     /**
      * @author
      * @reason
      */
-    @Overwrite
+    /*@Overwrite
     public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items) {
         if (group != SlashBlade.SLASHBLADE) {
             return;
@@ -142,6 +157,6 @@ public class ItemSlashBladeMixin {
                 .collect(Collectors.toList());
 
         items.addAll(allItems);
-    }
+    }*/
 
 }

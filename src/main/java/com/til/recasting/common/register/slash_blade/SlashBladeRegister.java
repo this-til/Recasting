@@ -1,7 +1,9 @@
 package com.til.recasting.common.register.slash_blade;
 
 import com.til.glowing_fire_glow.common.config.ConfigField;
+import com.til.glowing_fire_glow.common.config.ConfigManage;
 import com.til.glowing_fire_glow.common.register.RegisterBasics;
+import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
 import com.til.glowing_fire_glow.util.Delayed;
 import com.til.recasting.common.capability.SlashBladePack;
 import mods.flammpfeil.slashblade.SlashBlade;
@@ -16,6 +18,7 @@ import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.tags.ITag;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.registries.ForgeRegistries;
 
 /**
@@ -32,6 +35,9 @@ public abstract class SlashBladeRegister extends RegisterBasics {
 
     protected SlashBladePack slashBladePack;
 
+    @VoluntarilyAssignment
+    protected ConfigManage configManage;
+
 
     @Override
     protected void init() {
@@ -45,13 +51,18 @@ public abstract class SlashBladeRegister extends RegisterBasics {
 
     protected void defaultItemStackConfig(ItemStack itemStack) {
         slashBladePack = new SlashBladePack(itemStack);
-        //slashBladePack.slashBladeState.setTexture(texture);
-        //slashBladePack.slashBladeState.setModel(model);
+        slashBladePack.slashBladeState.setTexture(texture);
+        slashBladePack.slashBladeState.setModel(model);
+    }
+
+    public ItemStack getDefaultItemStack() {
+        return itemStack.get();
     }
 
     @Override
     public void defaultConfig() {
         super.defaultConfig();
+        configManage.addDelayedWrite(this);
         itemStack = new Delayed.ItemStackDelayed(() -> {
             ItemStack itemStack1 = new ItemStack(SBItems.slashblade);
             defaultItemStackConfig(itemStack1);

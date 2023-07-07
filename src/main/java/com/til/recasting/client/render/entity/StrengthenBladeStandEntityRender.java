@@ -69,8 +69,7 @@ public class StrengthenBladeStandEntityRender<E extends StrengthenBladeStandEnti
             matrixStackIn.rotate(Vector3f.YP.rotationDegrees(180.0F - entity.rotationYaw));
 
             try (MSAutoCloser msacB = MSAutoCloser.pushMatrix(matrixStackIn)) {
-                int i = entity.getRotation();
-                matrixStackIn.rotate(Vector3f.ZP.rotationDegrees((float) i * 360.0F / 8.0F));
+                matrixStackIn.rotate(Vector3f.ZP.rotationDegrees(entity.getRotation()));
 
 
                 matrixStackIn.scale(2, 2, 2);

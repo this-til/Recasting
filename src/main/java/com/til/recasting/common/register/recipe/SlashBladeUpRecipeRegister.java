@@ -1,11 +1,20 @@
 package com.til.recasting.common.register.recipe;
 
+import com.google.common.annotations.VisibleForTesting;
+import com.google.common.collect.Sets;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
+import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
+import com.til.glowing_fire_glow.common.register.VoluntarilyRegister;
 import com.til.glowing_fire_glow.common.register.recipe.RecipeRegister;
 import com.til.glowing_fire_glow.util.RecipeUtil;
 import com.til.glowing_fire_glow.util.gson.ConfigGson;
+import com.til.recasting.common.capability.ISE;
 import com.til.recasting.common.capability.SlashBladePack;
+import com.til.recasting.common.data.IRecipeInItemPack;
+import com.til.recasting.common.register.se.SE_Register;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.*;
@@ -16,9 +25,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 
 import javax.annotation.Nullable;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
+@VoluntarilyRegister
 public class SlashBladeUpRecipeRegister extends RecipeRegister<SlashBladeUpRecipeRegister.SlashBladeUpRecipe> {
 
 
@@ -49,13 +58,6 @@ public class SlashBladeUpRecipeRegister extends RecipeRegister<SlashBladeUpRecip
 
 
     public static class SlashBladeUpRecipe extends ShapedRecipe {
-        protected SlashBladeUpPack slashBladeUpPack;
-        protected IRecipeSerializer<SlashBladeUpRecipe> serializer;
-        protected SlashBladePack mainSlashBladePack;
-        protected int mainKeyId;
-        protected SlashBladePack outSlashBladePack;
-
-        protected NonNullList<Ingredient> recipeItems;
 
         public static SlashBladeUpRecipe of(ResourceLocation idIn, SlashBladeUpPack slashBladeUpPack, IRecipeSerializer<SlashBladeUpRecipe> serializer) {
             int maxHeight = slashBladeUpPack.pattern.size();
@@ -89,8 +91,11 @@ public class SlashBladeUpRecipeRegister extends RecipeRegister<SlashBladeUpRecip
             if (!hasMain) {
                 throw new JsonSyntaxException(String.format("SlashBladeUpRecipe配方mainSlashBladeKey:[%s]缺失", slashBladeUpPack.mainSlashBladeKey));
             }
-            Ingredient ingredient = slashBladeUpPack.key.get(slashBladeUpPack.mainSlashBladeKey);
-            SlashBladePack mainSlashBladePack = new SlashBladePack(ingredient.getMatchingStacks()[0]);
+            IRecipeInItemPack iRecipeInItemPack = slashBladeUpPack.key.get(slashBladeUpPack.mainSlashBladeKey);
+            if (!(iRecipeInItemPack instanceof IRecipeInItemPack.OfSlashBlade)) {
+                throw new JsonSyntaxException(String.format("SlashBladeUpRecipe配方mainSlashBladeKey:[%s]错误的类型", slashBladeUpPack.mainSlashBladeKey));
+            }
+            SlashBladePack mainSlashBladePack = ((IRecipeInItemPack.OfSlashBlade) iRecipeInItemPack).getSlashBladePack();
             if (!mainSlashBladePack.isEffective()) {
                 throw new JsonSyntaxException(String.format("SlashBladeUpRecipe配方mainSlashBladeKey:[%s]对应物品失效", slashBladeUpPack.mainSlashBladeKey));
             }
@@ -98,35 +103,80 @@ public class SlashBladeUpRecipeRegister extends RecipeRegister<SlashBladeUpRecip
             if (!potSlashBladePack.isEffective()) {
                 throw new JsonSyntaxException("SlashBladeUpRecipe配方输出物品失效");
             }
-            NonNullList<Ingredient> recipeItems = RecipeUtil.deserializeIngredients(slashBladeUpPack.pattern.toArray(new String[0]), slashBladeUpPack.key, maxWidth, maxHeight);
 
-            return new SlashBladeUpRecipe(idIn, "", maxWidth, maxHeight, recipeItems, slashBladeUpPack.result, serializer, mainSlashBladePack, mainId, potSlashBladePack);
+            NonNullList<IRecipeInItemPack> recipeItems = deserializeIngredients(slashBladeUpPack.pattern.toArray(new String[0]), slashBladeUpPack.key, maxWidth, maxHeight);
+
+            return new SlashBladeUpRecipe(idIn, "", maxWidth, maxHeight, recipeItems, serializer, mainId, potSlashBladePack);
         }
+
+        public static NonNullList<IRecipeInItemPack> deserializeIngredients(String[] pattern, Map<String, IRecipeInItemPack> keys, int patternWidth, int patternHeight) {
+            NonNullList<IRecipeInItemPack> nonnulllist = NonNullList.withSize(patternWidth * patternHeight, IRecipeInItemPack.EMPTY);
+            Set<String> set = Sets.newHashSet(keys.keySet());
+            set.remove(" ");
+
+            for (int i = 0; i < pattern.length; ++i) {
+                for (int j = 0; j < pattern[i].length(); ++j) {
+                    String s = pattern[i].substring(j, j + 1);
+                    if (s.equals(" ")) {
+                        continue;
+                    }
+                    IRecipeInItemPack ingredient = keys.get(s);
+                    if (ingredient == null) {
+                        throw new JsonSyntaxException("Pattern references symbol '" + s + "' but it's not defined in the key");
+                    }
+
+                    set.remove(s);
+                    nonnulllist.set(j + patternWidth * i, ingredient);
+                }
+            }
+
+            if (!set.isEmpty()) {
+                throw new JsonSyntaxException("Key defines symbols that aren't used in pattern: " + set);
+            } else {
+                return nonnulllist;
+            }
+        }
+
+        protected SlashBladeUpPack slashBladeUpPack;
+        protected IRecipeSerializer<SlashBladeUpRecipe> serializer;
+        protected int mainKeyId;
+        protected SlashBladePack outSlashBladePack;
+
+        protected NonNullList<IRecipeInItemPack> recipeItems;
+        protected NonNullList<Ingredient> ingredientNonNullList;
 
         public SlashBladeUpRecipe(
                 ResourceLocation idIn,
                 String groupIn,
                 int recipeWidthIn,
                 int recipeHeightIn,
-                NonNullList<Ingredient> recipeItemsIn,
-                ItemStack recipeOutputIn,
+                NonNullList<IRecipeInItemPack> recipeItemsIn,
                 IRecipeSerializer<SlashBladeUpRecipe> serializer,
-                SlashBladePack mainSlashBladePack,
                 int mainKeyId,
                 SlashBladePack outSlashBladePack) {
-            super(idIn, groupIn, recipeWidthIn, recipeHeightIn, recipeItemsIn, recipeOutputIn);
+            super(idIn, groupIn, recipeWidthIn, recipeHeightIn, null, outSlashBladePack.itemStack);
             this.serializer = serializer;
-            this.mainSlashBladePack = mainSlashBladePack;
             this.outSlashBladePack = outSlashBladePack;
             this.recipeItems = recipeItemsIn;
             this.mainKeyId = mainKeyId;
         }
 
         @Override
+        public NonNullList<Ingredient> getIngredients() {
+            if (ingredientNonNullList == null) {
+                ingredientNonNullList = NonNullList.withSize(recipeItems.size(), Ingredient.EMPTY);
+            }
+            for (int i = 0; i < recipeItems.size(); i++) {
+                ingredientNonNullList.set(i, recipeItems.get(i).toIngredient());
+            }
+            return ingredientNonNullList;
+        }
+
+        @Override
         public boolean matches(CraftingInventory inv, World worldIn) {
             for (int i = 0; i <= inv.getWidth() - this.getRecipeWidth(); ++i) {
                 for (int j = 0; j <= inv.getHeight() - this.getRecipeHeight(); ++j) {
-                    if (this.checkMatch(inv, i, j, true) || this.checkMatch(inv, i, j, false)) {
+                    if (this.checkMatch(inv, i, j)) {
                         return true;
                     }
                 }
@@ -134,12 +184,12 @@ public class SlashBladeUpRecipeRegister extends RecipeRegister<SlashBladeUpRecip
             return false;
         }
 
-        public boolean checkMatch(CraftingInventory craftingInventory, int width, int height, boolean p_77573_4_) {
+        protected boolean checkMatch(CraftingInventory craftingInventory, int width, int height) {
             for (int i = 0; i < craftingInventory.getWidth(); ++i) {
                 for (int j = 0; j < craftingInventory.getHeight(); ++j) {
                     int k = i - width;
                     int l = j - height;
-                    int id = p_77573_4_ ? this.getRecipeWidth() - k - 1 + l * this.getRecipeWidth() : k + l * this.getRecipeWidth();
+                    int id = this.getRecipeWidth() - k - 1 + l * this.getRecipeWidth() /*: k + l * this.getRecipeWidth()*/;
                     if (k < 0 || l < 0 || k >= this.getRecipeWidth() || l >= this.getRecipeHeight()) {
                         return false;
                     }
@@ -147,28 +197,42 @@ public class SlashBladeUpRecipeRegister extends RecipeRegister<SlashBladeUpRecip
                     if (!recipeItems.get(id).test(itemStack)) {
                         return false;
                     }
-                    if (mainKeyId == id) {
-                        SlashBladePack slashBladePack = new SlashBladePack(itemStack);
-                        if (!slashBladePack.isEffective()) {
-                            return false;
-                        }
-                        if (slashBladePack.slashBladeState.getKillCount() < slashBladePack.slashBladeState.getKillCount()) {
-                            return false;
-                        }
-                        if (slashBladePack.slashBladeState.getRefine() < slashBladePack.slashBladeState.getRefine()) {
-                            return false;
-                        }
-                    } else if (!recipeItems.get(id).test(itemStack)) {
-                        return false;
-                    }
                 }
             }
-
             return true;
         }
 
         @Override
         public ItemStack getCraftingResult(CraftingInventory inv) {
+            SlashBladePack slashBladePack = null;
+            for (int i = 0; i <= inv.getWidth() - this.getRecipeWidth(); ++i) {
+                for (int j = 0; j <= inv.getHeight() - this.getRecipeHeight(); ++j) {
+                    slashBladePack = this.getResultSlashBladePack(inv, i, j);
+                    if (slashBladePack != null) {
+                        return outSlashBladePack.getRecipeResult(slashBladePack).itemStack;
+                    }
+                }
+            }
+
+            return outSlashBladePack.itemStack;
+        }
+
+        @Nullable
+        protected SlashBladePack getResultSlashBladePack(CraftingInventory craftingInventory, int width, int height) {
+            for (int i = 0; i < craftingInventory.getWidth(); ++i) {
+                for (int j = 0; j < craftingInventory.getHeight(); ++j) {
+                    int k = i - width;
+                    int l = j - height;
+                    int id = this.getRecipeWidth() - k - 1 + l * this.getRecipeWidth() /*: k + l * this.getRecipeWidth()*/;
+                    if (k < 0 || l < 0 || k >= this.getRecipeWidth() || l >= this.getRecipeHeight()) {
+                        return null;
+                    }
+                    if (id == mainKeyId) {
+                        ItemStack itemStack = craftingInventory.getStackInSlot(i + j * craftingInventory.getWidth());
+                        return new SlashBladePack(itemStack);
+                    }
+                }
+            }
             return null;
         }
 
@@ -180,21 +244,24 @@ public class SlashBladeUpRecipeRegister extends RecipeRegister<SlashBladeUpRecip
         public SlashBladeUpPack getSlashBladeUpPack() {
             return slashBladeUpPack;
         }
-
-
-        @Override
-        public boolean isDynamic() {
-            return false;
-        }
-
-
     }
 
     public static class SlashBladeUpPack {
         public List<String> pattern;
-        public Map<String, Ingredient> key;
+        public Map<String, IRecipeInItemPack> key;
         public String mainSlashBladeKey;
         public ItemStack result;
+
+        public SlashBladeUpPack() {
+        }
+
+        public SlashBladeUpPack(List<String> pattern, Map<String, IRecipeInItemPack> key, String mainSlashBladeKey, ItemStack result) {
+            this.pattern = pattern;
+            this.key = key;
+            this.mainSlashBladeKey = mainSlashBladeKey;
+            this.result = result;
+        }
     }
+
 
 }

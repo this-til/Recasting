@@ -21,5 +21,7 @@ public class StrengthenBladeStandEntityTypeRegister extends EntityTypeRegister<S
     public void defaultConfig() {
         super.defaultConfig();
         updateInterval = 20;
+        trackingRange = 10;
+        shouldReceiveVelocityUpdates = false;
     }
 }
