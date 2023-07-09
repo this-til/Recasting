@@ -2,7 +2,7 @@ package com.til.recasting.common.mixin;
 
 import com.google.common.collect.Multimap;
 import com.til.glowing_fire_glow.GlowingFireGlow;
-import com.til.glowing_fire_glow.util.StringUtil;
+import com.til.glowing_fire_glow.common.util.StringUtil;
 import com.til.recasting.common.capability.ISE;
 import com.til.recasting.common.capability.SlashBladePack;
 import com.til.recasting.common.register.sa.AllSARegister;
@@ -116,7 +116,7 @@ public class ItemSlashBladeMixin {
             ))
     public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items, CallbackInfo callbackInfo) {
         for (SlashBladeRegister slashBladeRegister : GlowingFireGlow.getInstance().getWorldComponent(AllSlashBladeRegister.class).forAll()) {
-            items.add(slashBladeRegister.getDefaultItemStack());
+            items.add(slashBladeRegister.getSlashBladePack().itemStack);
         }
     }
 

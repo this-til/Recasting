@@ -10,6 +10,7 @@ import com.til.recasting.common.register.entity_predicate.DefaultEntityPredicate
 import com.til.recasting.common.register.entity_type.JudgementCutEntityTypeRegister;
 import com.til.recasting.common.register.sa.SA_Register;
 import com.til.recasting.common.register.target_selector.DefaultTargetSelectorRegister;
+import com.til.recasting.common.register.util.JudgementCutManage;
 import com.til.recasting.common.register.util.RayTraceUtil;
 import mods.flammpfeil.slashblade.SlashBlade;
 import mods.flammpfeil.slashblade.entity.EntityJudgementCut;
@@ -59,32 +60,7 @@ public class JudgementCutMixin {
      */
     @Overwrite
     static public EntityJudgementCut doJudgementCut(LivingEntity user) {
-
-        UseSlashBladeEntityPack useSlashBladeEntityPack = new UseSlashBladeEntityPack(user);
-        if (!useSlashBladeEntityPack.isEffective()) {
-            return null;
-        }
-
-        World worldIn = user.world;
-        RayTraceResult rayTraceResult;
-
-        @Nullable
-        Entity targetEntity = useSlashBladeEntityPack.slashBladePack.slashBladeState.getTargetEntity(worldIn);
-        rayTraceResult = targetEntity == null ? GlowingFireGlow.getInstance().getReflexManage().getVoluntarilyRegisterOfClass(DefaultTargetSelectorRegister.class)
-                .selector(user) : new EntityRayTraceResult(targetEntity);
-
-        Vector3d attackPos = targetEntity == null ? rayTraceResult.getHitVec() : RayTraceUtil.getPosition(targetEntity);
-
-        EventDoJudgementCut eventDoJudgementCut = new EventDoJudgementCut(useSlashBladeEntityPack, targetEntity, attackPos, 1f);
-        MinecraftForge.EVENT_BUS.post(eventDoJudgementCut);
-
-        JudgementCutEntity jc = new JudgementCutEntity(GlowingFireGlow.getInstance().getReflexManage().getVoluntarilyRegisterOfClass(JudgementCutEntityTypeRegister.class).getEntityType(), worldIn, user);
-        jc.setPosition(attackPos.x, attackPos.y, attackPos.z);
-        jc.setShooter(user);
-        jc.setColor(useSlashBladeEntityPack.slashBladePack.slashBladeState.getColorCode());
-        worldIn.addEntity(jc);
-        worldIn.playSound(null, jc.getPosX(), jc.getPosY(), jc.getPosZ(), SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.PLAYERS, 0.5F, 0.8F / (user.getRNG().nextFloat() * 0.4F + 0.8F));
-
+        JudgementCutManage.doJudgementCut(user, 1, 10, null, null);
         return null;
     }
 /*    @Inject(at = @At("HEAD"), method = "doJudgementCutJust")

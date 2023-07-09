@@ -7,7 +7,7 @@ import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
 import com.til.glowing_fire_glow.common.register.VoluntarilyRegister;
 import com.til.glowing_fire_glow.common.register.world.item.ItemRegister;
 import com.til.glowing_fire_glow.common.save.SaveField;
-import com.til.glowing_fire_glow.util.StringUtil;
+import com.til.glowing_fire_glow.common.util.StringUtil;
 import com.til.recasting.Recasting;
 import com.til.recasting.common.capability.CapabilityEvent;
 import com.til.recasting.common.capability.IItemSE;
@@ -40,7 +40,8 @@ import java.util.List;
  * @author til
  */
 @StaticVoluntarilyAssignment
-public abstract class SE_DepositItemRegister extends ItemRegister {
+@VoluntarilyRegister
+public class SE_DepositItemRegister extends ItemRegister {
 
 
     @VoluntarilyAssignment
@@ -61,6 +62,13 @@ public abstract class SE_DepositItemRegister extends ItemRegister {
     public float getSuccessRate() {
         return successRate;
     }
+
+    @Override
+    public void defaultConfig() {
+        super.defaultConfig();
+        successRate = 0.05f;
+    }
+
 
     public static class SE_DepositItem extends Item implements CapabilityEvent.ICustomCapability {
 
@@ -131,51 +139,6 @@ public abstract class SE_DepositItemRegister extends ItemRegister {
 
                 items.add(itemStack_2);
             }
-        }
-    }
-
-    @VoluntarilyRegister()
-    public static class SE_Deposit_1_ItemRegister extends SE_DepositItemRegister {
-        @Override
-        public void defaultConfig() {
-            super.defaultConfig();
-            successRate = 0.05f;
-        }
-    }
-
-    @VoluntarilyRegister(priority = -10)
-    public static class SE_Deposit_2_ItemRegister extends SE_DepositItemRegister {
-        @Override
-        public void defaultConfig() {
-            super.defaultConfig();
-            successRate = 0.1f;
-        }
-    }
-
-    @VoluntarilyRegister(priority = -20)
-    public static class SE_Deposit_3_ItemRegister extends SE_DepositItemRegister {
-        @Override
-        public void defaultConfig() {
-            super.defaultConfig();
-            successRate = 0.2f;
-        }
-    }
-
-    @VoluntarilyRegister(priority = -30)
-    public static class SE_Deposit_4_ItemRegister extends SE_DepositItemRegister {
-        @Override
-        public void defaultConfig() {
-            super.defaultConfig();
-            successRate = 0.4f;
-        }
-    }
-
-    @VoluntarilyRegister(priority = -40)
-    public static class SE_Deposit_5_ItemRegister extends SE_DepositItemRegister {
-        @Override
-        public void defaultConfig() {
-            super.defaultConfig();
-            successRate = 0.8f;
         }
     }
 }

@@ -21,19 +21,6 @@ public class BladeTooltipManager implements IWorldComponent {
 
     @SubscribeEvent
     public void onItemTooltipEvent(ItemTooltipEvent event) {
-
-        ItemStack stack = event.getItemStack();
-
-/*        if(stack.hasTag() && stack.getTag().contains(BLADE_DATA)) {
-            CompoundNBT bladeData = stack.getTag().getCompound(BLADE_DATA);
-
-            String translationKey = NBTHelper.getNBTCoupler(bladeData)
-                    .getChild("tag")
-                    .getChild("ShareTag")
-                    .getRawCompound().getString("translationKey");
-
-            event.getToolTip().add(new TranslationTextComponent(translationKey));
-        }*/
     }
 
 }

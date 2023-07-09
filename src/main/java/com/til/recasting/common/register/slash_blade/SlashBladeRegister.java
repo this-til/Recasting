@@ -4,7 +4,7 @@ import com.til.glowing_fire_glow.common.config.ConfigField;
 import com.til.glowing_fire_glow.common.config.ConfigManage;
 import com.til.glowing_fire_glow.common.register.RegisterBasics;
 import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
-import com.til.glowing_fire_glow.util.Delayed;
+import com.til.glowing_fire_glow.common.util.Delayed;
 import com.til.recasting.common.capability.SlashBladePack;
 import mods.flammpfeil.slashblade.SlashBlade;
 import mods.flammpfeil.slashblade.client.renderer.SlashBladeTEISR;
@@ -41,12 +41,8 @@ public abstract class SlashBladeRegister extends RegisterBasics {
 
     @Override
     protected void init() {
-        model = new ResourceLocation(getName().getNamespace(), String.format("%s/%s/%s", SlashBlade.modid, getName().getPath(), "model"));
-        texture = new ResourceLocation(getName().getNamespace(), String.format("%s/%s/%s", SlashBlade.modid, getName().getPath(), "texture"));
-    }
-
-    public ItemStack getItemStack() {
-        return itemStack.get();
+        model = new ResourceLocation(getName().getNamespace(), String.format("%s/%s/%s", SlashBlade.modid, getName().getPath(), "model.obj"));
+        texture = new ResourceLocation(getName().getNamespace(), String.format("%s/%s/%s", SlashBlade.modid, getName().getPath(), "texture.png"));
     }
 
     protected void defaultItemStackConfig(ItemStack itemStack) {
@@ -55,8 +51,8 @@ public abstract class SlashBladeRegister extends RegisterBasics {
         slashBladePack.slashBladeState.setModel(model);
     }
 
-    public ItemStack getDefaultItemStack() {
-        return itemStack.get();
+    public SlashBladePack getSlashBladePack() {
+        return new SlashBladePack(itemStack.get());
     }
 
     @Override

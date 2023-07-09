@@ -1,19 +1,27 @@
 package com.til.recasting.common.data;
 
 import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.JsonAdapter;
-import com.til.glowing_fire_glow.util.gson.AcceptTypeJson;
+import com.til.glowing_fire_glow.common.register.StaticVoluntarilyAssignment;
+import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
+import com.til.glowing_fire_glow.common.save.SaveField;
+import com.til.glowing_fire_glow.common.util.gson.AcceptTypeJson;
+import com.til.recasting.common.capability.IItemSA;
+import com.til.recasting.common.capability.IItemSE;
 import com.til.recasting.common.capability.SlashBladePack;
-import net.minecraft.item.Item;
+import com.til.recasting.common.register.capability.ItemSA_CapabilityRegister;
+import com.til.recasting.common.register.capability.ItemSE_CapabilityRegister;
+import com.til.recasting.common.register.sa.SA_Register;
+import com.til.recasting.common.register.se.SE_Register;
+import com.til.recasting.common.register.world.item.SA_DepositItemRegister;
+import com.til.recasting.common.register.world.item.SE_DepositItemRegister;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.tags.ITag;
 
-import javax.annotation.Nullable;
+import java.util.Optional;
 import java.util.function.Predicate;
 
 @AcceptTypeJson
+@StaticVoluntarilyAssignment
 public interface IRecipeInItemPack extends Predicate<ItemStack> {
     Ingredient toIngredient();
 
@@ -30,71 +38,112 @@ public interface IRecipeInItemPack extends Predicate<ItemStack> {
     };
 
 
-    class OfItem implements IRecipeInItemPack {
-        protected Item item;
+    class OfIngredient implements IRecipeInItemPack {
+        protected Ingredient ingredient;
 
-        public OfItem() {
+        public OfIngredient() {
         }
 
-        public OfItem(Item item) {
-            this.item = item;
-        }
-
-        @Override
-        public boolean test(ItemStack itemStack) {
-            return itemStack.getItem().equals(item);
+        public OfIngredient(Ingredient ingredient) {
+            this.ingredient = ingredient;
         }
 
         @Override
         public Ingredient toIngredient() {
-            return Ingredient.fromItems(item);
+            return ingredient;
+        }
+
+        @Override
+        public boolean test(ItemStack itemStack) {
+            return ingredient.test(itemStack);
         }
     }
 
-    class OfTag implements IRecipeInItemPack {
+    @StaticVoluntarilyAssignment
+    class OfItemSE implements IRecipeInItemPack {
 
-        protected ITag.INamedTag<Item> itemTag;
+        @VoluntarilyAssignment
+        protected static ItemSE_CapabilityRegister itemSE_capabilityRegister;
+
+        @VoluntarilyAssignment
+        protected static SE_DepositItemRegister se_depositItemRegister;
+
+        protected SE_Register se_register;
+        protected float successRate;
+
+        protected boolean protect;
 
 
-        public OfTag() {
+        public OfItemSE() {
         }
 
-        public OfTag(ITag.INamedTag<Item> itemTag) {
-            this.itemTag = itemTag;
+        public OfItemSE(SE_Register se_register, float successRate, boolean protect) {
+            this.se_register = se_register;
+            this.successRate = successRate;
+            this.protect = protect;
         }
-
-
-        @Override
-        public boolean test(ItemStack itemStack) {
-            return itemTag.contains(itemStack.getItem());
-        }
-
 
         @Override
         public Ingredient toIngredient() {
-            return Ingredient.fromTag(itemTag);
+            ItemStack itemStack = new ItemStack(se_depositItemRegister.getItem());
+            itemStack.getCapability(itemSE_capabilityRegister.getCapability()).ifPresent(pack -> {
+                pack.setSE(se_register);
+                pack.setProtect(protect);
+                pack.setBasicsSuccessRate(successRate);
+            });
+            return new ItemStackIngredient(itemStack);
+        }
+
+        @Override
+        public boolean test(ItemStack itemStack) {
+
+            Optional<IItemSE> itemSEOptional = itemStack.getCapability(itemSE_capabilityRegister.getCapability()).resolve();
+            if (!itemSEOptional.isPresent()) {
+                return false;
+            }
+            IItemSE iItemSE = itemSEOptional.get();
+            if (!iItemSE.getSE().equals(se_register)) {
+                return false;
+            }
+            if (iItemSE.getBasicsSuccessRate() - successRate > 0.01) {
+                return false;
+            }
+            if (protect && !iItemSE.isProtect()) {
+                return false;
+            }
+            return true;
         }
     }
 
-    class OfItemStack implements IRecipeInItemPack {
+    @StaticVoluntarilyAssignment
+    class OfItemSA implements IRecipeInItemPack {
 
-        protected ItemStack itemStack;
+        @VoluntarilyAssignment
+        protected static SA_DepositItemRegister sa_depositItemRegister;
 
-        public OfItemStack() {
+        @VoluntarilyAssignment
+        protected static ItemSA_CapabilityRegister itemSA_capabilityRegister;
+
+        protected SA_Register sa_register;
+
+        public OfItemSA() {
         }
 
-        public OfItemStack(ItemStack itemStack) {
-            this.itemStack = itemStack;
-        }
-
-        @Override
-        public boolean test(ItemStack itemStack) {
-            return itemStack.equals(this.itemStack);
+        public OfItemSA(SA_Register sa_register) {
+            this.sa_register = sa_register;
         }
 
         @Override
         public Ingredient toIngredient() {
-            return Ingredient.fromStacks(itemStack);
+            ItemStack itemStack = new ItemStack(sa_depositItemRegister.getItem());
+            itemStack.getCapability(itemSA_capabilityRegister.getCapability()).ifPresent(pack -> pack.setSA(sa_register));
+            return new ItemStackIngredient(itemStack);
+        }
+
+        @Override
+        public boolean test(ItemStack itemStack) {
+            Optional<IItemSA> itemSAOptional = itemStack.getCapability(itemSA_capabilityRegister.getCapability()).resolve();
+            return itemSAOptional.map(iItemSA -> iItemSA.getSA().equals(sa_register)).orElse(false);
         }
     }
 
@@ -133,7 +182,7 @@ public interface IRecipeInItemPack extends Predicate<ItemStack> {
 
         @Override
         public Ingredient toIngredient() {
-            return Ingredient.fromStacks(itemStack);
+            return new ItemStackIngredient(itemStack);
         }
     }
 }

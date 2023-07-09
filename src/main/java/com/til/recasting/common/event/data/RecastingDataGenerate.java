@@ -6,8 +6,8 @@ import com.til.glowing_fire_glow.common.config.ConfigManage;
 import com.til.glowing_fire_glow.common.main.IWorldComponent;
 import com.til.glowing_fire_glow.common.register.StaticVoluntarilyAssignment;
 import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
-import com.til.glowing_fire_glow.util.IOUtil;
-import com.til.glowing_fire_glow.util.gson.ConfigGson;
+import com.til.glowing_fire_glow.common.util.IOUtil;
+import com.til.glowing_fire_glow.common.util.gson.GsonManage;
 import com.til.recasting.Recasting;
 import com.til.recasting.common.register.recipe.SlashBladeUpRecipeRegister;
 import net.minecraft.data.DirectoryCache;
@@ -25,11 +25,13 @@ import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 
-@StaticVoluntarilyAssignment
 public class RecastingDataGenerate implements IWorldComponent {
 
     @VoluntarilyAssignment
     protected SlashBladeUpRecipeRegister slashBladeUpRecipeRegister;
+
+    @VoluntarilyAssignment
+    protected GsonManage gsonManage;
 
     @Override
     public void registerModEvent(IEventBus eventBus) {
@@ -45,14 +47,14 @@ public class RecastingDataGenerate implements IWorldComponent {
                 Map<ResourceLocation, SlashBladeUpRecipeRegister.SlashBladeUpPack> map = new HashMap<>();
                 MinecraftForge.EVENT_BUS.post(new EventSlashBladeUpRecipeData(map));
                 for (Map.Entry<ResourceLocation, SlashBladeUpRecipeRegister.SlashBladeUpPack> entry : map.entrySet()) {
-                    JsonObject jsonObject = ((JsonObject) ConfigGson.getGson().toJsonTree(entry.getValue()));
+                    JsonObject jsonObject = ((JsonObject) gsonManage.getGson().toJsonTree(entry.getValue()));
                     jsonObject.addProperty("type", slashBladeUpRecipeRegister.getName().toString());
                     Path mainOutput = event.getGenerator().getOutputFolder();
                     String pathSuffix = String.format("data/%s/recipes/%s.json",
                             entry.getKey().getNamespace(),
                             entry.getKey().getPath());
                     Path outputPath = mainOutput.resolve(pathSuffix);
-                    String text = ConfigGson.getGson().toJson(jsonObject);
+                    String text = gsonManage.getGson().toJson(jsonObject);
                     String textHas = HASH_FUNCTION.hashUnencodedChars(text).toString();
                     IOUtil.writer(outputPath.toFile(), text);
                     cache.recordHash(outputPath, textHas);

@@ -21,7 +21,7 @@ import net.minecraft.world.World;
 import javax.annotation.Nullable;
 
 /***
- * 疾袭幻影剑
+ * 风暴幻影剑
  */
 @VoluntarilyRegister
 public class EpidemicSummonedSwordSA extends SA_Register {
@@ -58,7 +58,7 @@ public class EpidemicSummonedSwordSA extends SA_Register {
             summondSwordEntity.setPosition(pos.getX(), pos.getY(), pos.getZ());
             summondSwordEntity.lookAt(attackPos, false);
             summondSwordEntity.setColor(slashBladeEntityPack.slashBladePack.slashBladeState.getColorCode());
-            summondSwordEntity.setStartDelay(5 + i);
+            summondSwordEntity.setStartDelay(i);
             summondSwordEntity.setLifeTime(100 + 5 + i);
             worldIn.addEntity(summondSwordEntity);
         }

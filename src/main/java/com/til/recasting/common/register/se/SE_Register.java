@@ -3,7 +3,6 @@ package com.til.recasting.common.register.se;
 import com.til.glowing_fire_glow.common.config.ConfigField;
 import com.til.glowing_fire_glow.common.register.RegisterBasics;
 import com.til.glowing_fire_glow.common.save.SaveField;
-import com.til.glowing_fire_glow.util.StringUtil;
 import com.til.recasting.common.capability.ISE;
 import com.til.recasting.common.register.util.StringFinal;
 import net.minecraft.client.util.ITooltipFlag;

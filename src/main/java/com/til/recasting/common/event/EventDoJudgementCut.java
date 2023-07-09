@@ -14,12 +14,14 @@ public class EventDoJudgementCut extends EventSlashBlade {
 
     public final Vector3d pos;
 
+    public int life;
     public float attack;
 
-    public EventDoJudgementCut(UseSlashBladeEntityPack pack, @Nullable Entity attackEntity, Vector3d pos, float attack) {
+    public EventDoJudgementCut(UseSlashBladeEntityPack pack, @Nullable Entity attackEntity, Vector3d pos, int life,float attack) {
         super(pack);
         this.attackEntity = attackEntity;
         this.pos = pos;
+        this.life = life;
         this.attack = attack;
     }
 }

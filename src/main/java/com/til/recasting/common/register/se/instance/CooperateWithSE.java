@@ -5,7 +5,7 @@ import com.til.glowing_fire_glow.common.capability.time_run.TimerCell;
 import com.til.glowing_fire_glow.common.config.ConfigField;
 import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
 import com.til.glowing_fire_glow.common.register.VoluntarilyRegister;
-import com.til.glowing_fire_glow.util.math.NumberPack;
+import com.til.glowing_fire_glow.common.util.math.NumberPack;
 import com.til.recasting.common.capability.ISE;
 import com.til.recasting.common.event.EventSlashBladeDoSlash;
 import com.til.recasting.common.register.se.SE_Register;

@@ -4,11 +4,11 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.Sets;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
+import com.til.glowing_fire_glow.common.register.StaticVoluntarilyAssignment;
 import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
 import com.til.glowing_fire_glow.common.register.VoluntarilyRegister;
 import com.til.glowing_fire_glow.common.register.recipe.RecipeRegister;
-import com.til.glowing_fire_glow.util.RecipeUtil;
-import com.til.glowing_fire_glow.util.gson.ConfigGson;
+import com.til.glowing_fire_glow.common.util.gson.GsonManage;
 import com.til.recasting.common.capability.ISE;
 import com.til.recasting.common.capability.SlashBladePack;
 import com.til.recasting.common.data.IRecipeInItemPack;
@@ -28,7 +28,11 @@ import javax.annotation.Nullable;
 import java.util.*;
 
 @VoluntarilyRegister
+@StaticVoluntarilyAssignment
 public class SlashBladeUpRecipeRegister extends RecipeRegister<SlashBladeUpRecipeRegister.SlashBladeUpRecipe> {
+
+    @VoluntarilyAssignment
+    protected static GsonManage gsonManage;
 
 
     @Override
@@ -39,7 +43,7 @@ public class SlashBladeUpRecipeRegister extends RecipeRegister<SlashBladeUpRecip
     public static class SlashBladeUpRecipeSerializer extends ForgeRegistryEntry<IRecipeSerializer<?>> implements IRecipeSerializer<SlashBladeUpRecipe> {
         @Override
         public SlashBladeUpRecipe read(ResourceLocation recipeId, JsonObject json) {
-            SlashBladeUpPack slashBladeUpPack = ConfigGson.getGson().fromJson(json, SlashBladeUpPack.class);
+            SlashBladeUpPack slashBladeUpPack = gsonManage.getGson().fromJson(json, SlashBladeUpPack.class);
             return SlashBladeUpRecipe.of(recipeId, slashBladeUpPack, this);
         }
 
@@ -47,12 +51,12 @@ public class SlashBladeUpRecipeRegister extends RecipeRegister<SlashBladeUpRecip
         @Override
         public SlashBladeUpRecipe read(ResourceLocation recipeId, PacketBuffer buffer) {
             String json = buffer.readString();
-            return read(recipeId, ConfigGson.getGson().fromJson(json, JsonObject.class));
+            return read(recipeId, gsonManage.getGson().fromJson(json, JsonObject.class));
         }
 
         @Override
         public void write(PacketBuffer buffer, SlashBladeUpRecipe recipe) {
-            buffer.writeString(ConfigGson.getGson().toJson(recipe.getSlashBladeUpPack()));
+            buffer.writeString(gsonManage.getGson().toJson(recipe.getSlashBladeUpPack()));
         }
     }
 
@@ -110,7 +114,7 @@ public class SlashBladeUpRecipeRegister extends RecipeRegister<SlashBladeUpRecip
         }
 
         public static NonNullList<IRecipeInItemPack> deserializeIngredients(String[] pattern, Map<String, IRecipeInItemPack> keys, int patternWidth, int patternHeight) {
-            NonNullList<IRecipeInItemPack> nonnulllist = NonNullList.withSize(patternWidth * patternHeight, IRecipeInItemPack.EMPTY);
+            NonNullList<IRecipeInItemPack> nonNullList = NonNullList.withSize(patternWidth * patternHeight, IRecipeInItemPack.EMPTY);
             Set<String> set = Sets.newHashSet(keys.keySet());
             set.remove(" ");
 
@@ -126,14 +130,14 @@ public class SlashBladeUpRecipeRegister extends RecipeRegister<SlashBladeUpRecip
                     }
 
                     set.remove(s);
-                    nonnulllist.set(j + patternWidth * i, ingredient);
+                    nonNullList.set(j + patternWidth * i, ingredient);
                 }
             }
 
             if (!set.isEmpty()) {
                 throw new JsonSyntaxException("Key defines symbols that aren't used in pattern: " + set);
             } else {
-                return nonnulllist;
+                return nonNullList;
             }
         }
 
