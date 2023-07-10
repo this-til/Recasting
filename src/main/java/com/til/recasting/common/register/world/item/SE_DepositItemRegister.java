@@ -11,6 +11,7 @@ import com.til.glowing_fire_glow.common.util.StringUtil;
 import com.til.recasting.Recasting;
 import com.til.recasting.common.capability.CapabilityEvent;
 import com.til.recasting.common.capability.IItemSE;
+import com.til.recasting.common.data.ItemStackIngredient;
 import com.til.recasting.common.register.capability.ItemSE_CapabilityRegister;
 import com.til.recasting.common.register.se.AllSE_Register;
 import com.til.recasting.common.register.se.SE_Register;
@@ -56,7 +57,7 @@ public class SE_DepositItemRegister extends ItemRegister {
 
     @Override
     protected Item initItem() {
-        return new SE_DepositItem(new Item.Properties().group(SlashBlade.SLASHBLADE), this);
+        return new SE_DepositItem(new Item.Properties().group(SlashBlade.SLASHBLADE));
     }
 
     public float getSuccessRate() {
@@ -69,14 +70,29 @@ public class SE_DepositItemRegister extends ItemRegister {
         successRate = 0.05f;
     }
 
+    public ItemStack mackItemStack(SE_Register se_register, boolean p) {
+        return mackItemStack(se_register, successRate, p);
+    }
 
+    public ItemStack mackItemStack(SE_Register se_register, float successRate, boolean protect) {
+        ItemStack itemStack = new ItemStack(getItem());
+        itemStack.getCapability(itemSE_CapabilityRegister.getCapability()).ifPresent(pack -> {
+            pack.setSE(se_register);
+            pack.setProtect(protect);
+            pack.setBasicsSuccessRate(successRate);
+        });
+        return itemStack;
+    }
+
+
+    @StaticVoluntarilyAssignment
     public static class SE_DepositItem extends Item implements CapabilityEvent.ICustomCapability {
 
-        protected final SE_DepositItemRegister se_depositItemRegister;
+        @VoluntarilyAssignment
+        protected static SE_DepositItemRegister se_depositItemRegister;
 
-        public SE_DepositItem(Properties properties, SE_DepositItemRegister se_depositItemRegister) {
+        public SE_DepositItem(Properties properties) {
             super(properties);
-            this.se_depositItemRegister = se_depositItemRegister;
         }
 
         @Override
@@ -121,23 +137,8 @@ public class SE_DepositItemRegister extends ItemRegister {
                 return;
             }
             for (SE_Register se_register : allSE_register.forAll()) {
-
-                ItemStack itemStack = new ItemStack(this);
-                itemStack.getCapability(itemSE_CapabilityRegister.getCapability()).ifPresent(pack -> {
-                    pack.setSE(se_register);
-                    pack.setBasicsSuccessRate(se_depositItemRegister.getSuccessRate());
-                });
-
-                items.add(itemStack);
-
-                ItemStack itemStack_2 = new ItemStack(this);
-                itemStack_2.getCapability(itemSE_CapabilityRegister.getCapability()).ifPresent(pack -> {
-                    pack.setSE(se_register);
-                    pack.setBasicsSuccessRate(se_depositItemRegister.getSuccessRate());
-                    pack.setProtect(true);
-                });
-
-                items.add(itemStack_2);
+                items.add(se_depositItemRegister.mackItemStack(se_register, true));
+                items.add(se_depositItemRegister.mackItemStack(se_register, false));
             }
         }
     }

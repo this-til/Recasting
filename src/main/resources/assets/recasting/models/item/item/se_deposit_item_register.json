@@ -1,5 +1,5 @@
 {
-  "parent": "slashblade:item/tiny",
+  "parent": "recasting:prefab/soul_7",
   "textures": {
     "layer0": "slashblade:soul"
   },

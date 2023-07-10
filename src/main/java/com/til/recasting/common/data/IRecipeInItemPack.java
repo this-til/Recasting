@@ -1,19 +1,24 @@
 package com.til.recasting.common.data;
 
 import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.JsonAdapter;
 import com.til.glowing_fire_glow.common.register.StaticVoluntarilyAssignment;
 import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
 import com.til.glowing_fire_glow.common.save.SaveField;
 import com.til.glowing_fire_glow.common.util.gson.AcceptTypeJson;
+import com.til.glowing_fire_glow.common.util.gson.type_adapter.factory.ForgeRegistryItemTypeAdapterFactory;
 import com.til.recasting.common.capability.IItemSA;
 import com.til.recasting.common.capability.IItemSE;
 import com.til.recasting.common.capability.SlashBladePack;
+import com.til.recasting.common.register.capability.IItemEntity_CapabilityRegister;
 import com.til.recasting.common.register.capability.ItemSA_CapabilityRegister;
 import com.til.recasting.common.register.capability.ItemSE_CapabilityRegister;
 import com.til.recasting.common.register.sa.SA_Register;
 import com.til.recasting.common.register.se.SE_Register;
+import com.til.recasting.common.register.world.item.Entity_DepositItemRegister;
 import com.til.recasting.common.register.world.item.SA_DepositItemRegister;
 import com.til.recasting.common.register.world.item.SE_DepositItemRegister;
+import net.minecraft.entity.EntityType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 
@@ -85,13 +90,7 @@ public interface IRecipeInItemPack extends Predicate<ItemStack> {
 
         @Override
         public Ingredient toIngredient() {
-            ItemStack itemStack = new ItemStack(se_depositItemRegister.getItem());
-            itemStack.getCapability(itemSE_capabilityRegister.getCapability()).ifPresent(pack -> {
-                pack.setSE(se_register);
-                pack.setProtect(protect);
-                pack.setBasicsSuccessRate(successRate);
-            });
-            return new ItemStackIngredient(itemStack);
+            return new ItemStackIngredient(se_depositItemRegister.mackItemStack(se_register, successRate, protect));
         }
 
         @Override
@@ -135,9 +134,7 @@ public interface IRecipeInItemPack extends Predicate<ItemStack> {
 
         @Override
         public Ingredient toIngredient() {
-            ItemStack itemStack = new ItemStack(sa_depositItemRegister.getItem());
-            itemStack.getCapability(itemSA_capabilityRegister.getCapability()).ifPresent(pack -> pack.setSA(sa_register));
-            return new ItemStackIngredient(itemStack);
+            return new ItemStackIngredient(sa_depositItemRegister.mackItemStack(sa_register));
         }
 
         @Override
@@ -146,6 +143,36 @@ public interface IRecipeInItemPack extends Predicate<ItemStack> {
             return itemSAOptional.map(iItemSA -> iItemSA.getSA().equals(sa_register)).orElse(false);
         }
     }
+
+    @StaticVoluntarilyAssignment
+    class OfEntity implements IRecipeInItemPack {
+        @VoluntarilyAssignment
+        protected static Entity_DepositItemRegister entity_depositItemRegister;
+
+        @VoluntarilyAssignment
+        protected static IItemEntity_CapabilityRegister entity_capabilityRegister;
+
+        @JsonAdapter(ForgeRegistryItemTypeAdapterFactory.class)
+        protected EntityType<?> entityType;
+
+        public OfEntity() {
+        }
+
+        public OfEntity(EntityType<?> entityType) {
+            this.entityType = entityType;
+        }
+
+        @Override
+        public Ingredient toIngredient() {
+            return new ItemStackIngredient(entity_depositItemRegister.mackItemStack(entityType));
+        }
+
+        @Override
+        public boolean test(ItemStack itemStack) {
+            return itemStack.getCapability(entity_capabilityRegister.getCapability()).resolve().map(entityPack -> entityPack.getEntityType().equals(entityType)).orElse(false);
+        }
+    }
+
 
     class OfSlashBlade implements IRecipeInItemPack {
 

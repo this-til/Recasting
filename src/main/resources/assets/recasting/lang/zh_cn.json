@@ -1,13 +1,18 @@
 {
 
-  "recasting.multiple.dimensional.chopping.sa": "多从次元斩",
-  "recasting.multiple.dimensional.chopping.sa.introduce": "进行至多4次次元斩进行攻击",
-  "recasting.default.sa": "次元斩",
-  "recasting.default.sa.introduce": "在目标位置进行次元斩攻击",
-  "recasting.epidemic.summoned.sword.sa": "风暴幻影剑",
-  "recasting.epidemic.summoned.sword.sa.introduce": "召唤幻影剑攻击指定位置",
-  "recasting.fanatical.dance.sa": "乱舞",
-  "recasting.fanatical.dance.sa.introduce": "在前方进行多次剑气攻击",
+  "recasting": "重铸",
+  "recasting.lock_client_key_register": "锁定",
+  "recasting.special_action_client_key_register": "特殊行动",
+  "recasting.summoned_sword_client_key_register": "召唤幻影剑",
+
+  "recasting.multiple_dimensional_chopping_sa": "多从次元斩",
+  "recasting.multiple_dimensional_chopping_sa.introduce": "进行至多4次次元斩进行攻击",
+  "recasting.default_sa": "次元斩",
+  "recasting.default_sa.introduce": "在目标位置进行次元斩攻击",
+  "recasting.epidemic_summoned_sword_sa": "风暴幻影剑",
+  "recasting.epidemic_summoned_sword_sa.introduce": "召唤幻影剑攻击指定位置",
+  "recasting.fanatical_dance_sa": "乱舞",
+  "recasting.fanatical_dance_sa.introduce": "在前方进行多次剑气攻击",
 
   "recasting.cooperate_with_se": "同协",
   "recasting.cooperate_with_se.introduce": "挥刀的时候有概率再次进行挥刀",

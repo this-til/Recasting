@@ -11,6 +11,7 @@
     "ItemSlashBladeMixin",
     "JudgementCutMixin",
     "LockOnManagerMixin",
+    "MoveInputHandlerMixin",
     "SummonedSwordArtsMixin",
     "UntouchableMixin"
   ],

@@ -43,7 +43,17 @@ public class SA_DepositItemRegister extends ItemRegister {
         return new SA_DepositItem(new Item.Properties().group(SlashBlade.SLASHBLADE));
     }
 
+    public ItemStack mackItemStack(SA_Register sa_register) {
+        ItemStack itemStack = new ItemStack(getItem());
+        itemStack.getCapability(itemSA_capabilityRegister.getCapability()).ifPresent(pack -> pack.setSA(sa_register));
+        return itemStack;
+    }
+
+    @StaticVoluntarilyAssignment
     public static class SA_DepositItem extends Item implements CapabilityEvent.ICustomCapability {
+
+        @VoluntarilyAssignment
+        protected static SA_DepositItemRegister sa_depositItemRegister;
 
 
         public SA_DepositItem(Properties properties) {
@@ -62,7 +72,7 @@ public class SA_DepositItemRegister extends ItemRegister {
                 SA_Register sa_register = pack.getSA();
                 tooltip.add(new TranslationTextComponent("SA:%s",
                         sa_register == null ? "null" : new TranslationTextComponent(StringUtil.formatLang(pack.getSA().getName()))));
-                if (sa_register != null ) {
+                if (sa_register != null) {
                     tooltip.add(new TranslationTextComponent("§8%s",
                             new TranslationTextComponent(StringUtil.formatLang(sa_register.getName().getNamespace(), sa_register.getName().getPath(), StringFinal.INTRODUCE))));
                 }
@@ -75,9 +85,7 @@ public class SA_DepositItemRegister extends ItemRegister {
                 return;
             }
             for (SA_Register sa_register : allSARegister.forAll()) {
-                ItemStack itemStack = new ItemStack(this);
-                itemStack.getCapability(itemSA_capabilityRegister.getCapability()).ifPresent(pack -> pack.setSA(sa_register));
-                items.add(itemStack);
+                items.add(sa_depositItemRegister.mackItemStack(sa_register));
             }
         }
 

@@ -1,5 +1,5 @@
 {
-  "parent": "slashblade:item/sphere",
+  "parent": "recasting:prefab/soul_4",
   "textures": {
     "layer0": "slashblade:soul"
   },

@@ -27,10 +27,10 @@ public class SummonedSwordArtsManage implements IWorldComponent {
     protected final Map<Entity, Long> timMap = new HashMap<>();
 
     protected final float[] yPos = new float[]{
-            0.6f, 0.6f,
-            0.3f, 0.3f,
+            0.5f, 0.5f,
+            0.25f, 0.25f,
             0, 0,
-            -0.3f, -0.3f
+            -0.25f, -0.25f
     };
 
     @SubscribeEvent
@@ -113,7 +113,7 @@ public class SummonedSwordArtsManage implements IWorldComponent {
                     //todo 伤害评估器
                     summondSwordEntity.setDamage(0.3);
                     summondSwordEntity.setDelay(100);
-                    summondSwordEntity.setStartDelay(12 + (dir / 2) * 2);
+                    summondSwordEntity.setStartDelay((dir / 2) * 2);
 
                     Vector3d pos = player.getEyePosition(1.0f)
                             .add(VectorHelper.getVectorForRotation(0.0f, player.getYaw(0) + 90).scale(dir % 2 == 0 ? 1 : -1));
