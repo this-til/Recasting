@@ -63,6 +63,7 @@ public class SummonedSwordArtsManage implements IWorldComponent {
                     GlowingFireGlow.getInstance().getReflexManage().getVoluntarilyRegisterOfClass(SummondSwordEntityTypeRegister.class).getEntityType(),
                     sender.world,
                     sender);
+            slashBladePack.iSlashBladeStateSupplement.decorate(summondSwordEntity);
             summondSwordEntity.setColor(slashBladePack.slashBladeState.getColorCode());
             //todo 伤害评估器
             summondSwordEntity.setDamage(0.45);
@@ -109,6 +110,7 @@ public class SummonedSwordArtsManage implements IWorldComponent {
                             GlowingFireGlow.getInstance().getReflexManage().getVoluntarilyRegisterOfClass(SummondSwordEntityTypeRegister.class).getEntityType(),
                             player.world,
                             player);
+                    slashBladePack.iSlashBladeStateSupplement.decorate(summondSwordEntity);
                     summondSwordEntity.setColor(slashBladePack.slashBladeState.getColorCode());
                     //todo 伤害评估器
                     summondSwordEntity.setDamage(0.3);

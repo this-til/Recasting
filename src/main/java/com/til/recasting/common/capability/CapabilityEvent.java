@@ -6,7 +6,7 @@ import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
 import com.til.recasting.Recasting;
 import com.til.recasting.common.register.capability.ISlashBladeStateSupplement_CapabilityRegister;
 import com.til.recasting.common.register.capability.SE_CapabilityRegister;
-import com.til.recasting.common.register.se.AllSE_Register;
+import com.til.recasting.common.register.slash_blade.se.AllSE_Register;
 import mods.flammpfeil.slashblade.item.ItemSlashBlade;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;

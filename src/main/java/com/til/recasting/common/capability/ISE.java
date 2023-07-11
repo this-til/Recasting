@@ -1,14 +1,12 @@
 package com.til.recasting.common.capability;
 
-import com.google.gson.annotations.JsonAdapter;
 import com.til.glowing_fire_glow.common.save.SaveField;
 import com.til.glowing_fire_glow.common.util.MathUtil;
 import com.til.recasting.common.register.sa.SA_Register;
-import com.til.recasting.common.register.se.SE_Register;
+import com.til.recasting.common.register.slash_blade.se.SE_Register;
 import net.minecraft.nbt.CompoundNBT;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public interface ISE {

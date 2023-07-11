@@ -2,16 +2,15 @@ package com.til.recasting.common.mixin;
 
 import com.google.common.collect.Multimap;
 import com.til.glowing_fire_glow.GlowingFireGlow;
+import com.til.glowing_fire_glow.common.register.RegisterBasics;
 import com.til.glowing_fire_glow.common.util.StringUtil;
 import com.til.recasting.common.capability.ISE;
 import com.til.recasting.common.capability.SlashBladePack;
 import com.til.recasting.common.register.sa.AllSARegister;
 import com.til.recasting.common.register.sa.SA_Register;
-import com.til.recasting.common.register.se.SE_Register;
+import com.til.recasting.common.register.slash_blade.se.SE_Register;
 import com.til.recasting.common.register.slash_blade.AllSlashBladeRegister;
 import com.til.recasting.common.register.slash_blade.SlashBladeRegister;
-import com.til.recasting.common.register.util.StringFinal;
-import mods.flammpfeil.slashblade.SlashBlade;
 import mods.flammpfeil.slashblade.item.ItemSlashBlade;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.ai.attributes.Attribute;
@@ -19,28 +18,22 @@ import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.item.crafting.RecipeManager;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.DistExecutor;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -115,7 +108,12 @@ public class ItemSlashBladeMixin {
                     opcode = 1
             ))
     public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items, CallbackInfo callbackInfo) {
+        List<SlashBladeRegister> slashBladeRegisterList = new ArrayList<>();
         for (SlashBladeRegister slashBladeRegister : GlowingFireGlow.getInstance().getWorldComponent(AllSlashBladeRegister.class).forAll()) {
+            slashBladeRegisterList.add(slashBladeRegister);
+        }
+        slashBladeRegisterList = slashBladeRegisterList.stream().sorted(Comparator.comparing(RegisterBasics::getName)).collect(Collectors.toList());
+        for (SlashBladeRegister slashBladeRegister : slashBladeRegisterList) {
             items.add(slashBladeRegister.getSlashBladePack().itemStack);
         }
     }

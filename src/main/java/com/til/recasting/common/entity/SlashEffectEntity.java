@@ -372,10 +372,13 @@ public class SlashEffectEntity extends Entity {
             String modelString = dataManager.get(MODEL);
             if (modelString.isEmpty()) {
                 model = DEFAULT_MODEL_NAME;
+            } else {
+                model = new ResourceLocation(modelString);
             }
         }
         return model;
     }
+
 
     public void setModel(ResourceLocation model) {
         this.model = model;
@@ -391,6 +394,9 @@ public class SlashEffectEntity extends Entity {
             String textureString = dataManager.get(TEXTURE);
             if (textureString.isEmpty()) {
                 texture = DEFAULT_TEXTURE_NAME;
+            } else {
+                texture = new ResourceLocation(textureString);
+
             }
         }
         return texture;

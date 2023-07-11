@@ -5,7 +5,6 @@ import com.til.glowing_fire_glow.common.register.VoluntarilyRegister;
 import com.til.recasting.common.capability.SlashBladePack;
 import com.til.recasting.common.register.sa.instance.FanaticalDanceSA;
 import com.til.recasting.common.register.slash_blade.SlashBladeRegister;
-import com.til.recasting.common.register.slash_blade.up.SlashBladeUpRegister;
 import net.minecraft.item.ItemStack;
 
 @VoluntarilyRegister

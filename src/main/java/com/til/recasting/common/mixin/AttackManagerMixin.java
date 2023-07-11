@@ -86,6 +86,7 @@ public class AttackManagerMixin {
         jc.setIsCritical(critical);
         jc.setDamage(damage);
         jc.setKnockBack(knockback);
+        jc.setBaseSize(useSlashBladeEntityPack.slashBladePack.iSlashBladeStateSupplement.getAttackDistance());
         playerIn.world.addEntity(jc);
         return null;
     }

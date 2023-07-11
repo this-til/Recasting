@@ -1,4 +1,4 @@
-package com.til.recasting.common.register.se.instance;
+package com.til.recasting.common.register.slash_blade.se.instance;
 
 import com.til.glowing_fire_glow.common.config.ConfigField;
 import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
@@ -8,7 +8,7 @@ import com.til.recasting.common.capability.ISE;
 import com.til.recasting.common.entity.SummondSwordEntity;
 import com.til.recasting.common.event.EventDoJudgementCut;
 import com.til.recasting.common.register.entity_type.SummondSwordEntityTypeRegister;
-import com.til.recasting.common.register.se.SE_Register;
+import com.til.recasting.common.register.slash_blade.se.SE_Register;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraftforge.eventbus.api.SubscribeEvent;

@@ -9,7 +9,6 @@ import com.til.recasting.common.event.data.EventSlashBladeUpRecipeData;
 import com.til.recasting.common.register.recipe.SlashBladeUpRecipeRegister;
 import com.til.recasting.common.register.slash_blade.SlashBladeRegister;
 import mods.flammpfeil.slashblade.init.SBItems;
-import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
@@ -25,7 +24,7 @@ public class FluorescentRodSlashBladeRegister extends SlashBladeRegister {
                 ListUtil.of(" A ", "ABA", " A "),
                 MapUtil.of(
                         "A", new IRecipeInItemPack.OfIngredient(Ingredient.fromItems(SBItems.proudsoul)),
-                        "B", new IRecipeInItemPack.OfSlashBlade(testSlashBladeRegister.getSlashBladePack().itemStack)),
+                        "B", new IRecipeInItemPack.OfSlashBladeRegister(testSlashBladeRegister)),
                 "B",
                 getSlashBladePack().itemStack
         ));

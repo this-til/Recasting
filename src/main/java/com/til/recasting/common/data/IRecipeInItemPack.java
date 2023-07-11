@@ -4,7 +4,6 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.JsonAdapter;
 import com.til.glowing_fire_glow.common.register.StaticVoluntarilyAssignment;
 import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
-import com.til.glowing_fire_glow.common.save.SaveField;
 import com.til.glowing_fire_glow.common.util.gson.AcceptTypeJson;
 import com.til.glowing_fire_glow.common.util.gson.type_adapter.factory.ForgeRegistryItemTypeAdapterFactory;
 import com.til.recasting.common.capability.IItemSA;
@@ -14,7 +13,8 @@ import com.til.recasting.common.register.capability.IItemEntity_CapabilityRegist
 import com.til.recasting.common.register.capability.ItemSA_CapabilityRegister;
 import com.til.recasting.common.register.capability.ItemSE_CapabilityRegister;
 import com.til.recasting.common.register.sa.SA_Register;
-import com.til.recasting.common.register.se.SE_Register;
+import com.til.recasting.common.register.slash_blade.SlashBladeRegister;
+import com.til.recasting.common.register.slash_blade.se.SE_Register;
 import com.til.recasting.common.register.world.item.Entity_DepositItemRegister;
 import com.til.recasting.common.register.world.item.SA_DepositItemRegister;
 import com.til.recasting.common.register.world.item.SE_DepositItemRegister;
@@ -22,6 +22,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 
+import javax.annotation.Nullable;
 import java.util.Optional;
 import java.util.function.Predicate;
 
@@ -210,6 +211,35 @@ public interface IRecipeInItemPack extends Predicate<ItemStack> {
         @Override
         public Ingredient toIngredient() {
             return new ItemStackIngredient(itemStack);
+        }
+    }
+
+    class OfSlashBladeRegister implements IRecipeInItemPack {
+
+        protected SlashBladeRegister slashBladeRegister;
+
+        @Expose
+        @Nullable
+        protected OfSlashBlade ofSlashBlade;
+
+        public OfSlashBladeRegister(SlashBladeRegister slashBladePack) {
+            this.slashBladeRegister = slashBladePack;
+        }
+
+        @Override
+        public Ingredient toIngredient() {
+            if (ofSlashBlade == null) {
+                ofSlashBlade = new OfSlashBlade(slashBladeRegister.getSlashBladePack().itemStack);
+            }
+            return ofSlashBlade.toIngredient();
+        }
+
+        @Override
+        public boolean test(ItemStack itemStack) {
+            if (ofSlashBlade == null) {
+                ofSlashBlade = new OfSlashBlade(slashBladeRegister.getSlashBladePack().itemStack);
+            }
+            return ofSlashBlade.test(itemStack);
         }
     }
 }

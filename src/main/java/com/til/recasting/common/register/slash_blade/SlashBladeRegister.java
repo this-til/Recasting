@@ -5,6 +5,7 @@ import com.til.glowing_fire_glow.common.config.ConfigManage;
 import com.til.glowing_fire_glow.common.register.RegisterBasics;
 import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
 import com.til.glowing_fire_glow.common.util.Delayed;
+import com.til.glowing_fire_glow.common.util.StringUtil;
 import com.til.recasting.common.capability.SlashBladePack;
 import mods.flammpfeil.slashblade.SlashBlade;
 import mods.flammpfeil.slashblade.client.renderer.SlashBladeTEISR;
@@ -21,6 +22,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import javax.annotation.Nullable;
+
 /**
  * @author til
  */
@@ -29,6 +32,14 @@ public abstract class SlashBladeRegister extends RegisterBasics {
 
     protected ResourceLocation model;
     protected ResourceLocation texture;
+
+    @Nullable
+    protected ResourceLocation summondSwordModel;
+    @Nullable
+    protected ResourceLocation summondSwordTexture;
+
+    @Nullable
+    protected ResourceLocation slashEffectTexture;
 
     @ConfigField
     protected Delayed<ItemStack> itemStack;
@@ -41,14 +52,19 @@ public abstract class SlashBladeRegister extends RegisterBasics {
 
     @Override
     protected void init() {
-        model = new ResourceLocation(getName().getNamespace(), String.format("%s/%s/%s", SlashBlade.modid, getName().getPath(), "model.obj"));
-        texture = new ResourceLocation(getName().getNamespace(), String.format("%s/%s/%s", SlashBlade.modid, getName().getPath(), "texture.png"));
+        model = new ResourceLocation(getName().getNamespace(),  String.join("/", SlashBlade.modid, getName().getPath(), "model.obj"));
+        texture = new ResourceLocation(getName().getNamespace(), String.join("/", SlashBlade.modid, getName().getPath(), "texture.png"));
     }
 
     protected void defaultItemStackConfig(ItemStack itemStack) {
         slashBladePack = new SlashBladePack(itemStack);
         slashBladePack.slashBladeState.setTexture(texture);
         slashBladePack.slashBladeState.setModel(model);
+        slashBladePack.slashBladeState.setTranslationKey(StringUtil.formatLang(getName()));
+
+        slashBladePack.iSlashBladeStateSupplement.setSummondSwordModel(summondSwordModel);
+        slashBladePack.iSlashBladeStateSupplement.setSummondSwordTexture(summondSwordTexture);
+        slashBladePack.iSlashBladeStateSupplement.setSlashEffectTexture(slashEffectTexture);
     }
 
     public SlashBladePack getSlashBladePack() {

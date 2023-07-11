@@ -1,4 +1,4 @@
-package com.til.recasting.common.register.se;
+package com.til.recasting.common.register.slash_blade.se;
 
 import com.til.glowing_fire_glow.common.config.ConfigField;
 import com.til.glowing_fire_glow.common.register.RegisterBasics;

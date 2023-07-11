@@ -2,6 +2,8 @@ package com.til.recasting.common.capability;
 
 
 import com.til.glowing_fire_glow.common.config.ConfigField;
+import com.til.glowing_fire_glow.common.register.particle_register.ParticleRegister;
+import com.til.glowing_fire_glow.common.save.SaveField;
 import com.til.recasting.common.entity.SlashEffectEntity;
 import com.til.recasting.common.entity.SummondSwordEntity;
 import net.minecraft.util.ResourceLocation;
@@ -12,6 +14,10 @@ import javax.annotation.Nullable;
  * 一个对应ISlashBladeState的补充状态
  */
 public interface ISlashBladeStateSupplement {
+
+    float getAttackDistance();
+
+    void setAttackDistance(float attackDistance);
 
     @Nullable
     ResourceLocation getSummondSwordModel();
@@ -34,15 +40,42 @@ public interface ISlashBladeStateSupplement {
 
     class SlashBladeStateSupplement implements ISlashBladeStateSupplement {
 
-        @ConfigField
+        @SaveField
+        protected float attackDistance = 1;
+
+        @SaveField
         @Nullable
         protected ResourceLocation summondSwordModel;
-        @ConfigField
+        @SaveField
         @Nullable
         protected ResourceLocation summondSwordTexture;
-        @ConfigField
+        @SaveField
         @Nullable
         protected ResourceLocation slashEffectTexture;
+
+        /***
+         * 攻击的效果
+         */
+        @SaveField
+        @Nullable
+        protected ParticleRegister attackEffect;
+
+        /***
+         * 移动的效果
+         */
+        @SaveField
+        @Nullable
+        protected ParticleRegister moveEffect;
+
+        @Override
+        public float getAttackDistance() {
+            return attackDistance;
+        }
+
+        @Override
+        public void setAttackDistance(float attackDistance) {
+            this.attackDistance = attackDistance;
+        }
 
         @Nullable
         @Override

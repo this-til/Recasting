@@ -13,7 +13,6 @@
   "recasting.epidemic_summoned_sword_sa.introduce": "召唤幻影剑攻击指定位置",
   "recasting.fanatical_dance_sa": "乱舞",
   "recasting.fanatical_dance_sa.introduce": "在前方进行多次剑气攻击",
-
   "recasting.cooperate_with_se": "同协",
   "recasting.cooperate_with_se.introduce": "挥刀的时候有概率再次进行挥刀",
   "recasting.impact_se": "冲击",
@@ -23,17 +22,13 @@
   "recasting.overload_se": "过载",
   "recasting.overload_se.introduce": "挥刀的时候有小概率触发审判",
   "recasting.storm_se": "风暴",
-  "recasting.storm_se.introduce": "触发审判时，召唤幻影剑进行攻击",
+  "recasting.storm_se.introduce": "触发次元斩时，召唤幻影剑进行攻击",
   "recasting.storm_variant_se": "风暴·变体",
   "recasting.storm_variant_se.introduce": "触发次元斩时，召唤幻影剑进行攻击",
 
   "item.recasting.item.se_deposit_item_register": "SE结晶",
-  "item.recasting.item.se_deposit_1_item_register": "SE结晶",
-  "item.recasting.item.se_deposit_2_item_register": "SE结晶",
-  "item.recasting.item.se_deposit_3_item_register": "SE结晶",
-  "item.recasting.item.se_deposit_4_item_register": "SE结晶",
-  "item.recasting.item.se_deposit_5_item_register": "SE结晶",
   "item.recasting.item.sa_deposit_item_register": "SA结晶",
+  "item.recasting.item.entity_deposit_item_register": "实体结晶",
 
   "item.recasting.item.soul_1_item_register" : "耀魂聚合物",
   "item.recasting.item.soul_2_item_register" : "耀魂剑体",

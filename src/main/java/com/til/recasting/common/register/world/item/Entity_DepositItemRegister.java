@@ -92,7 +92,7 @@ public class Entity_DepositItemRegister extends ItemRegister {
             );
             for (EntityType<?> value : ForgeRegistries.ENTITIES.getValues()) {
                 if (!entityClassifications.contains(value.getClassification())) {
-                    return;
+                    continue;
                 }
                 items.add(entity_depositItemRegister.mackItemStack(value));
             }

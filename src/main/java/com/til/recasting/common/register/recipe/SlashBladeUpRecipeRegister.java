@@ -1,6 +1,5 @@
 package com.til.recasting.common.register.recipe;
 
-import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.Sets;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
@@ -9,12 +8,8 @@ import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
 import com.til.glowing_fire_glow.common.register.VoluntarilyRegister;
 import com.til.glowing_fire_glow.common.register.recipe.RecipeRegister;
 import com.til.glowing_fire_glow.common.util.gson.GsonManage;
-import com.til.recasting.common.capability.ISE;
 import com.til.recasting.common.capability.SlashBladePack;
 import com.til.recasting.common.data.IRecipeInItemPack;
-import com.til.recasting.common.register.se.SE_Register;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.*;

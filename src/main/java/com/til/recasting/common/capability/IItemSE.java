@@ -1,10 +1,9 @@
 package com.til.recasting.common.capability;
 
 import com.til.glowing_fire_glow.common.save.SaveField;
-import com.til.recasting.common.register.se.SE_Register;
+import com.til.recasting.common.register.slash_blade.se.SE_Register;
 
 import java.util.Random;
-import java.util.Set;
 
 /**
  * @author til
