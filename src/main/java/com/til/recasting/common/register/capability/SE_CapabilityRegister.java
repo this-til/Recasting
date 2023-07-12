@@ -11,13 +11,4 @@ import net.minecraftforge.common.capabilities.CapabilityInject;
  */
 @VoluntarilyRegister
 public class SE_CapabilityRegister extends OriginalCapabilityRegister<ISE> {
-
-
-    @CapabilityInject(ISE.class)
-    public static Capability<ISE> isaCapability;
-
-    @Override
-    protected Capability<ISE> initCapability() {
-        return isaCapability;
-    }
 }

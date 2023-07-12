@@ -52,7 +52,7 @@ public abstract class SlashBladeRegister extends RegisterBasics {
 
     @Override
     protected void init() {
-        model = new ResourceLocation(getName().getNamespace(),  String.join("/", SlashBlade.modid, getName().getPath(), "model.obj"));
+        model = new ResourceLocation(getName().getNamespace(), String.join("/", SlashBlade.modid, getName().getPath(), "model.obj"));
         texture = new ResourceLocation(getName().getNamespace(), String.join("/", SlashBlade.modid, getName().getPath(), "texture.png"));
     }
 
@@ -68,7 +68,12 @@ public abstract class SlashBladeRegister extends RegisterBasics {
     }
 
     public SlashBladePack getSlashBladePack() {
-        return new SlashBladePack(itemStack.get());
+        return new SlashBladePack(itemStack.get().copy());
+    }
+
+
+    public boolean displayItem() {
+        return true;
     }
 
     @Override

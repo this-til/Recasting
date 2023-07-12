@@ -10,6 +10,7 @@ import com.til.glowing_fire_glow.common.register.recipe.RecipeRegister;
 import com.til.glowing_fire_glow.common.util.gson.GsonManage;
 import com.til.recasting.common.capability.SlashBladePack;
 import com.til.recasting.common.data.IRecipeInItemPack;
+import com.til.recasting.common.data.IResultPack;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.*;
@@ -91,14 +92,14 @@ public class SlashBladeUpRecipeRegister extends RecipeRegister<SlashBladeUpRecip
                 throw new JsonSyntaxException(String.format("SlashBladeUpRecipe配方mainSlashBladeKey:[%s]缺失", slashBladeUpPack.mainSlashBladeKey));
             }
             IRecipeInItemPack iRecipeInItemPack = slashBladeUpPack.key.get(slashBladeUpPack.mainSlashBladeKey);
-            if (!(iRecipeInItemPack instanceof IRecipeInItemPack.OfSlashBlade)) {
+            if (!(iRecipeInItemPack instanceof IRecipeInItemPack.OfSlashBlade) && !(iRecipeInItemPack instanceof  IRecipeInItemPack.OfSlashBladeRegister)) {
                 throw new JsonSyntaxException(String.format("SlashBladeUpRecipe配方mainSlashBladeKey:[%s]错误的类型", slashBladeUpPack.mainSlashBladeKey));
             }
-            SlashBladePack mainSlashBladePack = ((IRecipeInItemPack.OfSlashBlade) iRecipeInItemPack).getSlashBladePack();
+            /*SlashBladePack mainSlashBladePack = ((IRecipeInItemPack.OfSlashBlade) iRecipeInItemPack).getSlashBladePack();
             if (!mainSlashBladePack.isEffective()) {
                 throw new JsonSyntaxException(String.format("SlashBladeUpRecipe配方mainSlashBladeKey:[%s]对应物品失效", slashBladeUpPack.mainSlashBladeKey));
-            }
-            SlashBladePack potSlashBladePack = new SlashBladePack(slashBladeUpPack.result);
+            }*/
+            SlashBladePack potSlashBladePack = new SlashBladePack(slashBladeUpPack.result.getOutItemStack());
             if (!potSlashBladePack.isEffective()) {
                 throw new JsonSyntaxException("SlashBladeUpRecipe配方输出物品失效");
             }
@@ -249,12 +250,12 @@ public class SlashBladeUpRecipeRegister extends RecipeRegister<SlashBladeUpRecip
         public List<String> pattern;
         public Map<String, IRecipeInItemPack> key;
         public String mainSlashBladeKey;
-        public ItemStack result;
+        public IResultPack result;
 
         public SlashBladeUpPack() {
         }
 
-        public SlashBladeUpPack(List<String> pattern, Map<String, IRecipeInItemPack> key, String mainSlashBladeKey, ItemStack result) {
+        public SlashBladeUpPack(List<String> pattern, Map<String, IRecipeInItemPack> key, String mainSlashBladeKey, IResultPack result) {
             this.pattern = pattern;
             this.key = key;
             this.mainSlashBladeKey = mainSlashBladeKey;

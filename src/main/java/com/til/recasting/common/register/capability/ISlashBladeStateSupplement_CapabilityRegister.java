@@ -11,13 +11,4 @@ import net.minecraftforge.common.capabilities.CapabilityInject;
  */
 @VoluntarilyRegister
 public class ISlashBladeStateSupplement_CapabilityRegister extends OriginalCapabilityRegister<ISlashBladeStateSupplement> {
-
-
-    @CapabilityInject(ISlashBladeStateSupplement.class)
-    public static Capability<ISlashBladeStateSupplement> iSlashBladeStateSupplementCapability;
-
-    @Override
-    protected Capability<ISlashBladeStateSupplement> initCapability() {
-        return iSlashBladeStateSupplementCapability;
-    }
 }

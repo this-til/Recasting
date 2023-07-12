@@ -13,13 +13,4 @@ import net.minecraftforge.common.capabilities.CapabilityInject;
  */
 @VoluntarilyRegister
 public class ItemSE_CapabilityRegister extends OriginalCapabilityRegister<IItemSE> {
-
-
-    @CapabilityInject(IItemSE.class)
-    public static Capability<IItemSE> iItemSECapability;
-
-    @Override
-    protected Capability<IItemSE> initCapability() {
-        return iItemSECapability;
-    }
 }

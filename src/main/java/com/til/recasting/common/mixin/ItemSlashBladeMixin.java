@@ -65,8 +65,8 @@ public class ItemSlashBladeMixin {
             return;
         }
 
-        //tooltip.add(new TranslationTextComponent("name:%s", slashBladePack.iSlashBladeStateSupplement.getSlashBladeName()));
-        //tooltip.add(new StringTextComponent(""));
+        tooltip.add(new TranslationTextComponent("key:%s", slashBladePack.slashBladeState.getTranslationKey()));
+        tooltip.add(new StringTextComponent(""));
 
         SA_Register sa_register = GlowingFireGlow.getInstance().getWorldComponent(AllSARegister.class).getSA_Register(slashBladePack.slashBladeState.getSlashArts());
         if (sa_register != null) {
@@ -110,6 +110,9 @@ public class ItemSlashBladeMixin {
     public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items, CallbackInfo callbackInfo) {
         List<SlashBladeRegister> slashBladeRegisterList = new ArrayList<>();
         for (SlashBladeRegister slashBladeRegister : GlowingFireGlow.getInstance().getWorldComponent(AllSlashBladeRegister.class).forAll()) {
+            if (!slashBladeRegister.displayItem()) {
+                continue;
+            }
             slashBladeRegisterList.add(slashBladeRegister);
         }
         slashBladeRegisterList = slashBladeRegisterList.stream().sorted(Comparator.comparing(RegisterBasics::getName)).collect(Collectors.toList());

@@ -34,8 +34,8 @@
   "item.recasting.item.soul_2_item_register" : "耀魂剑体",
   "item.recasting.item.soul_3_item_register" : "耀魂刀体",
   "item.recasting.item.soul_4_item_register" : "耀魂异构体",
-  "item.recasting.item.soul_5_item_register" : "耀魂立方体",
-  "item.recasting.item.soul_6_item_register" : "耀魂多态体",
+  "item.recasting.item.soul_cube_item_register" : "耀魂立方体",
+  "item.recasting.item.soul_cube_change_item_register" : "耀魂多态体",
   "item.recasting.item.soul_7_item_register" : "耀魂离散体",
   "item.recasting.item.soul_8_item_register" : "耀魂立方变体",
 

@@ -14,16 +14,21 @@ import net.minecraft.data.DirectoryCache;
 import net.minecraft.data.IDataProvider;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModList;
+import net.minecraftforge.fml.ModLoader;
 import net.minecraftforge.fml.event.lifecycle.GatherDataEvent;
+import net.minecraftforge.fml.loading.moddiscovery.ModFileInfo;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class RecastingDataGenerate implements IWorldComponent {
 
@@ -41,6 +46,7 @@ public class RecastingDataGenerate implements IWorldComponent {
     @SubscribeEvent
     protected void onEvent(GatherDataEvent event) {
         MinecraftForge.EVENT_BUS.start();
+        //ModLoader modLoader = ModLoader.get();
         event.getGenerator().addProvider(new IDataProvider() {
             @Override
             public void act(DirectoryCache cache) throws IOException {

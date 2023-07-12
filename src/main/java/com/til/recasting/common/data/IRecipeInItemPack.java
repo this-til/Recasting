@@ -47,8 +47,6 @@ public interface IRecipeInItemPack extends Predicate<ItemStack> {
     class OfIngredient implements IRecipeInItemPack {
         protected Ingredient ingredient;
 
-        public OfIngredient() {
-        }
 
         public OfIngredient(Ingredient ingredient) {
             this.ingredient = ingredient;
@@ -126,8 +124,6 @@ public interface IRecipeInItemPack extends Predicate<ItemStack> {
 
         protected SA_Register sa_register;
 
-        public OfItemSA() {
-        }
 
         public OfItemSA(SA_Register sa_register) {
             this.sa_register = sa_register;
@@ -156,8 +152,6 @@ public interface IRecipeInItemPack extends Predicate<ItemStack> {
         @JsonAdapter(ForgeRegistryItemTypeAdapterFactory.class)
         protected EntityType<?> entityType;
 
-        public OfEntity() {
-        }
 
         public OfEntity(EntityType<?> entityType) {
             this.entityType = entityType;
@@ -182,8 +176,6 @@ public interface IRecipeInItemPack extends Predicate<ItemStack> {
         @Expose
         protected SlashBladePack slashBladePack;
 
-        public OfSlashBlade() {
-        }
 
         public OfSlashBlade(ItemStack itemStack) {
             this.itemStack = itemStack;
