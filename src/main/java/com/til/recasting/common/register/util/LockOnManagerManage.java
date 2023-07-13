@@ -5,25 +5,16 @@ import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
 import com.til.recasting.common.capability.UseSlashBladeEntityPack;
 import com.til.recasting.common.register.target_selector.DefaultTargetSelectorRegister;
 import mods.flammpfeil.slashblade.event.InputCommandEvent;
-import mods.flammpfeil.slashblade.item.ItemSlashBlade;
 import mods.flammpfeil.slashblade.util.InputCommand;
-import mods.flammpfeil.slashblade.util.RayTraceHelper;
-import mods.flammpfeil.slashblade.util.TargetSelector;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.entity.PartEntity;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import java.util.Comparator;
-import java.util.EnumSet;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * @author til

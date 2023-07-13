@@ -2,21 +2,12 @@ package com.til.recasting.common.register.slash_blade;
 
 import com.til.glowing_fire_glow.GlowingFireGlow;
 import com.til.glowing_fire_glow.common.register.RegisterManage;
-import mods.flammpfeil.slashblade.client.renderer.SlashBladeTEISR;
 import mods.flammpfeil.slashblade.client.renderer.model.BladeModel;
-import mods.flammpfeil.slashblade.init.SBItems;
-import mods.flammpfeil.slashblade.item.ItemTierSlashBlade;
 import net.minecraft.client.renderer.model.ModelResourceLocation;
-import net.minecraft.client.renderer.tileentity.ItemStackTileEntityRenderer;
-import net.minecraft.item.IItemTier;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
-import net.minecraftforge.registries.ForgeRegistries;
-
-import java.util.concurrent.Callable;
-import java.util.function.Supplier;
 
 /**
  * @author til

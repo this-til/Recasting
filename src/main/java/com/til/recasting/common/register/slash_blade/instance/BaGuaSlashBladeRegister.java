@@ -50,7 +50,7 @@ public class BaGuaSlashBladeRegister extends SlashBladeRegister {
                     ),
                     MapUtil.of(
                             "A", new IRecipeInItemPack.OfEntity(EntityType.SKELETON),
-                            "B", new IRecipeInItemPack.OfEntity(EntityType.SKELETON_HORSE),
+                            "B", new IRecipeInItemPack.OfEntity(EntityType.WITHER_SKELETON),
                             "V", new IRecipeInItemPack.OfSlashBlade(slashBladePack.itemStack)
                     ),
                     "V",

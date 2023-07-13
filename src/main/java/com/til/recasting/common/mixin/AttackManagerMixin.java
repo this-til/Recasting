@@ -1,43 +1,19 @@
 package com.til.recasting.common.mixin;
 
-import com.google.common.collect.Lists;
 import com.til.glowing_fire_glow.GlowingFireGlow;
-import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
-import com.til.recasting.common.capability.SlashBladePack;
 import com.til.recasting.common.capability.UseSlashBladeEntityPack;
 import com.til.recasting.common.entity.SlashEffectEntity;
-import com.til.recasting.common.event.EventSlashBladeAreaAttack;
 import com.til.recasting.common.event.EventSlashBladeDoSlash;
 import com.til.recasting.common.register.entity_type.SlashEffectEntityTypeRegister;
-import mods.flammpfeil.slashblade.SlashBlade;
-import mods.flammpfeil.slashblade.entity.EntityJudgementCut;
 import mods.flammpfeil.slashblade.entity.EntitySlashEffect;
-import mods.flammpfeil.slashblade.specialattack.JudgementCut;
 import mods.flammpfeil.slashblade.util.AttackManager;
 import mods.flammpfeil.slashblade.util.KnockBacks;
-import mods.flammpfeil.slashblade.util.TargetSelector;
 import mods.flammpfeil.slashblade.util.VectorHelper;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraftforge.common.MinecraftForge;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-
-import java.util.List;
-import java.util.Objects;
-import java.util.function.Consumer;
 
 /**
  * @author til

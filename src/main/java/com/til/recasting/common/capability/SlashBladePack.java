@@ -4,6 +4,7 @@ import com.til.glowing_fire_glow.common.register.StaticVoluntarilyAssignment;
 import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
 import com.til.recasting.common.register.capability.ISlashBladeStateSupplement_CapabilityRegister;
 import com.til.recasting.common.register.capability.SE_CapabilityRegister;
+import com.til.recasting.common.register.slash_blade.sa.SA_Register;
 import com.til.recasting.common.register.slash_blade.se.SE_Register;
 import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
 import mods.flammpfeil.slashblade.item.ItemSlashBlade;
@@ -105,6 +106,10 @@ public class SlashBladePack {
         }
         EnchantmentHelper.setEnchantments(outEnchantmentMap, outItemStack);
         return outSlashBladePack;
+    }
+
+    public void setSA(SA_Register sa_register) {
+        slashBladeState.setSlashArtsKey(sa_register.getSlashArts().getName());
     }
 
 }

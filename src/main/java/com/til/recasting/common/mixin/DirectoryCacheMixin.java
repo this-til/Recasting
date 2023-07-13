@@ -3,9 +3,6 @@ package com.til.recasting.common.mixin;
 import net.minecraft.data.DirectoryCache;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
-import org.spongepowered.asm.mixin.gen.Invoker;
-
-import java.io.IOException;
 
 @Mixin(DirectoryCache.class)
 public class DirectoryCacheMixin {

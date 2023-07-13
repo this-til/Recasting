@@ -1,10 +1,7 @@
 package com.til.recasting.common.event.data;
 
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.til.glowing_fire_glow.common.config.ConfigManage;
 import com.til.glowing_fire_glow.common.main.IWorldComponent;
-import com.til.glowing_fire_glow.common.register.StaticVoluntarilyAssignment;
 import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
 import com.til.glowing_fire_glow.common.util.IOUtil;
 import com.til.glowing_fire_glow.common.util.gson.GsonManage;
@@ -14,21 +11,14 @@ import net.minecraft.data.DirectoryCache;
 import net.minecraft.data.IDataProvider;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.capabilities.CapabilityManager;
-import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.fml.ModLoader;
 import net.minecraftforge.fml.event.lifecycle.GatherDataEvent;
-import net.minecraftforge.fml.loading.moddiscovery.ModFileInfo;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class RecastingDataGenerate implements IWorldComponent {
 

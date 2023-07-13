@@ -69,11 +69,7 @@ public abstract class LikeOriginalEntityPredicateRegister extends EntityPredicat
             }
         }
 
-        if (!this.ignoresLineOfSight && attacker instanceof MobEntity && !((MobEntity) attacker).getEntitySenses().canSee(target)) {
-            return false;
-        }
-
-        return true;
+        return this.ignoresLineOfSight || !(attacker instanceof MobEntity) || ((MobEntity) attacker).getEntitySenses().canSee(target);
     }
 
 

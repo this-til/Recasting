@@ -2,7 +2,6 @@ package com.til.recasting.common.mixin;
 
 import mods.flammpfeil.slashblade.ability.SummonedSwordArts;
 import mods.flammpfeil.slashblade.event.InputCommandEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 

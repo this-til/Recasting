@@ -7,20 +7,11 @@ import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
 import com.til.glowing_fire_glow.common.util.Delayed;
 import com.til.glowing_fire_glow.common.util.StringUtil;
 import com.til.recasting.common.capability.SlashBladePack;
+import com.til.recasting.common.register.slash_blade.sa.SA_Register;
 import mods.flammpfeil.slashblade.SlashBlade;
-import mods.flammpfeil.slashblade.client.renderer.SlashBladeTEISR;
 import mods.flammpfeil.slashblade.init.SBItems;
-import mods.flammpfeil.slashblade.item.ItemTierSlashBlade;
-import net.minecraft.item.IItemTier;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.tags.ITag;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nullable;
 
@@ -70,7 +61,6 @@ public abstract class SlashBladeRegister extends RegisterBasics {
     public SlashBladePack getSlashBladePack() {
         return new SlashBladePack(itemStack.get().copy());
     }
-
 
     public boolean displayItem() {
         return true;

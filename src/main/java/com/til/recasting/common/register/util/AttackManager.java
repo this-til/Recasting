@@ -5,7 +5,6 @@ import com.til.recasting.common.event.EventDoAttack;
 import com.til.recasting.common.event.EventSlashBladeAreaAttack;
 import mods.flammpfeil.slashblade.ability.ArrowReflector;
 import mods.flammpfeil.slashblade.ability.TNTExtinguisher;
-import mods.flammpfeil.slashblade.util.TargetSelector;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;

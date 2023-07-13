@@ -1,23 +1,8 @@
 package com.til.recasting.common.register.util;
 
-import com.google.common.collect.Lists;
-import mods.flammpfeil.slashblade.entity.IShootable;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityPredicate;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.boss.dragon.EnderDragonEntity;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
-
-import static mods.flammpfeil.slashblade.util.TargetSelector.getAreaAttackPredicate;
 
 public class RayTraceUtil {
     /*    */

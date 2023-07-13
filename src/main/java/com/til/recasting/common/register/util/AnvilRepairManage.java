@@ -2,13 +2,11 @@ package com.til.recasting.common.register.util;
 
 import com.til.glowing_fire_glow.common.main.IWorldComponent;
 import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
-import com.til.recasting.common.capability.IItemSA;
 import com.til.recasting.common.capability.IItemSE;
 import com.til.recasting.common.register.capability.ItemSE_CapabilityRegister;
 import com.til.recasting.common.register.world.item.SE_DepositItemRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.AnvilUpdateEvent;
-import net.minecraftforge.event.entity.player.AnvilRepairEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import java.util.Optional;

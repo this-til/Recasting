@@ -7,9 +7,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 
 import java.util.Collection;
-import java.util.List;
-import java.util.function.Predicate;
-import java.util.stream.Stream;
 
 
 public class ItemStackIngredient extends Ingredient {

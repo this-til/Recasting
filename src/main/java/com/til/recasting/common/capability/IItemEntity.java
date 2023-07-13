@@ -2,7 +2,6 @@ package com.til.recasting.common.capability;
 
 import com.til.glowing_fire_glow.common.save.SaveField;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
 
 public interface IItemEntity {
 

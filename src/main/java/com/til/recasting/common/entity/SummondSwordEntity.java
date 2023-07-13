@@ -8,16 +8,13 @@ import com.til.recasting.common.register.util.HitAssessment;
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import mods.flammpfeil.slashblade.SlashBlade;
 import mods.flammpfeil.slashblade.ability.StunManager;
-import mods.flammpfeil.slashblade.entity.IShootable;
 import mods.flammpfeil.slashblade.util.EnumSetConverter;
-import mods.flammpfeil.slashblade.util.TargetSelector;
 import net.minecraft.block.BlockState;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.entity.projectile.ProjectileHelper;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
@@ -29,7 +26,9 @@ import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.potion.PotionUtils;
-import net.minecraft.util.*;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.*;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.vector.Vector3d;
@@ -557,7 +556,7 @@ public class SummondSwordEntity extends Entity {
         this.inBlockState = blockstate;
         Vector3d vec3d = blockraytraceresult.getHitVec().subtract(this.getPosX(), this.getPosY(), this.getPosZ());
         this.setMotion(vec3d);
-        Vector3d vec3d1 = this.getPositionVec().subtract(vec3d.normalize().scale((double) 0.05F));
+        Vector3d vec3d1 = this.getPositionVec().subtract(vec3d.normalize().scale(0.05F));
         this.setPosition(vec3d1.x, vec3d1.y, vec3d1.z);
         this.playSound(this.getHitGroundSound(), 1.0F, 2.2F / (this.rand.nextFloat() * 0.2F + 0.9F));
         this.inGround = true;
@@ -671,7 +670,7 @@ public class SummondSwordEntity extends Entity {
     }
 
     public void setPierce(byte value) {
-        this.getDataManager().set(PIERCE, (byte) value);
+        this.getDataManager().set(PIERCE, value);
     }
 
     public int getDelay() {

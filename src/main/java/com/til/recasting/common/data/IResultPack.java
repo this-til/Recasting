@@ -12,9 +12,6 @@ public interface IResultPack {
     class OfItemStack implements IResultPack {
         protected ItemStack itemStack;
 
-        public OfItemStack() {
-
-        }
 
         public OfItemStack(ItemStack itemStack) {
             this.itemStack = itemStack;
@@ -29,9 +26,6 @@ public interface IResultPack {
     class OfSlashBladeRegister implements IResultPack {
         protected SlashBladeRegister slashBladeRegister;
 
-        public OfSlashBladeRegister() {
-
-        }
 
         public OfSlashBladeRegister(SlashBladeRegister slashBladeRegister) {
             this.slashBladeRegister = slashBladeRegister;

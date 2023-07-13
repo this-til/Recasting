@@ -1,4 +1,4 @@
-package com.til.recasting.common.register.sa.instance;
+package com.til.recasting.common.register.slash_blade.sa.instance;
 
 import com.til.glowing_fire_glow.common.config.ConfigField;
 import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
@@ -6,7 +6,7 @@ import com.til.glowing_fire_glow.common.register.VoluntarilyRegister;
 import com.til.recasting.common.capability.UseSlashBladeEntityPack;
 import com.til.recasting.common.entity.SummondSwordEntity;
 import com.til.recasting.common.register.entity_type.SummondSwordEntityTypeRegister;
-import com.til.recasting.common.register.sa.SA_Register;
+import com.til.recasting.common.register.slash_blade.sa.SA_Register;
 import com.til.recasting.common.register.target_selector.DefaultTargetSelectorRegister;
 import com.til.recasting.common.register.target_selector.TargetSelectorRegister;
 import com.til.recasting.common.register.util.RayTraceUtil;

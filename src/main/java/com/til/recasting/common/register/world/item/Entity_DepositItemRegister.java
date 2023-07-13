@@ -6,17 +6,13 @@ import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
 import com.til.glowing_fire_glow.common.register.VoluntarilyRegister;
 import com.til.glowing_fire_glow.common.register.world.item.ItemRegister;
 import com.til.glowing_fire_glow.common.util.SetUtil;
-import com.til.glowing_fire_glow.common.util.StringUtil;
 import com.til.recasting.common.capability.CapabilityEvent;
 import com.til.recasting.common.capability.IItemEntity;
 import com.til.recasting.common.register.capability.IItemEntity_CapabilityRegister;
-import com.til.recasting.common.register.sa.SA_Register;
-import com.til.recasting.common.register.util.StringFinal;
 import mods.flammpfeil.slashblade.SlashBlade;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
@@ -28,7 +24,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 

@@ -1,7 +1,6 @@
 package com.til.recasting.common.register.util;
 
 import com.til.glowing_fire_glow.GlowingFireGlow;
-import com.til.glowing_fire_glow.common.main.IWorldComponent;
 import com.til.recasting.common.capability.UseSlashBladeEntityPack;
 import com.til.recasting.common.entity.JudgementCutEntity;
 import com.til.recasting.common.event.EventDoJudgementCut;

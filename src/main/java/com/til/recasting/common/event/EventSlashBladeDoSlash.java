@@ -1,11 +1,7 @@
 package com.til.recasting.common.event;
 
-import com.til.recasting.common.capability.SlashBladePack;
 import com.til.recasting.common.capability.UseSlashBladeEntityPack;
-import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
 import mods.flammpfeil.slashblade.util.KnockBacks;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.vector.Vector3d;
 
 /**

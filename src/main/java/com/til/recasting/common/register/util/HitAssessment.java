@@ -4,10 +4,7 @@ import com.google.common.collect.Lists;
 import com.til.glowing_fire_glow.common.register.StaticVoluntarilyAssignment;
 import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
 import com.til.recasting.common.register.entity_predicate.DefaultEntityPredicateRegister;
-import mods.flammpfeil.slashblade.entity.IShootable;
-import mods.flammpfeil.slashblade.util.TargetSelector;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityPredicate;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.boss.dragon.EnderDragonEntity;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -15,7 +12,6 @@ import net.minecraft.world.World;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 

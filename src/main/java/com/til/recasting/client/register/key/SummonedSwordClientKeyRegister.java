@@ -6,7 +6,6 @@ import com.til.recasting.common.key.SummonedSwordKeyRegister;
 import net.minecraft.client.util.InputMappings;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import org.lwjgl.glfw.GLFW;
 
 @OnlyIn(Dist.CLIENT)
 @VoluntarilyRegister

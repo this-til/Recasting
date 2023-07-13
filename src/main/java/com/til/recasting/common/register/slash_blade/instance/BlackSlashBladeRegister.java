@@ -34,7 +34,6 @@ public class BlackSlashBladeRegister extends SlashBladeRegister {
 
         slashBladePack.slashBladeState.setBaseAttackModifier(4f);
         slashBladePack.slashBladeState.setColorCode(0x000000);
-        slashBladePack.slashBladeState.setTranslationKey(ResourceLocationUtil.ofPath(BlackSlashBladeRegister.class));
     }
 
     @VoluntarilyRegister

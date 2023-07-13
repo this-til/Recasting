@@ -1,6 +1,7 @@
-package com.til.recasting.common.register.sa;
+package com.til.recasting.common.register.slash_blade.sa;
 
 import com.til.glowing_fire_glow.common.register.RegisterManage;
+import com.til.recasting.common.register.slash_blade.sa.SA_Register;
 import mods.flammpfeil.slashblade.specialattack.SlashArts;
 
 import javax.annotation.Nullable;

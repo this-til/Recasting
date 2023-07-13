@@ -1,6 +1,5 @@
 package com.til.recasting.client.register.entity_render;
 
-import com.til.glowing_fire_glow.client.register.entity_render.EntityRenderRegister;
 import com.til.glowing_fire_glow.client.register.entity_render.IndependenceEntityRenderRegister;
 import com.til.glowing_fire_glow.common.register.VoluntarilyRegister;
 import com.til.recasting.client.render.entity.SlashEffectEntityRender;

@@ -7,12 +7,11 @@ import com.til.recasting.common.register.util.AttackManager;
 import com.til.recasting.common.register.util.HitAssessment;
 import mods.flammpfeil.slashblade.SlashBlade;
 import mods.flammpfeil.slashblade.entity.EntityJudgementCut;
-import mods.flammpfeil.slashblade.entity.EntitySlashEffect;
-import mods.flammpfeil.slashblade.util.*;
+import mods.flammpfeil.slashblade.util.EnumSetConverter;
+import mods.flammpfeil.slashblade.util.KnockBacks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.entity.projectile.ProjectileHelper;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
@@ -26,7 +25,6 @@ import net.minecraft.potion.Effects;
 import net.minecraft.potion.PotionUtils;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
@@ -40,7 +38,6 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
-import java.util.UUID;
 
 @StaticVoluntarilyAssignment
 public class JudgementCutEntity extends Entity {
@@ -221,7 +218,7 @@ public class JudgementCutEntity extends Entity {
                 AttackManager.areaAttack(getShooter(), this, knockBackType.action, 4.0f, (float) getDamage(), false, true, true, excludeEntity);
             }
 
-            final int count = 3;
+           /* final int count = 3;
             if (0 < ticksExisted && ticksExisted <= count) {
 
                 SlashEffectEntity slashEffectEntity = new SlashEffectEntity(slashEffectEntityTypeRegister.getEntityType(), world, getShooter());
@@ -235,7 +232,7 @@ public class JudgementCutEntity extends Entity {
                 slashEffectEntity.setKnockBack(KnockBacks.cancel);
                 slashEffectEntity.setIndirect(true);
                 this.world.addEntity(slashEffectEntity);
-            }
+            }*/
             if (getLifetime() < this.ticksExisted) {
                 this.burst();
             }

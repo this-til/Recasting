@@ -6,13 +6,14 @@ import com.til.glowing_fire_glow.common.register.RegisterBasics;
 import com.til.glowing_fire_glow.common.util.StringUtil;
 import com.til.recasting.common.capability.ISE;
 import com.til.recasting.common.capability.SlashBladePack;
-import com.til.recasting.common.register.sa.AllSARegister;
-import com.til.recasting.common.register.sa.SA_Register;
-import com.til.recasting.common.register.slash_blade.se.SE_Register;
 import com.til.recasting.common.register.slash_blade.AllSlashBladeRegister;
 import com.til.recasting.common.register.slash_blade.SlashBladeRegister;
+import com.til.recasting.common.register.slash_blade.sa.AllSARegister;
+import com.til.recasting.common.register.slash_blade.sa.SA_Register;
+import com.til.recasting.common.register.slash_blade.se.SE_Register;
 import mods.flammpfeil.slashblade.item.ItemSlashBlade;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.inventory.EquipmentSlotType;
@@ -24,6 +25,8 @@ import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Overwrite;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -34,13 +37,14 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 /**
  * @author til
  */
-@Mixin(value = ItemSlashBlade.class, remap = false)
-public class ItemSlashBladeMixin {
+@Mixin(value = {ItemSlashBlade.class}, remap = false)
+public abstract class ItemSlashBladeMixin {
 
 
     @Inject(method = "getAttributeModifiers",
@@ -51,6 +55,47 @@ public class ItemSlashBladeMixin {
             ))
     protected void getAttributeModifiers(EquipmentSlotType slot, ItemStack stack, CallbackInfoReturnable<Multimap<Attribute, AttributeModifier>> callbackInfoReturnable) {
 
+    }
+
+
+    /**
+     * @author
+     * @reason
+     */
+    @Overwrite
+    public void setDamage(ItemStack stack, int damage) {
+        int half = getHalfMaxdamage();
+        if (damage == half) {
+            return;
+        }
+        SlashBladePack slashBladePack = new SlashBladePack(stack);
+
+        //anti shrink damageItem
+        if (damage > stack.getMaxDamage()) {
+            stack.setCount(2);
+        }
+
+        float amount = (damage - half) / (float) half / 2;
+        amount = amount / slashBladePack.iSlashBladeStateSupplement.getDurable();
+        slashBladePack.slashBladeState.setDamage(  slashBladePack.slashBladeState.getDamage() + amount);
+        stack.getCapability(ItemSlashBlade.BLADESTATE).ifPresent((s) -> {
+
+
+            s.setDamage(s.getDamage() + amount);
+        });
+    }
+
+    @Shadow
+    abstract int getHalfMaxdamage();
+
+
+    /**
+     * @author
+     * @reason
+     */
+    @Overwrite
+    public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, T entity, Consumer<T> onBroken) {
+        return Math.min(amount, getHalfMaxdamage(stack) / 2);
     }
 
     @Inject(method = "addInformation",
@@ -64,16 +109,18 @@ public class ItemSlashBladeMixin {
         if (!slashBladePack.isEffective()) {
             return;
         }
-
         tooltip.add(new TranslationTextComponent("key:%s", slashBladePack.slashBladeState.getTranslationKey()));
         tooltip.add(new StringTextComponent(""));
+
 
         SA_Register sa_register = GlowingFireGlow.getInstance().getWorldComponent(AllSARegister.class).getSA_Register(slashBladePack.slashBladeState.getSlashArts());
         if (sa_register != null) {
             tooltip.add(new TranslationTextComponent("SA:%s",
                     new TranslationTextComponent(StringUtil.formatLang(sa_register.getName()))));
-         /*   tooltip.add(new TranslationTextComponent("  %s",
-                    new TranslationTextComponent(StringUtil.formatLang(sa_register.getName().getNamespace(), sa_register.getName().getPath(), StringFinal.INTRODUCE))));*/
+            /*if (detail) {
+                tooltip.add(new TranslationTextComponent("  %s",
+                        new TranslationTextComponent(StringUtil.formatLang(sa_register.getName().getNamespace(), sa_register.getName().getPath(), StringFinal.INTRODUCE))));
+            }*/
             tooltip.add(new StringTextComponent(""));
         }
 
@@ -92,12 +139,21 @@ public class ItemSlashBladeMixin {
                             se_registerSE_packEntry.getValue().getLevel(),
                             se_registerSE_packEntry.getKey().getMaxLevel()
                     ));
-          /*  tooltip.add(new TranslationTextComponent("  %s",
-                    new TranslationTextComponent(StringUtil.formatLang(
-                            se_registerSE_packEntry.getKey().getName().getNamespace(),
-                            se_registerSE_packEntry.getKey().getName().getPath(),
-                            StringFinal.INTRODUCE))));*/
+            /*if (detail) {
+                tooltip.add(new TranslationTextComponent("  %s",
+                        new TranslationTextComponent(StringUtil.formatLang(
+                                se_registerSE_packEntry.getKey().getName().getNamespace(),
+                                se_registerSE_packEntry.getKey().getName().getPath(),
+                                StringFinal.INTRODUCE))));
+            }*/
+
         }
+        /*if (!detail) {
+            tooltip.add(new StringTextComponent(""));
+            tooltip.add(new TranslationTextComponent(StringUtil.formatLang("information", StringFinal.INTRODUCE),
+                    new TranslationTextComponent(informationClientKeyRegister.getKeyMapping().getKey().getTranslationKey())));
+            tooltip.add(new StringTextComponent(""));
+        }*/
 
     }
 

@@ -14,12 +14,8 @@ import com.til.recasting.common.register.slash_blade.se.instance.CooperateWithSE
 import com.til.recasting.common.register.world.item.SoulItemRegister;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
-import net.minecraft.entity.EntityType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
-
-import java.util.List;
-import java.util.Map;
 
 @VoluntarilyRegister
 public class BlueCloudSlashBladeRegister extends SlashBladeRegister {

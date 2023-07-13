@@ -12,8 +12,8 @@ import com.til.recasting.common.capability.SlashBladePack;
 import com.til.recasting.common.register.capability.IItemEntity_CapabilityRegister;
 import com.til.recasting.common.register.capability.ItemSA_CapabilityRegister;
 import com.til.recasting.common.register.capability.ItemSE_CapabilityRegister;
-import com.til.recasting.common.register.sa.SA_Register;
 import com.til.recasting.common.register.slash_blade.SlashBladeRegister;
+import com.til.recasting.common.register.slash_blade.sa.SA_Register;
 import com.til.recasting.common.register.slash_blade.se.SE_Register;
 import com.til.recasting.common.register.world.item.Entity_DepositItemRegister;
 import com.til.recasting.common.register.world.item.SA_DepositItemRegister;
@@ -106,10 +106,7 @@ public interface IRecipeInItemPack extends Predicate<ItemStack> {
             if (iItemSE.getBasicsSuccessRate() - successRate > 0.01) {
                 return false;
             }
-            if (protect && !iItemSE.isProtect()) {
-                return false;
-            }
-            return true;
+            return !protect || iItemSE.isProtect();
         }
     }
 

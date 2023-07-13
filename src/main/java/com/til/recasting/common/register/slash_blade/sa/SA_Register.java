@@ -1,4 +1,4 @@
-package com.til.recasting.common.register.sa;
+package com.til.recasting.common.register.slash_blade.sa;
 
 import com.til.glowing_fire_glow.common.register.RegisterBasics;
 import com.til.glowing_fire_glow.common.util.StringUtil;
@@ -8,11 +8,8 @@ import mods.flammpfeil.slashblade.capability.slashblade.ComboState;
 import mods.flammpfeil.slashblade.capability.slashblade.combo.Extra;
 import mods.flammpfeil.slashblade.event.FallHandler;
 import mods.flammpfeil.slashblade.event.client.UserPoseOverrider;
-import mods.flammpfeil.slashblade.specialattack.JudgementCut;
 import mods.flammpfeil.slashblade.specialattack.SlashArts;
 import net.minecraft.entity.LivingEntity;
-
-import java.util.function.Function;
 
 import static mods.flammpfeil.slashblade.init.DefaultResources.ExMotionLocation;
 
@@ -68,7 +65,6 @@ public abstract class SA_Register extends RegisterBasics {
         @Override
         public ComboState doArts(ArtsType type, LivingEntity user) {
             switch (type) {
-                case Fail:
                 case Success:
                 case Jackpot:
                     return comboState;

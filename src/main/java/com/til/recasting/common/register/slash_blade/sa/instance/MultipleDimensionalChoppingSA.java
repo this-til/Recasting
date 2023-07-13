@@ -1,11 +1,11 @@
-package com.til.recasting.common.register.sa.instance;
+package com.til.recasting.common.register.slash_blade.sa.instance;
 
 import com.til.glowing_fire_glow.common.capability.time_run.TimerCell;
 import com.til.glowing_fire_glow.common.config.ConfigField;
 import com.til.glowing_fire_glow.common.register.VoluntarilyRegister;
 import com.til.recasting.common.capability.UseSlashBladeEntityPack;
 import com.til.recasting.common.entity.JudgementCutEntity;
-import com.til.recasting.common.register.sa.SA_Register;
+import com.til.recasting.common.register.slash_blade.sa.SA_Register;
 import com.til.recasting.common.register.util.JudgementCutManage;
 import net.minecraft.util.math.vector.Vector3d;
 

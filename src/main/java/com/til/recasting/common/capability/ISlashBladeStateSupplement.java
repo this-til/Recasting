@@ -1,7 +1,6 @@
 package com.til.recasting.common.capability;
 
 
-import com.til.glowing_fire_glow.common.config.ConfigField;
 import com.til.glowing_fire_glow.common.register.particle_register.ParticleRegister;
 import com.til.glowing_fire_glow.common.save.SaveField;
 import com.til.recasting.common.entity.SlashEffectEntity;
@@ -38,10 +37,17 @@ public interface ISlashBladeStateSupplement {
 
     void decorate(SlashEffectEntity slashEffectEntity);
 
+    float getDurable();
+
+    void setDurable(float durable);
+
     class SlashBladeStateSupplement implements ISlashBladeStateSupplement {
 
         @SaveField
         protected float attackDistance = 1;
+
+        @SaveField
+        protected float durable = 1;
 
         @SaveField
         @Nullable
@@ -125,6 +131,16 @@ public interface ISlashBladeStateSupplement {
             if (getSlashEffectTexture() != null) {
                 slashEffectEntity.setTexture(getSlashEffectTexture());
             }
+        }
+
+        @Override
+        public float getDurable() {
+            return Math.max(durable, 0.01f);
+        }
+
+        @Override
+        public void setDurable(float durable) {
+            this.durable = durable;
         }
     }
 

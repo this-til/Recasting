@@ -1,9 +1,31 @@
 {
 
+  "recasting.void_sword_slash_blade_register" : "洞虚利刃",
+  "recasting.void_sword_1_slash_blade_register" : "洞虚利刃",
+  "recasting.void_sword_2_slash_blade_register" : "洞虚利刃[漆黑]",
+  "recasting.void_sword_3_slash_blade_register" : "洞虚利刃[猩红]",
+
+  "recasting.star_blade_slash_blade_register" : "星流利刃",
+  "recasting.star_blade_1_slash_blade_register" : "星流利刃I",
+  "recasting.star_blade_2_slash_blade_register" : "星流利刃II",
+  "recasting.star_blade_3_slash_blade_register" : "星流利刃III",
+  "recasting.star_blade_4_slash_blade_register" : "星流利刃IV",
+
+  "recasting.ba_gua_slash_blade_register" : "八卦剑",
+
+  "recasting.black_slash_blade_register" : "黑刃",
+
+  "recasting.blue_cloud_slash_blade_register" : "青云",
+
+  "recasting.cool_mint_slash_blade_register" : "冰薄荷",
+
+
+
   "recasting": "重铸",
   "recasting.lock_client_key_register": "锁定",
   "recasting.special_action_client_key_register": "特殊行动",
   "recasting.summoned_sword_client_key_register": "召唤幻影剑",
+  "recasting.information_client_key_register": "详细信息",
 
   "recasting.multiple_dimensional_chopping_sa": "多从次元斩",
   "recasting.multiple_dimensional_chopping_sa.introduce": "进行至多4次次元斩进行攻击",
@@ -13,6 +35,9 @@
   "recasting.epidemic_summoned_sword_sa.introduce": "召唤幻影剑攻击指定位置",
   "recasting.fanatical_dance_sa": "乱舞",
   "recasting.fanatical_dance_sa.introduce": "在前方进行多次剑气攻击",
+  "recasting.infinite_dimensional_chopping_sa": "无限次元斩",
+  "recasting.infinite_dimensional_chopping_sa.introduce": "召唤次元斩攻击指定位置范围内的生物",
+
   "recasting.cooperate_with_se": "同协",
   "recasting.cooperate_with_se.introduce": "挥刀的时候有概率再次进行挥刀",
   "recasting.impact_se": "冲击",
@@ -35,12 +60,14 @@
   "item.recasting.item.soul_3_item_register" : "耀魂刀体",
   "item.recasting.item.soul_4_item_register" : "耀魂异构体",
   "item.recasting.item.soul_cube_item_register" : "耀魂立方体",
-  "item.recasting.item.soul_cube_change_item_register" : "耀魂多态体",
+  "item.recasting.item.soul_cube_change_item_register" : "耀魂立方变体",
   "item.recasting.item.soul_7_item_register" : "耀魂离散体",
-  "item.recasting.item.soul_8_item_register" : "耀魂立方变体",
+  "item.recasting.item.soul_8_item_register" : "耀魂多态体",
 
   "recasting.basics_success_rate": "基础成功率",
   "recasting.protect.true": "强化失败不会降低等级",
-  "recasting.protect.false": "强化失败将会降低等级"
+  "recasting.protect.false": "强化失败将会降低等级",
+
+  "information.introduce": "按住%s键查看详细信息"
 
 }

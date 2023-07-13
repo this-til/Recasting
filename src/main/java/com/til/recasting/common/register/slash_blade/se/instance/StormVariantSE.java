@@ -44,14 +44,15 @@ public class StormVariantSE extends SE_Register {
             SummondSwordEntity summondSwordEntity = new SummondSwordEntity(summondSwordEntityTypeRegister.getEntityType(), event.pack.entity.world, event.pack.entity);
             event.pack.slashBladePack.iSlashBladeStateSupplement.decorate(summondSwordEntity);
             Vector3d pos = event.pos.add(
-                    -1.5 + random.nextDouble() * 9,
+                    -4.5 + random.nextDouble() * 9,
                     12 + random.nextDouble() * 9,
-                    -1.5 + random.nextDouble() * 9);
+                    -4.5 + random.nextDouble() * 9);
             summondSwordEntity.setPosition(pos.getX(), pos.getY(), pos.getZ());
             summondSwordEntity.lookAt(event.pos, false);
             summondSwordEntity.setColor(event.pack.slashBladePack.slashBladeState.getColorCode());
             summondSwordEntity.setDamage(a);
             summondSwordEntity.setStartDelay(random.nextInt(10));
+            summondSwordEntity.setRoll(random.nextInt(360));
             event.pack.entity.world.addEntity(summondSwordEntity);
         }
         event.pack.entity.playSound(SoundEvents.ITEM_CHORUS_FRUIT_TELEPORT, 0.2F, 1.45F);

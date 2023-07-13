@@ -2,7 +2,6 @@ package com.til.recasting.client.render.entity;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.til.recasting.common.entity.SlashEffectEntity;
-import mods.flammpfeil.slashblade.SlashBlade;
 import mods.flammpfeil.slashblade.client.renderer.model.BladeModelManager;
 import mods.flammpfeil.slashblade.client.renderer.model.obj.Face;
 import mods.flammpfeil.slashblade.client.renderer.model.obj.WavefrontObject;
@@ -28,7 +27,7 @@ import javax.annotation.Nullable;
 @OnlyIn(Dist.CLIENT)
 public class SlashEffectEntityRender<T extends SlashEffectEntity> extends EntityRenderer<T> {
 
-    private static LazyValue<ItemStack> enchantedItem = new LazyValue<ItemStack>(() -> new ItemStack(SBItems.proudsoul));
+    private static final LazyValue<ItemStack> enchantedItem = new LazyValue<ItemStack>(() -> new ItemStack(SBItems.proudsoul));
 
     @Nullable
     @Override

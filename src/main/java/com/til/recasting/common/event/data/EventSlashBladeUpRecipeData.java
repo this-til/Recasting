@@ -4,10 +4,7 @@ import com.til.recasting.common.register.recipe.SlashBladeUpRecipeRegister;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.eventbus.api.Event;
 
-import java.util.Comparator;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Consumer;
 
 public class EventSlashBladeUpRecipeData extends Event {
     protected final Map<ResourceLocation, SlashBladeUpRecipeRegister.SlashBladeUpPack> map;

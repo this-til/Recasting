@@ -1,5 +1,5 @@
 {
-  "parent": "recasting:prefab/soul_6",
+  "parent": "recasting:prefab/soul_8",
   "textures": {
     "layer0": "slashblade:soul"
   },

@@ -1,41 +1,11 @@
 package com.til.recasting.common.mixin;
 
-import com.til.glowing_fire_glow.GlowingFireGlow;
-import com.til.recasting.common.capability.SlashBladePack;
-import com.til.recasting.common.capability.UseSlashBladeEntityPack;
-import com.til.recasting.common.entity.JudgementCutEntity;
-import com.til.recasting.common.event.EventDoJudgementCut;
-import com.til.recasting.common.event.EventSlashBladeSA;
-import com.til.recasting.common.register.entity_predicate.DefaultEntityPredicateRegister;
-import com.til.recasting.common.register.entity_type.JudgementCutEntityTypeRegister;
-import com.til.recasting.common.register.sa.SA_Register;
-import com.til.recasting.common.register.target_selector.DefaultTargetSelectorRegister;
 import com.til.recasting.common.register.util.JudgementCutManage;
-import com.til.recasting.common.register.util.RayTraceUtil;
-import mods.flammpfeil.slashblade.SlashBlade;
 import mods.flammpfeil.slashblade.entity.EntityJudgementCut;
-import mods.flammpfeil.slashblade.item.ItemSlashBlade;
 import mods.flammpfeil.slashblade.specialattack.JudgementCut;
-import mods.flammpfeil.slashblade.util.RayTraceHelper;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.EntityRayTraceResult;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-
-import javax.annotation.Nullable;
-import java.util.Optional;
 
 /**
  * @author til
