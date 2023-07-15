@@ -7,9 +7,8 @@ import com.til.glowing_fire_glow.common.util.MapUtil;
 import com.til.recasting.common.capability.SlashBladePack;
 import com.til.recasting.common.data.IRecipeInItemPack;
 import com.til.recasting.common.data.IResultPack;
-import com.til.recasting.common.register.recipe.SlashBladeUpRecipeRegister;
+import com.til.recasting.common.register.recipe.SlashBladeRecipeSerializerRegister;
 import com.til.recasting.common.register.slash_blade.SlashBladeRegister;
-import com.til.recasting.common.register.slash_blade.recipe.SlashBladeRecipeRegister;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.EntityType;
@@ -22,10 +21,11 @@ public class BaGuaSlashBladeRegister extends SlashBladeRegister {
         super.defaultItemStackConfig(itemStack);
         slashBladePack.slashBladeState.setBaseAttackModifier(4f);
         slashBladePack.slashBladeState.setColorCode(0xFFFFFF);
+        slashBladePack.iSlashBladeStateSupplement.setDurable(2);
     }
 
     @VoluntarilyRegister
-    public static class BaGuaSlashBladeRegisterRecipeRegister extends SlashBladeRecipeRegister {
+    public static class BaGuaSlashBladeRegisterRecipeRegister extends SlashBladeRecipeSerializerRegister.SlashBladeRecipeRegister {
         @VoluntarilyAssignment
         protected BaGuaSlashBladeRegister baGuaSlashBladeRegister;
 
@@ -33,7 +33,7 @@ public class BaGuaSlashBladeRegister extends SlashBladeRegister {
         protected NamelessSlashBladeRegister namelessSlashBladeRegister;
 
         @Override
-        protected SlashBladeUpRecipeRegister.SlashBladeUpPack defaultConfigSlashBladeUpPack() {
+        protected SlashBladeRecipeSerializerRegister.SlashBladeRecipeRecipePack defaultConfigSlashBladeRecipeRecipePack() {
             SlashBladePack slashBladePack = namelessSlashBladeRegister.getSlashBladePack();
             slashBladePack.slashBladeState.setRefine(45);
             slashBladePack.slashBladeState.setKillCount(300);
@@ -42,7 +42,7 @@ public class BaGuaSlashBladeRegister extends SlashBladeRegister {
                             Enchantments.BANE_OF_ARTHROPODS, 1,
                             Enchantments.SHARPNESS, 1),
                     slashBladePack.itemStack);
-            return new SlashBladeUpRecipeRegister.SlashBladeUpPack(
+            return new SlashBladeRecipeSerializerRegister.SlashBladeRecipeRecipePack(
                     ListUtil.of(
                             "  A",
                             " V ",

@@ -14,14 +14,14 @@ import net.minecraftforge.eventbus.api.EventPriority;
  */
 public class AllSlashBladeRegister extends RegisterManage<SlashBladeRegister> {
 
-    @Override
+    /*@Override
     public void initNew() {
         super.initNew();
         GlowingFireGlow.getInstance().modEventBus.addListener(EventPriority.HIGHEST, this::onModelBakeEvent);
 
-    }
+    }*/
 
-    @OnlyIn(Dist.CLIENT)
+   /* @OnlyIn(Dist.CLIENT)
     protected void onModelBakeEvent(final ModelBakeEvent event) {
         for (SlashBladeRegister slashBladeRegister : this.forAll()) {
             ModelResourceLocation loc = new ModelResourceLocation(
@@ -29,6 +29,6 @@ public class AllSlashBladeRegister extends RegisterManage<SlashBladeRegister> {
             BladeModel model = new BladeModel(event.getModelRegistry().get(loc), event.getModelLoader());
             event.getModelRegistry().put(loc, model);
         }
-    }
+    }*/
 
 }

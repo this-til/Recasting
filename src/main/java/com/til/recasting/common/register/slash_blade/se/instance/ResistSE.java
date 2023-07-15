@@ -14,21 +14,25 @@ import com.til.recasting.common.register.recipe.SpecialRecipeSerializerRegister;
 import com.til.recasting.common.register.slash_blade.se.SE_Register;
 import com.til.recasting.common.register.world.item.SE_DepositItemRegister;
 import mods.flammpfeil.slashblade.init.SBItems;
-import net.minecraft.item.Items;
 import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.potion.Effect;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 /***
- * 生长
- * 挥刀时恢复生命
+ * 抵抗
+ * 挥刀的时候获得伤害吸收
  */
-@VoluntarilyRegister
-public class GrowSE extends SE_Register {
+public class ResistSE extends SE_Register {
 
 
     @ConfigField
-    protected NumberPack life;
+    protected NumberPack level;
+
+    @ConfigField
+    protected NumberPack time;
 
     @SubscribeEvent
     protected void onEventSlashBladeDoSlash(EventSlashBladeDoSlash event) {
@@ -36,17 +40,18 @@ public class GrowSE extends SE_Register {
             return;
         }
         ISE.SE_Pack se_pack = event.pack.slashBladePack.ise.getPack(this);
-        event.pack.entity.setHealth((float) (event.pack.entity.getHealth() + life.of(se_pack.getLevel())));
+        event.pack.entity.addPotionEffect(new EffectInstance(Effects.ABSORPTION, (int) time.of(se_pack.getLevel()), (int) level.of(se_pack.getLevel())));
     }
 
     @Override
     public void defaultConfig() {
         super.defaultConfig();
-        life = new NumberPack(0, 0.3);
+        level = new NumberPack(1, 0);
+        time = new NumberPack(1, 1);
     }
 
     @VoluntarilyRegister
-    public static class GrowSE_Recipe extends SpecialRecipeSerializerRegister.SpecialRecipeRegister {
+    public static class ResistSE_Recipe extends SpecialRecipeSerializerRegister.SpecialRecipeRegister {
 
         @VoluntarilyAssignment
         protected SE_DepositItemRegister se_depositItemRegister;
@@ -55,7 +60,7 @@ public class GrowSE extends SE_Register {
         protected CooperateWithSE cooperateWithSE;
 
         @VoluntarilyAssignment
-        protected GrowSE growSE;
+        protected ResistSE resistSE;
 
         @Override
         protected SpecialRecipeSerializerRegister.SpecialRecipePack defaultSpecialRecipePackDelayed() {
@@ -66,12 +71,13 @@ public class GrowSE extends SE_Register {
                             "BAB"
                     ),
                     MapUtil.of(
-                            "A", new IRecipeInItemPack.OfIngredient(Ingredient.fromItems(SBItems.proudsoul)),
-                            "B", new IRecipeInItemPack.OfIngredient(Ingredient.fromItems(Items.GOLDEN_CARROT)),
+                            "A", new IRecipeInItemPack.OfIngredient(Ingredient.fromItems(SBItems.proudsoul_crystal)),
+                            "B", new IRecipeInItemPack.OfTag(Tags.Items.ORES_GOLD.getName()),
                             "V", new IRecipeInItemPack.OfItemSE(cooperateWithSE)),
-                    new IResultPack.OfItemStack(se_depositItemRegister.mackItemStack(growSE))
+                    new IResultPack.OfItemStack(se_depositItemRegister.mackItemStack(resistSE))
             );
         }
     }
+
 
 }

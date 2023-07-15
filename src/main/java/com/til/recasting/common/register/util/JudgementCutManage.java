@@ -1,6 +1,7 @@
 package com.til.recasting.common.register.util;
 
 import com.til.glowing_fire_glow.GlowingFireGlow;
+import com.til.recasting.common.capability.SlashBladePack;
 import com.til.recasting.common.capability.UseSlashBladeEntityPack;
 import com.til.recasting.common.entity.JudgementCutEntity;
 import com.til.recasting.common.event.EventDoJudgementCut;
@@ -23,7 +24,7 @@ public class JudgementCutManage {
 
     public static JudgementCutEntity doJudgementCut(LivingEntity user, float hit, int life, @Nullable Vector3d attackPos, @Nullable Entity targetEntity) {
         UseSlashBladeEntityPack useSlashBladeEntityPack = new UseSlashBladeEntityPack(user);
-        if (!useSlashBladeEntityPack.isEffective()) {
+        if (!useSlashBladeEntityPack.isEffective(SlashBladePack.EffectiveType.canUse)) {
             return null;
         }
 

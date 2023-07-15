@@ -88,7 +88,7 @@ public class StrengthenBladeStandEntity extends BladeStandEntity {
         }
 
         SlashBladePack slashBladePack = new SlashBladePack(getDisplayedItem());
-        if (!slashBladePack.isEffective()) {
+        if (!slashBladePack.isEffective(SlashBladePack.EffectiveType.isSlashBlade)) {
             return ActionResultType.PASS;
         }
 

@@ -3,14 +3,18 @@ package com.til.recasting.common.register.recipe;
 import com.google.common.collect.Sets;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
-import com.til.glowing_fire_glow.common.register.StaticVoluntarilyAssignment;
-import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
-import com.til.glowing_fire_glow.common.register.VoluntarilyRegister;
+import com.til.glowing_fire_glow.common.config.ConfigField;
+import com.til.glowing_fire_glow.common.config.ConfigManage;
+import com.til.glowing_fire_glow.common.register.*;
+import com.til.glowing_fire_glow.common.register.recipe.AllRecipeRegister;
 import com.til.glowing_fire_glow.common.register.recipe.RecipeRegister;
+import com.til.glowing_fire_glow.common.register.recipe.RecipeSerializerRegister;
+import com.til.glowing_fire_glow.common.util.Delayed;
 import com.til.glowing_fire_glow.common.util.gson.GsonManage;
 import com.til.recasting.common.capability.SlashBladePack;
 import com.til.recasting.common.data.IRecipeInItemPack;
 import com.til.recasting.common.data.IResultPack;
+import com.til.recasting.common.register.slash_blade.AllSlashBladeRegister;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipeSerializer;
@@ -26,44 +30,44 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Supplier;
 
 @VoluntarilyRegister
 @StaticVoluntarilyAssignment
-public class SlashBladeUpRecipeRegister extends RecipeRegister<SlashBladeUpRecipeRegister.SlashBladeUpRecipe> {
+public class SlashBladeRecipeSerializerRegister extends RecipeSerializerRegister<SlashBladeRecipeSerializerRegister.SlashBladeRecipeRecipe> {
 
     @VoluntarilyAssignment
     protected static GsonManage gsonManage;
 
 
     @Override
-    public IRecipeSerializer<SlashBladeUpRecipe> initRecipeSerializer() {
-        return new SlashBladeUpRecipeSerializer();
+    public IRecipeSerializer<SlashBladeRecipeRecipe> initRecipeSerializer() {
+        return new SlashBladeRecipeRecipeSerializer();
     }
 
-    public static class SlashBladeUpRecipeSerializer extends ForgeRegistryEntry<IRecipeSerializer<?>> implements IRecipeSerializer<SlashBladeUpRecipe> {
+    public static class SlashBladeRecipeRecipeSerializer extends ForgeRegistryEntry<IRecipeSerializer<?>> implements IRecipeSerializer<SlashBladeRecipeRecipe> {
         @Override
-        public SlashBladeUpRecipe read(ResourceLocation recipeId, JsonObject json) {
-            SlashBladeUpPack slashBladeUpPack = gsonManage.getGson().fromJson(json, SlashBladeUpPack.class);
-            return SlashBladeUpRecipe.of(recipeId, slashBladeUpPack, this);
+        public SlashBladeRecipeRecipe read(ResourceLocation recipeId, JsonObject json) {
+            SlashBladeRecipeRecipePack slashBladeUpPack = gsonManage.getGson().fromJson(json, SlashBladeRecipeRecipePack.class);
+            return SlashBladeRecipeRecipe.of(recipeId, slashBladeUpPack, this);
         }
 
         @Nullable
         @Override
-        public SlashBladeUpRecipe read(ResourceLocation recipeId, PacketBuffer buffer) {
+        public SlashBladeRecipeRecipe read(ResourceLocation recipeId, PacketBuffer buffer) {
             String json = buffer.readString();
             return read(recipeId, gsonManage.getGson().fromJson(json, JsonObject.class));
         }
 
         @Override
-        public void write(PacketBuffer buffer, SlashBladeUpRecipe recipe) {
+        public void write(PacketBuffer buffer, SlashBladeRecipeRecipe recipe) {
             buffer.writeString(gsonManage.getGson().toJson(recipe.getSlashBladeUpPack()));
         }
     }
 
+    public static class SlashBladeRecipeRecipe extends ShapedRecipe {
 
-    public static class SlashBladeUpRecipe extends ShapedRecipe {
-
-        public static SlashBladeUpRecipe of(ResourceLocation idIn, SlashBladeUpPack slashBladeUpPack, IRecipeSerializer<SlashBladeUpRecipe> serializer) {
+        public static SlashBladeRecipeRecipe of(ResourceLocation idIn, SlashBladeRecipeRecipePack slashBladeUpPack, IRecipeSerializer<SlashBladeRecipeRecipe> serializer) {
             int maxHeight = slashBladeUpPack.pattern.size();
             int maxWidth = 0;
             for (String s : slashBladeUpPack.pattern) {
@@ -96,7 +100,7 @@ public class SlashBladeUpRecipeRegister extends RecipeRegister<SlashBladeUpRecip
                 throw new JsonSyntaxException(String.format("SlashBladeUpRecipe配方mainSlashBladeKey:[%s]缺失", slashBladeUpPack.mainSlashBladeKey));
             }
             IRecipeInItemPack iRecipeInItemPack = slashBladeUpPack.key.get(slashBladeUpPack.mainSlashBladeKey);
-            if (!(iRecipeInItemPack instanceof IRecipeInItemPack.OfSlashBlade) && !(iRecipeInItemPack instanceof  IRecipeInItemPack.OfSlashBladeRegister)) {
+            if (!(iRecipeInItemPack instanceof IRecipeInItemPack.OfSlashBlade) && !(iRecipeInItemPack instanceof IRecipeInItemPack.OfSlashBladeRegister)) {
                 throw new JsonSyntaxException(String.format("SlashBladeUpRecipe配方mainSlashBladeKey:[%s]错误的类型", slashBladeUpPack.mainSlashBladeKey));
             }
             /*SlashBladePack mainSlashBladePack = ((IRecipeInItemPack.OfSlashBlade) iRecipeInItemPack).getSlashBladePack();
@@ -104,13 +108,11 @@ public class SlashBladeUpRecipeRegister extends RecipeRegister<SlashBladeUpRecip
                 throw new JsonSyntaxException(String.format("SlashBladeUpRecipe配方mainSlashBladeKey:[%s]对应物品失效", slashBladeUpPack.mainSlashBladeKey));
             }*/
             SlashBladePack potSlashBladePack = new SlashBladePack(slashBladeUpPack.result.getOutItemStack());
-            if (!potSlashBladePack.isEffective()) {
+            if (!potSlashBladePack.isEffective(SlashBladePack.EffectiveType.isSlashBlade)) {
                 throw new JsonSyntaxException("SlashBladeUpRecipe配方输出物品失效");
             }
-
             NonNullList<IRecipeInItemPack> recipeItems = deserializeIngredients(slashBladeUpPack.pattern.toArray(new String[0]), slashBladeUpPack.key, maxWidth, maxHeight);
-
-            return new SlashBladeUpRecipe(idIn, "", maxWidth, maxHeight, recipeItems, serializer, mainId, potSlashBladePack);
+            return new SlashBladeRecipeRecipe(idIn, "", maxWidth, maxHeight, recipeItems, serializer, mainId, potSlashBladePack, slashBladeUpPack);
         }
 
         public static NonNullList<IRecipeInItemPack> deserializeIngredients(String[] pattern, Map<String, IRecipeInItemPack> keys, int patternWidth, int patternHeight) {
@@ -141,28 +143,30 @@ public class SlashBladeUpRecipeRegister extends RecipeRegister<SlashBladeUpRecip
             }
         }
 
-        protected SlashBladeUpPack slashBladeUpPack;
-        protected IRecipeSerializer<SlashBladeUpRecipe> serializer;
+        protected SlashBladeRecipeRecipePack slashBladeUpPack;
+        protected IRecipeSerializer<SlashBladeRecipeRecipe> serializer;
         protected int mainKeyId;
         protected SlashBladePack outSlashBladePack;
 
         protected NonNullList<IRecipeInItemPack> recipeItems;
         protected NonNullList<Ingredient> ingredientNonNullList;
 
-        public SlashBladeUpRecipe(
+        public SlashBladeRecipeRecipe(
                 ResourceLocation idIn,
                 String groupIn,
                 int recipeWidthIn,
                 int recipeHeightIn,
                 NonNullList<IRecipeInItemPack> recipeItemsIn,
-                IRecipeSerializer<SlashBladeUpRecipe> serializer,
+                IRecipeSerializer<SlashBladeRecipeRecipe> serializer,
                 int mainKeyId,
-                SlashBladePack outSlashBladePack) {
+                SlashBladePack outSlashBladePack,
+                SlashBladeRecipeRecipePack slashBladeUpPack) {
             super(idIn, groupIn, recipeWidthIn, recipeHeightIn, null, outSlashBladePack.itemStack);
             this.serializer = serializer;
             this.outSlashBladePack = outSlashBladePack;
             this.recipeItems = recipeItemsIn;
             this.mainKeyId = mainKeyId;
+            this.slashBladeUpPack = slashBladeUpPack;
         }
 
         @Override
@@ -245,21 +249,21 @@ public class SlashBladeUpRecipeRegister extends RecipeRegister<SlashBladeUpRecip
             return serializer;
         }
 
-        public SlashBladeUpPack getSlashBladeUpPack() {
+        public SlashBladeRecipeRecipePack getSlashBladeUpPack() {
             return slashBladeUpPack;
         }
     }
 
-    public static class SlashBladeUpPack {
+    public static class SlashBladeRecipeRecipePack {
         public List<String> pattern;
         public Map<String, IRecipeInItemPack> key;
         public String mainSlashBladeKey;
         public IResultPack result;
 
-        public SlashBladeUpPack() {
+        public SlashBladeRecipeRecipePack() {
         }
 
-        public SlashBladeUpPack(List<String> pattern, Map<String, IRecipeInItemPack> key, String mainSlashBladeKey, IResultPack result) {
+        public SlashBladeRecipeRecipePack(List<String> pattern, Map<String, IRecipeInItemPack> key, String mainSlashBladeKey, IResultPack result) {
             this.pattern = pattern;
             this.key = key;
             this.mainSlashBladeKey = mainSlashBladeKey;
@@ -268,4 +272,57 @@ public class SlashBladeUpRecipeRegister extends RecipeRegister<SlashBladeUpRecip
     }
 
 
+    public abstract static class SlashBladeRecipeRegister extends RecipeRegister<SlashBladeRecipeRecipe, SlashBladeRecipeSerializerRegister> {
+        @VoluntarilyAssignment
+        protected ConfigManage configManage;
+
+        @ConfigField
+        protected Delayed<SlashBladeRecipeRecipePack> slashBladeUpPack;
+
+        @Override
+        protected Class<SlashBladeRecipeRecipe> initRecipeClass() {
+            return SlashBladeRecipeRecipe.class;
+        }
+
+        @Override
+        protected Class<SlashBladeRecipeSerializerRegister> initRecipeSerializerClass() {
+            return SlashBladeRecipeSerializerRegister.class;
+        }
+
+        @Override
+        public void defaultConfig() {
+            configManage.addDelayedWrite(this);
+            slashBladeUpPack = new SlashBladeRecipeRecipePackDelayed(this::defaultConfigSlashBladeRecipeRecipePack);
+        }
+
+        @Override
+        public SlashBladeRecipeRecipe mackRecipe() {
+            return SlashBladeRecipeRecipe.of(getName(), getSlashBladeRecipeRecipePack(), getRecipeSerializer().getRecipeSerializer());
+        }
+
+        protected abstract SlashBladeRecipeRecipePack defaultConfigSlashBladeRecipeRecipePack();
+
+        public SlashBladeRecipeRecipePack getSlashBladeRecipeRecipePack() {
+            return slashBladeUpPack.get();
+        }
+
+        public static class SlashBladeRecipeRecipePackDelayed extends Delayed<SlashBladeRecipeRecipePack> {
+            public SlashBladeRecipeRecipePackDelayed(Supplier<SlashBladeRecipeRecipePack> supplier) {
+                super(supplier);
+            }
+        }
+    }
+
+    public static class AllSlashBladeRecipeRegister extends RegisterManage<SlashBladeRecipeRegister> {
+        @Nullable
+        @Override
+        public Class<? extends RegisterManage<?>> getBasicsRegisterManageClass() {
+            return AllRecipeRegister.class;
+        }
+
+        @Override
+        public int getVoluntarilyRegisterTime() {
+            return -100;
+        }
+    }
 }

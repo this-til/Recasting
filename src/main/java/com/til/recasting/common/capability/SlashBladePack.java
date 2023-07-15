@@ -38,8 +38,16 @@ public class SlashBladePack {
         ise = itemStack.getCapability(se_capabilityRegister.getCapability()).orElse(null);
     }
 
-    public boolean isEffective() {
-        return slashBladeState != null && ise != null && iSlashBladeStateSupplement != null;
+    public boolean isEffective(EffectiveType effectiveType) {
+        boolean isSlashBlade = slashBladeState != null && ise != null && iSlashBladeStateSupplement != null;
+        switch (effectiveType) {
+            case isSlashBlade:
+                return isSlashBlade;
+            case canUse:
+                return isSlashBlade && !slashBladeState.isBroken();
+            default:
+                return false;
+        }
     }
 
     /***
@@ -47,7 +55,7 @@ public class SlashBladePack {
      * 用做和成判定
      */
     public boolean isExtends(SlashBladePack slashBladePack) {
-        if (!slashBladePack.isEffective()) {
+        if (!slashBladePack.isEffective(EffectiveType.isSlashBlade)) {
             return false;
         }
         if (!slashBladePack.slashBladeState.getTranslationKey().equals(slashBladeState.getTranslationKey())) {
@@ -110,6 +118,17 @@ public class SlashBladePack {
 
     public void setSA(SA_Register sa_register) {
         slashBladeState.setSlashArtsKey(sa_register.getSlashArts().getName());
+    }
+
+    public enum EffectiveType {
+        /***
+         * 表明是一把刀
+         */
+        isSlashBlade,
+        /***
+         * 表明刀可以使用
+         */
+        canUse,
     }
 
 }

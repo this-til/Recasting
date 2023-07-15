@@ -8,9 +8,8 @@ import com.til.glowing_fire_glow.common.util.ResourceLocationUtil;
 import com.til.recasting.common.capability.SlashBladePack;
 import com.til.recasting.common.data.IRecipeInItemPack;
 import com.til.recasting.common.data.IResultPack;
-import com.til.recasting.common.register.recipe.SlashBladeUpRecipeRegister;
+import com.til.recasting.common.register.recipe.SlashBladeRecipeSerializerRegister;
 import com.til.recasting.common.register.slash_blade.SlashBladeRegister;
-import com.til.recasting.common.register.slash_blade.recipe.SlashBladeRecipeRegister;
 import com.til.recasting.common.register.slash_blade.sa.instance.DefaultSA;
 import com.til.recasting.common.register.slash_blade.sa.instance.MultipleDimensionalChoppingSA;
 import com.til.recasting.common.register.world.item.SoulItemRegister;
@@ -19,8 +18,6 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
-
-import java.util.List;
 
 public abstract class VoidSwordSlashBladeRegister extends SlashBladeRegister {
 
@@ -47,6 +44,7 @@ public abstract class VoidSwordSlashBladeRegister extends SlashBladeRegister {
             super.defaultItemStackConfig(itemStack);
             slashBladePack.slashBladeState.setBaseAttackModifier(8f);
             slashBladePack.slashBladeState.setColorCode(0xD25968);
+            slashBladePack.iSlashBladeStateSupplement.setDurable(12);
         }
 
 
@@ -56,7 +54,7 @@ public abstract class VoidSwordSlashBladeRegister extends SlashBladeRegister {
         }
 
         @VoluntarilyRegister
-        public static class VoidSword_1_SlashBladeRecipeRegister extends SlashBladeRecipeRegister {
+        public static class VoidSword_1_SlashBladeRecipeRegister extends SlashBladeRecipeSerializerRegister.SlashBladeRecipeRegister {
             @VoluntarilyAssignment
             protected VoidSword_1_SlashBladeRegister voidSword_1_slashBladeRegister;
 
@@ -73,7 +71,7 @@ public abstract class VoidSwordSlashBladeRegister extends SlashBladeRegister {
             protected DefaultSA defaultSA;
 
             @Override
-            protected SlashBladeUpRecipeRegister.SlashBladeUpPack defaultConfigSlashBladeUpPack() {
+            protected SlashBladeRecipeSerializerRegister.SlashBladeRecipeRecipePack defaultConfigSlashBladeRecipeRecipePack() {
                 SlashBladePack blackSlash = blackSlashBladeRegister.getSlashBladePack();
                 blackSlash.slashBladeState.setKillCount(1200);
                 blackSlash.slashBladeState.setRefine(145);
@@ -82,7 +80,7 @@ public abstract class VoidSwordSlashBladeRegister extends SlashBladeRegister {
                 blueCloudSlashBlade.slashBladeState.setKillCount(4500);
                 blueCloudSlashBlade.slashBladeState.setRefine(350);
 
-                return new SlashBladeUpRecipeRegister.SlashBladeUpPack(
+                return new SlashBladeRecipeSerializerRegister.SlashBladeRecipeRecipePack(
                         ListUtil.of(
                                 "ACA",
                                 "BVB",
@@ -108,6 +106,7 @@ public abstract class VoidSwordSlashBladeRegister extends SlashBladeRegister {
             super.defaultItemStackConfig(itemStack);
             slashBladePack.slashBladeState.setBaseAttackModifier(7f);
             slashBladePack.slashBladeState.setColorCode(0xD25968);
+            slashBladePack.iSlashBladeStateSupplement.setDurable(48);
         }
 
         @Override
@@ -116,7 +115,7 @@ public abstract class VoidSwordSlashBladeRegister extends SlashBladeRegister {
         }
 
         @VoluntarilyRegister
-        public static class VoidSword_2_SlashBladeRecipeRegister extends SlashBladeRecipeRegister {
+        public static class VoidSword_2_SlashBladeRecipeRegister extends SlashBladeRecipeSerializerRegister.SlashBladeRecipeRegister {
             @VoluntarilyAssignment
             protected VoidSword_1_SlashBladeRegister voidSword_1_slashBladeRegister;
 
@@ -133,7 +132,7 @@ public abstract class VoidSwordSlashBladeRegister extends SlashBladeRegister {
             protected MultipleDimensionalChoppingSA multipleDimensionalChoppingSA;
 
             @Override
-            protected SlashBladeUpRecipeRegister.SlashBladeUpPack defaultConfigSlashBladeUpPack() {
+            protected SlashBladeRecipeSerializerRegister.SlashBladeRecipeRecipePack defaultConfigSlashBladeRecipeRecipePack() {
                 SlashBladePack blueCloudSlashBlade = blueCloudSlashBladeRegister.getSlashBladePack();
                 blueCloudSlashBlade.slashBladeState.setKillCount(4200);
                 blueCloudSlashBlade.slashBladeState.setRefine(245);
@@ -142,7 +141,7 @@ public abstract class VoidSwordSlashBladeRegister extends SlashBladeRegister {
                 voidSword_1_slashBlade.slashBladeState.setKillCount(10000);
                 voidSword_1_slashBlade.slashBladeState.setRefine(1350);
 
-                return new SlashBladeUpRecipeRegister.SlashBladeUpPack(
+                return new SlashBladeRecipeSerializerRegister.SlashBladeRecipeRecipePack(
                         ListUtil.of(
                                 "ACA",
                                 "BVB",
@@ -170,6 +169,7 @@ public abstract class VoidSwordSlashBladeRegister extends SlashBladeRegister {
             super.defaultItemStackConfig(itemStack);
             slashBladePack.slashBladeState.setBaseAttackModifier(8f);
             slashBladePack.slashBladeState.setColorCode(0xD25968);
+            slashBladePack.iSlashBladeStateSupplement.setDurable(1024);
         }
 
         @Override
@@ -178,7 +178,7 @@ public abstract class VoidSwordSlashBladeRegister extends SlashBladeRegister {
         }
 
         @VoluntarilyRegister
-        public static class VoidSword_3_SlashBladeRecipeRegister extends SlashBladeRecipeRegister {
+        public static class VoidSword_3_SlashBladeRecipeRegister extends SlashBladeRecipeSerializerRegister.SlashBladeRecipeRegister {
 
             @VoluntarilyAssignment
             protected VoidSword_2_SlashBladeRegister voidSword_2_slashBladeRegister;
@@ -188,13 +188,13 @@ public abstract class VoidSwordSlashBladeRegister extends SlashBladeRegister {
 
 
             @Override
-            protected SlashBladeUpRecipeRegister.SlashBladeUpPack defaultConfigSlashBladeUpPack() {
+            protected SlashBladeRecipeSerializerRegister.SlashBladeRecipeRecipePack defaultConfigSlashBladeRecipeRecipePack() {
                 SlashBladePack voidSword_2_slashBlade = voidSword_2_slashBladeRegister.getSlashBladePack();
                 voidSword_2_slashBlade.slashBladeState.setKillCount(30000);
                 voidSword_2_slashBlade.slashBladeState.setRefine(2500);
 
 
-                return new SlashBladeUpRecipeRegister.SlashBladeUpPack(
+                return new SlashBladeRecipeSerializerRegister.SlashBladeRecipeRecipePack(
                         ListUtil.of(
                                 "AAA",
                                 "AVA",

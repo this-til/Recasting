@@ -1,11 +1,13 @@
 package com.til.recasting.common.mixin;
 
-import com.google.common.collect.Multimap;
 import com.til.glowing_fire_glow.GlowingFireGlow;
 import com.til.glowing_fire_glow.common.register.RegisterBasics;
 import com.til.glowing_fire_glow.common.util.StringUtil;
 import com.til.recasting.common.capability.ISE;
 import com.til.recasting.common.capability.SlashBladePack;
+import com.til.recasting.common.data.IRecipeInItemPack;
+import com.til.recasting.common.data.IResultPack;
+import com.til.recasting.common.register.recipe.SlashBladeRecipeSerializerRegister;
 import com.til.recasting.common.register.slash_blade.AllSlashBladeRegister;
 import com.til.recasting.common.register.slash_blade.SlashBladeRegister;
 import com.til.recasting.common.register.slash_blade.sa.AllSARegister;
@@ -13,12 +15,13 @@ import com.til.recasting.common.register.slash_blade.sa.SA_Register;
 import com.til.recasting.common.register.slash_blade.se.SE_Register;
 import mods.flammpfeil.slashblade.item.ItemSlashBlade;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.attributes.Attribute;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Hand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
@@ -27,17 +30,14 @@ import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.gen.Accessor;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.function.Consumer;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -46,17 +46,100 @@ import java.util.stream.Collectors;
 @Mixin(value = {ItemSlashBlade.class}, remap = false)
 public abstract class ItemSlashBladeMixin {
 
+    @Accessor
+    public static UUID getATTACK_DAMAGE_AMPLIFIER() {
+        throw new UnsupportedOperationException();
+    }
 
-    @Inject(method = "getAttributeModifiers",
+    @Accessor
+    public static UUID getPLAYER_REACH_AMPLIFIER(){
+        throw new UnsupportedOperationException();
+    }
+
+    /*@Inject(method = "getAttributeModifiers",
             at = @At(
                     value = "INVOKE",
                     target = "Lnet/minecraftforge/common/util/LazyOptional;ifPresent(Lnet/minecraftforge/common/util/NonNullConsumer;)V",
                     opcode = 1
-            ))
-    protected void getAttributeModifiers(EquipmentSlotType slot, ItemStack stack, CallbackInfoReturnable<Multimap<Attribute, AttributeModifier>> callbackInfoReturnable) {
+            ))*/
 
+    /**
+     * @author
+     * @reason
+     */
+  /*  @Overwrite
+    public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot, ItemStack stack) {
+
+        SlashBladePack slashBladePack = new SlashBladePack(stack);
+        if (!slashBladePack.isEffective(SlashBladePack.EffectiveType.canUse)) {
+            return ImmutableMultimap.of();
+        }
+        if (slot != EquipmentSlotType.MAINHAND) {
+            return ImmutableMultimap.of();
+        }
+
+        Multimap<Attribute, AttributeModifier> result = ArrayListMultimap.create();
+
+        result.put(Attributes.ATTACK_DAMAGE,
+                new AttributeModifier(
+                        getATTACK_DAMAGE_AMPLIFIER(),
+                        "Weapon modifier",
+                        slashBladePack.slashBladeState.getBaseAttackModifier(),
+                        AttributeModifier.Operation.ADDITION));
+
+        result.put(Attributes.ATTACK_DAMAGE,
+                new AttributeModifier(
+                        getATTACK_DAMAGE_AMPLIFIER(),
+                        "Weapon amplifier",
+                        slashBladePack.slashBladeState.getAttackAmplifier(),
+                        AttributeModifier.Operation.ADDITION
+                ));
+
+        result.put(ForgeMod.REACH_DISTANCE.get(),
+                new AttributeModifier(
+                        getPLAYER_REACH_AMPLIFIER(),
+                        "Reach amplifer",
+                        1.5f,
+                        AttributeModifier.Operation.ADDITION
+                ));
+
+        *//*Multimap<Attribute, AttributeModifier> def = super.getAttributeModifiers(slot,stack);
+        Multimap<Attribute, AttributeModifier> result = ArrayListMultimap.create();
+
+        result.putAll(Attributes.ATTACK_DAMAGE, def.get(Attributes.ATTACK_DAMAGE));
+        result.putAll(Attributes.ATTACK_SPEED, def.get(Attributes.ATTACK_SPEED));
+
+        if (slot == EquipmentSlotType.MAINHAND) {
+            LazyOptional<ISlashBladeState> state = stack.getCapability(BLADESTATE);
+            state.ifPresent(s -> {
+                float baseAttackModifier = s.getBaseAttackModifier();
+                AttributeModifier base = new AttributeModifier(ATTACK_DAMAGE_MODIFIER,
+                        "Weapon modifier",
+                        (double) baseAttackModifier,
+                        AttributeModifier.Operation.ADDITION);
+                result.remove(Attributes.ATTACK_DAMAGE,base);
+                result.put(Attributes.ATTACK_DAMAGE,base);
+
+                float rankAttackAmplifier = s.getAttackAmplifier();
+                result.put(Attributes.ATTACK_DAMAGE,
+                        new AttributeModifier(ATTACK_DAMAGE_AMPLIFIER,
+                                "Weapon amplifier",
+
+                                (double) rankAttackAmplifier,
+                                AttributeModifier.Operation.ADDITION));
+
+
+
+                result.put(ForgeMod.REACH_DISTANCE.get(), new AttributeModifier(PLAYER_REACH_AMPLIFIER,
+                        "Reach amplifer",
+                        s.isBroken() ? 0 : 1.5, AttributeModifier.Operation.ADDITION));
+
+            });
+        }*//*
+
+        return result;
     }
-
+*/
 
     /**
      * @author
@@ -77,26 +160,11 @@ public abstract class ItemSlashBladeMixin {
 
         float amount = (damage - half) / (float) half / 2;
         amount = amount / slashBladePack.iSlashBladeStateSupplement.getDurable();
-        slashBladePack.slashBladeState.setDamage(  slashBladePack.slashBladeState.getDamage() + amount);
-        stack.getCapability(ItemSlashBlade.BLADESTATE).ifPresent((s) -> {
-
-
-            s.setDamage(s.getDamage() + amount);
-        });
+        slashBladePack.slashBladeState.setDamage(slashBladePack.slashBladeState.getDamage() + amount);
     }
 
     @Shadow
     abstract int getHalfMaxdamage();
-
-
-    /**
-     * @author
-     * @reason
-     */
-    @Overwrite
-    public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, T entity, Consumer<T> onBroken) {
-        return Math.min(amount, getHalfMaxdamage(stack) / 2);
-    }
 
     @Inject(method = "addInformation",
             at = @At(
@@ -106,7 +174,7 @@ public abstract class ItemSlashBladeMixin {
             ))
     protected void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn, CallbackInfo callbackInfo) {
         SlashBladePack slashBladePack = new SlashBladePack(stack);
-        if (!slashBladePack.isEffective()) {
+        if (!slashBladePack.isEffective(SlashBladePack.EffectiveType.isSlashBlade)) {
             return;
         }
         tooltip.add(new TranslationTextComponent("key:%s", slashBladePack.slashBladeState.getTranslationKey()));
@@ -157,6 +225,7 @@ public abstract class ItemSlashBladeMixin {
 
     }
 
+
     @Inject(method = "fillItemGroup",
             at = @At(
                     value = "INVOKE",
@@ -174,6 +243,41 @@ public abstract class ItemSlashBladeMixin {
         slashBladeRegisterList = slashBladeRegisterList.stream().sorted(Comparator.comparing(RegisterBasics::getName)).collect(Collectors.toList());
         for (SlashBladeRegister slashBladeRegister : slashBladeRegisterList) {
             items.add(slashBladeRegister.getSlashBladePack().itemStack);
+        }
+
+        List<SlashBladeRecipeSerializerRegister.SlashBladeRecipeRegister> slashBladeRecipeRegisterList = new ArrayList<>();
+        for (SlashBladeRecipeSerializerRegister.SlashBladeRecipeRegister slashBladeRecipeRegister : GlowingFireGlow.getInstance().getWorldComponent(SlashBladeRecipeSerializerRegister.AllSlashBladeRecipeRegister.class).forAll()) {
+            slashBladeRecipeRegisterList.add(slashBladeRecipeRegister);
+        }
+        slashBladeRecipeRegisterList = slashBladeRecipeRegisterList.stream().sorted(Comparator.comparing(RegisterBasics::getName)).collect(Collectors.toList());
+        for (SlashBladeRecipeSerializerRegister.SlashBladeRecipeRegister slashBladeRecipeRegister : slashBladeRecipeRegisterList) {
+            for (Map.Entry<String, IRecipeInItemPack> stringIRecipeInItemPackEntry : slashBladeRecipeRegister.getSlashBladeRecipeRecipePack().key.entrySet()) {
+                if (stringIRecipeInItemPackEntry.getValue() instanceof IRecipeInItemPack.OfSlashBlade) {
+                    items.add(((IRecipeInItemPack.OfSlashBlade) stringIRecipeInItemPackEntry.getValue()).getSlashBladePack().itemStack);
+                }
+            }
+            if (slashBladeRecipeRegister.getSlashBladeRecipeRecipePack().result instanceof IResultPack.OfItemStack) {
+                items.add(slashBladeRecipeRegister.getSlashBladeRecipeRecipePack().result.getOutItemStack());
+            }
+        }
+    }
+
+    @Inject(method = "onItemRightClick", at = @At("HEAD"), cancellable = true)
+    public void onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn, CallbackInfoReturnable<ActionResult<ItemStack>> cir) {
+        ItemStack itemstack = playerIn.getHeldItem(handIn);
+        SlashBladePack slashBladePack = new SlashBladePack(itemstack);
+        if (!slashBladePack.isEffective(SlashBladePack.EffectiveType.canUse)) {
+            cir.setReturnValue(new ActionResult<>(ActionResultType.PASS, itemstack));
+            cir.cancel();
+        }
+    }
+
+    @Inject(method = "onLeftClickEntity", at = @At("HEAD"), cancellable = true)
+    public void onLeftClickEntity(ItemStack itemstack, PlayerEntity playerIn, Entity entity, CallbackInfoReturnable<Boolean> cir) {
+        SlashBladePack slashBladePack = new SlashBladePack(itemstack);
+        if (!slashBladePack.isEffective(SlashBladePack.EffectiveType.canUse)) {
+            cir.setReturnValue(false);
+            cir.cancel();
         }
     }
 

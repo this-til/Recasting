@@ -9,22 +9,34 @@ import com.til.glowing_fire_glow.common.util.gson.type_adapter.factory.ForgeRegi
 import com.til.recasting.common.capability.IItemSA;
 import com.til.recasting.common.capability.IItemSE;
 import com.til.recasting.common.capability.SlashBladePack;
+import com.til.recasting.common.register.capability.IItemBiome_CapabilityRegister;
 import com.til.recasting.common.register.capability.IItemEntity_CapabilityRegister;
 import com.til.recasting.common.register.capability.ItemSA_CapabilityRegister;
 import com.til.recasting.common.register.capability.ItemSE_CapabilityRegister;
 import com.til.recasting.common.register.slash_blade.SlashBladeRegister;
 import com.til.recasting.common.register.slash_blade.sa.SA_Register;
 import com.til.recasting.common.register.slash_blade.se.SE_Register;
+import com.til.recasting.common.register.slash_blade.se.instance.StormSE;
+import com.til.recasting.common.register.world.item.Biome_DepositItemRegister;
 import com.til.recasting.common.register.world.item.Entity_DepositItemRegister;
 import com.til.recasting.common.register.world.item.SA_DepositItemRegister;
 import com.til.recasting.common.register.world.item.SE_DepositItemRegister;
 import net.minecraft.entity.EntityType;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.tags.ITag;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.biome.Biome;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 @AcceptTypeJson
 @StaticVoluntarilyAssignment
@@ -63,6 +75,34 @@ public interface IRecipeInItemPack extends Predicate<ItemStack> {
         }
     }
 
+    class OfTag implements IRecipeInItemPack {
+        @Expose
+        protected OfIngredient ofIngredient;
+
+        protected ResourceLocation tagName;
+
+        public OfTag(ResourceLocation tagName) {
+            this.tagName = tagName;
+        }
+
+        public OfIngredient getOfIngredient() {
+            if (ofIngredient == null) {
+                ofIngredient = new OfIngredient(Ingredient.fromTag(ItemTags.makeWrapperTag(tagName.toString())));
+            }
+            return ofIngredient;
+        }
+
+        @Override
+        public Ingredient toIngredient() {
+            return getOfIngredient().toIngredient();
+        }
+
+        @Override
+        public boolean test(ItemStack itemStack) {
+            return getOfIngredient().test(itemStack);
+        }
+    }
+
     @StaticVoluntarilyAssignment
     class OfItemSE implements IRecipeInItemPack {
 
@@ -78,13 +118,15 @@ public interface IRecipeInItemPack extends Predicate<ItemStack> {
         protected boolean protect;
 
 
-        public OfItemSE() {
-        }
 
         public OfItemSE(SE_Register se_register, float successRate, boolean protect) {
             this.se_register = se_register;
             this.successRate = successRate;
             this.protect = protect;
+        }
+
+        public OfItemSE(SE_Register se_register) {
+            this(se_register, 0, false);
         }
 
         @Override
@@ -165,6 +207,34 @@ public interface IRecipeInItemPack extends Predicate<ItemStack> {
         }
     }
 
+    @StaticVoluntarilyAssignment
+    class OfBiome implements IRecipeInItemPack {
+
+
+        @VoluntarilyAssignment
+        protected static Biome_DepositItemRegister biome_depositItemRegister;
+
+        @VoluntarilyAssignment
+        protected static IItemBiome_CapabilityRegister iItemBiome_capabilityRegister;
+
+        protected Biome biome;
+
+        public OfBiome(Biome biome) {
+            this.biome = biome;
+        }
+
+        @Override
+        public Ingredient toIngredient() {
+            return new ItemStackIngredient(biome_depositItemRegister.mackItemStack(biome));
+        }
+
+        @Override
+        public boolean test(ItemStack itemStack) {
+            return itemStack.getCapability(iItemBiome_capabilityRegister.getCapability()).resolve()
+                    .map(iItemBiome -> biome == null || Objects.equals(iItemBiome.getBiome(), biome)).orElse(false);
+        }
+    }
+
 
     class OfSlashBlade implements IRecipeInItemPack {
 
@@ -181,7 +251,7 @@ public interface IRecipeInItemPack extends Predicate<ItemStack> {
         @Override
         public boolean test(ItemStack itemStack) {
             SlashBladePack inSlashBladePack = new SlashBladePack(itemStack);
-            if (!inSlashBladePack.isEffective()) {
+            if (!inSlashBladePack.isEffective(SlashBladePack.EffectiveType.isSlashBlade)) {
                 return false;
             }
             return getSlashBladePack().isExtends(inSlashBladePack);
@@ -191,7 +261,7 @@ public interface IRecipeInItemPack extends Predicate<ItemStack> {
             if (slashBladePack == null) {
                 slashBladePack = new SlashBladePack(itemStack);
             }
-            if (!slashBladePack.isEffective()) {
+            if (!slashBladePack.isEffective(SlashBladePack.EffectiveType.isSlashBlade)) {
                 throw new RuntimeException("错误的拔刀剑物品");
             }
             return slashBladePack;

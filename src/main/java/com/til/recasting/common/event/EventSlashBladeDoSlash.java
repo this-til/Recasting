@@ -14,9 +14,10 @@ public class EventSlashBladeDoSlash extends EventSlashBlade {
     public boolean mute;
     public boolean critical;
     public double damage;
+    public double basicsRange;
     public KnockBacks knockback;
 
-    public EventSlashBladeDoSlash(UseSlashBladeEntityPack pack, float roll, int colorCode, Vector3d centerOffset, boolean mute, boolean critical, double damage, KnockBacks knockback) {
+    public EventSlashBladeDoSlash(UseSlashBladeEntityPack pack, float roll, int colorCode, Vector3d centerOffset, boolean mute, boolean critical, double damage, double basicsRange, KnockBacks knockback) {
         super(pack);
         this.roll = roll;
         this.colorCode = colorCode;
@@ -24,6 +25,7 @@ public class EventSlashBladeDoSlash extends EventSlashBlade {
         this.mute = mute;
         this.critical = critical;
         this.damage = damage;
+        this.basicsRange = basicsRange;
         this.knockback = knockback;
     }
 }

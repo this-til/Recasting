@@ -55,7 +55,7 @@ public class SummonedSwordArtsManage implements IWorldComponent {
             }
             ItemStack stack = sender.getHeldItemMainhand();
             SlashBladePack slashBladePack = new SlashBladePack(stack);
-            if (!slashBladePack.isEffective()) {
+            if (!slashBladePack.isEffective(SlashBladePack.EffectiveType.canUse)) {
                 return;
             }
             Entity targetEntity = slashBladePack.slashBladeState.getTargetEntity(sender.world);
@@ -66,7 +66,7 @@ public class SummonedSwordArtsManage implements IWorldComponent {
             slashBladePack.iSlashBladeStateSupplement.decorate(summondSwordEntity);
             summondSwordEntity.setColor(slashBladePack.slashBladeState.getColorCode());
             //todo 伤害评估器
-            summondSwordEntity.setDamage(0.45);
+            summondSwordEntity.setDamage(0.25);
             summondSwordEntity.setDelay(100);
             if (targetEntity != null) {
                 summondSwordEntity.lookAt(RayTraceUtil.getPosition(targetEntity), false);
@@ -96,7 +96,7 @@ public class SummonedSwordArtsManage implements IWorldComponent {
             timMap.remove(player);
             ItemStack stack = player.getHeldItemMainhand();
             SlashBladePack slashBladePack = new SlashBladePack(stack);
-            if (!slashBladePack.isEffective()) {
+            if (!slashBladePack.isEffective(SlashBladePack.EffectiveType.canUse)) {
                 return;
             }
             Entity targetEntity = slashBladePack.slashBladeState.getTargetEntity(player.world);
@@ -113,7 +113,7 @@ public class SummonedSwordArtsManage implements IWorldComponent {
                     slashBladePack.iSlashBladeStateSupplement.decorate(summondSwordEntity);
                     summondSwordEntity.setColor(slashBladePack.slashBladeState.getColorCode());
                     //todo 伤害评估器
-                    summondSwordEntity.setDamage(0.3);
+                    summondSwordEntity.setDamage(0.12);
                     summondSwordEntity.setDelay(100);
                     summondSwordEntity.setStartDelay((dir / 2) * 2);
 

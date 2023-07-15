@@ -7,9 +7,8 @@ import com.til.glowing_fire_glow.common.util.MapUtil;
 import com.til.recasting.common.capability.SlashBladePack;
 import com.til.recasting.common.data.IRecipeInItemPack;
 import com.til.recasting.common.data.IResultPack;
-import com.til.recasting.common.register.recipe.SlashBladeUpRecipeRegister;
+import com.til.recasting.common.register.recipe.SlashBladeRecipeSerializerRegister;
 import com.til.recasting.common.register.slash_blade.SlashBladeRegister;
-import com.til.recasting.common.register.slash_blade.recipe.SlashBladeRecipeRegister;
 import com.til.recasting.common.register.slash_blade.se.instance.CooperateWithSE;
 import com.til.recasting.common.register.world.item.SoulItemRegister;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -25,10 +24,11 @@ public class BlueCloudSlashBladeRegister extends SlashBladeRegister {
         super.defaultItemStackConfig(itemStack);
         slashBladePack.slashBladeState.setBaseAttackModifier(6f);
         slashBladePack.slashBladeState.setColorCode(0xA7C683);
+        slashBladePack.iSlashBladeStateSupplement.setDurable(4);
     }
 
     @VoluntarilyRegister
-    public static class BlueCloudSlashBladeRecipeRegister extends SlashBladeRecipeRegister {
+    public static class BlueCloudSlashBladeRecipeRegister extends SlashBladeRecipeSerializerRegister.SlashBladeRecipeRegister {
 
         @VoluntarilyAssignment
         protected BlueCloudSlashBladeRegister blueCloudSlashBladeRecipeRegister;
@@ -46,7 +46,7 @@ public class BlueCloudSlashBladeRegister extends SlashBladeRegister {
         protected SoulItemRegister.SoulCubeChangeItemRegister soulCubeChangeItemRegister;
 
         @Override
-        protected SlashBladeUpRecipeRegister.SlashBladeUpPack defaultConfigSlashBladeUpPack() {
+        protected SlashBladeRecipeSerializerRegister.SlashBladeRecipeRecipePack defaultConfigSlashBladeRecipeRecipePack() {
 
             SlashBladePack baGuaSlashBlade = baGuaSlashBladeRegister.getSlashBladePack();
             baGuaSlashBlade.slashBladeState.setKillCount(1000);
@@ -62,7 +62,7 @@ public class BlueCloudSlashBladeRegister extends SlashBladeRegister {
             baGuaSlashBlade.ise.getPack(cooperateWithSE).setLevel(2);
 
 
-            return new SlashBladeUpRecipeRegister.SlashBladeUpPack(
+            return new SlashBladeRecipeSerializerRegister.SlashBladeRecipeRecipePack(
                     ListUtil.of(
                             "ABA",
                             "AVA",

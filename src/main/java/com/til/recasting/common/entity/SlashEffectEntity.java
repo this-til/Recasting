@@ -18,10 +18,7 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.EntityRayTraceResult;
-import net.minecraft.util.math.RayTraceContext;
-import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.*;
 import net.minecraft.util.math.vector.Quaternion;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.vector.Vector3f;
@@ -96,6 +93,30 @@ public class SlashEffectEntity extends Entity {
     @Override
     public IPacket<?> createSpawnPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
+    }
+
+    public void lookAt(Vector3d target, boolean isDistance) {
+        lookAt(target, isDistance, true);
+    }
+
+
+    public void lookAt(Vector3d target, boolean isDistance, boolean prevSynchronous) {
+        Vector3d distance = isDistance ? target : target.subtract(getPositionVec());
+        distance = distance.normalize();
+        double d0 = distance.x;
+        double d1 = distance.y;
+        double d2 = distance.z;
+        double d3 = MathHelper.sqrt(d0 * d0 + d2 * d2);
+
+         this.rotationPitch = MathHelper.wrapDegrees((float) ((MathHelper.atan2(d1, d3) * (double) (180F / (float) Math.PI))));
+         this.rotationYaw = MathHelper.wrapDegrees((float) (MathHelper.atan2(d2, d0) * (double) (180F / (float) Math.PI)) - 90.0F);
+
+        //this.rotationPitch = MathHelper.wrapDegrees((float) ((MathHelper.atan2(d1, d3)) * (double) (180F / (float) Math.PI)));
+        //this.rotationYaw = MathHelper.wrapDegrees((float) (MathHelper.atan2(d0, d2) * (double) (180F / (float) Math.PI)));
+        if (prevSynchronous) {
+            this.prevRotationPitch = this.rotationPitch;
+            this.prevRotationYaw = this.rotationYaw;
+        }
     }
 
     @Override

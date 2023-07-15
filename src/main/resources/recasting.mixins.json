@@ -12,7 +12,6 @@
     "JudgementCutMixin",
     "LockOnManagerMixin",
     "MoveInputHandlerMixin",
-    "RecipeManagerMixin",
     "SummonedSwordArtsMixin",
     "UntouchableMixin"
   ],

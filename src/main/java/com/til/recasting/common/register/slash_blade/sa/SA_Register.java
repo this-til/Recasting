@@ -2,6 +2,7 @@ package com.til.recasting.common.register.slash_blade.sa;
 
 import com.til.glowing_fire_glow.common.register.RegisterBasics;
 import com.til.glowing_fire_glow.common.util.StringUtil;
+import com.til.recasting.common.capability.SlashBladePack;
 import com.til.recasting.common.capability.UseSlashBladeEntityPack;
 import mods.flammpfeil.slashblade.ability.StunManager;
 import mods.flammpfeil.slashblade.capability.slashblade.ComboState;
@@ -52,7 +53,7 @@ public abstract class SA_Register extends RegisterBasics {
                     ExMotionLocation, e -> comboState, () -> Extra.EX_JUDGEMENT_CUT_SHEATH_AIR)
                     .addTickAction(ComboState.TimeLineTickAction.getBuilder().put(0, e -> {
                         UseSlashBladeEntityPack useSlashBladeEntityPack = new UseSlashBladeEntityPack(e);
-                        if (!useSlashBladeEntityPack.isEffective()) {
+                        if (!useSlashBladeEntityPack.isEffective(SlashBladePack.EffectiveType.canUse)) {
                             return;
                         }
                         sa_register.trigger(useSlashBladeEntityPack);

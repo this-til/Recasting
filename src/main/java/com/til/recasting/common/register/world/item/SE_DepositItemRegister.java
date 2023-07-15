@@ -62,6 +62,10 @@ public class SE_DepositItemRegister extends ItemRegister {
         successRate = 0.05f;
     }
 
+    public ItemStack mackItemStack(SE_Register se_register) {
+        return mackItemStack(se_register, successRate, false);
+    }
+
     public ItemStack mackItemStack(SE_Register se_register, boolean p) {
         return mackItemStack(se_register, successRate, p);
     }
@@ -118,7 +122,7 @@ public class SE_DepositItemRegister extends ItemRegister {
                         tooltip.add(new TranslationTextComponent("%s:%s",
                                 new TranslationTextComponent(StringUtil.formatLang(Recasting.MOD_ID, "basics_success_rate")),
                                 new StringTextComponent(fmt.format(pack.getBasicsSuccessRate()))));
-                        tooltip.add(new TranslationTextComponent(pack.isProtect() ? StringUtil.formatLang(Recasting.MOD_ID, "protect.true") : StringUtil.formatLang(Recasting.MOD_ID, "protect.false")));
+                        //tooltip.add(new TranslationTextComponent(pack.isProtect() ? StringUtil.formatLang(Recasting.MOD_ID, "protect.true") : StringUtil.formatLang(Recasting.MOD_ID, "protect.false")));
                     }
             );
         }

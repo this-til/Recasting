@@ -6,7 +6,7 @@ import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
 import com.til.glowing_fire_glow.common.util.IOUtil;
 import com.til.glowing_fire_glow.common.util.gson.GsonManage;
 import com.til.recasting.Recasting;
-import com.til.recasting.common.register.recipe.SlashBladeUpRecipeRegister;
+import com.til.recasting.common.register.recipe.SlashBladeRecipeSerializerRegister;
 import net.minecraft.data.DirectoryCache;
 import net.minecraft.data.IDataProvider;
 import net.minecraft.util.ResourceLocation;
@@ -23,7 +23,7 @@ import java.util.Map;
 public class RecastingDataGenerate implements IWorldComponent {
 
     @VoluntarilyAssignment
-    protected SlashBladeUpRecipeRegister slashBladeUpRecipeRegister;
+    protected SlashBladeRecipeSerializerRegister slashBladeUpRecipeRegister;
 
     @VoluntarilyAssignment
     protected GsonManage gsonManage;
@@ -40,9 +40,9 @@ public class RecastingDataGenerate implements IWorldComponent {
         event.getGenerator().addProvider(new IDataProvider() {
             @Override
             public void act(DirectoryCache cache) throws IOException {
-                Map<ResourceLocation, SlashBladeUpRecipeRegister.SlashBladeUpPack> map = new HashMap<>();
+                Map<ResourceLocation, SlashBladeRecipeSerializerRegister.SlashBladeRecipeRecipePack> map = new HashMap<>();
                 MinecraftForge.EVENT_BUS.post(new EventSlashBladeUpRecipeData(map));
-                for (Map.Entry<ResourceLocation, SlashBladeUpRecipeRegister.SlashBladeUpPack> entry : map.entrySet()) {
+                for (Map.Entry<ResourceLocation, SlashBladeRecipeSerializerRegister.SlashBladeRecipeRecipePack> entry : map.entrySet()) {
                     JsonObject jsonObject = ((JsonObject) gsonManage.getGson().toJsonTree(entry.getValue()));
                     jsonObject.addProperty("type", slashBladeUpRecipeRegister.getName().toString());
                     Path mainOutput = event.getGenerator().getOutputFolder();

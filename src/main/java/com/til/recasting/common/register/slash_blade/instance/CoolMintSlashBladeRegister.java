@@ -7,9 +7,8 @@ import com.til.glowing_fire_glow.common.util.MapUtil;
 import com.til.recasting.common.capability.SlashBladePack;
 import com.til.recasting.common.data.IRecipeInItemPack;
 import com.til.recasting.common.data.IResultPack;
-import com.til.recasting.common.register.recipe.SlashBladeUpRecipeRegister;
+import com.til.recasting.common.register.recipe.SlashBladeRecipeSerializerRegister;
 import com.til.recasting.common.register.slash_blade.SlashBladeRegister;
-import com.til.recasting.common.register.slash_blade.recipe.SlashBladeRecipeRegister;
 import com.til.recasting.common.register.slash_blade.sa.instance.FanaticalDanceSA;
 import com.til.recasting.common.register.slash_blade.se.instance.CooperateWithSE;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -29,10 +28,12 @@ public class CoolMintSlashBladeRegister extends SlashBladeRegister {
         slashBladePack.slashBladeState.setColorCode(0xC7F3CB);
         slashBladePack.slashBladeState.setBaseAttackModifier(7f);
         slashBladePack.slashBladeState.setSlashArtsKey(fanaticalDanceSA.getSlashArts().getName());
+        slashBladePack.iSlashBladeStateSupplement.setDurable(16);
+
     }
 
     @VoluntarilyRegister
-    public static class CoolMintSlashBladeRecipeRegister extends SlashBladeRecipeRegister {
+    public static class CoolMintSlashBladeRecipeRegister extends SlashBladeRecipeSerializerRegister.SlashBladeRecipeRegister {
 
         @VoluntarilyAssignment
         protected CoolMintSlashBladeRegister coolMintSlashBladeRegister;
@@ -47,7 +48,7 @@ public class CoolMintSlashBladeRegister extends SlashBladeRegister {
         protected BlackSlashBladeRegister blackSlashBladeRegister;
 
         @Override
-        protected SlashBladeUpRecipeRegister.SlashBladeUpPack defaultConfigSlashBladeUpPack() {
+        protected SlashBladeRecipeSerializerRegister.SlashBladeRecipeRecipePack defaultConfigSlashBladeRecipeRecipePack() {
 
             SlashBladePack blueCloudSlashBlade = blueCloudSlashBladeRegister.getSlashBladePack();
             blueCloudSlashBlade.slashBladeState.setKillCount(2500);
@@ -73,7 +74,7 @@ public class CoolMintSlashBladeRegister extends SlashBladeRegister {
                     blackSlashBlade.itemStack);
 
 
-            return new SlashBladeUpRecipeRegister.SlashBladeUpPack(
+            return new SlashBladeRecipeSerializerRegister.SlashBladeRecipeRecipePack(
                     ListUtil.of(
                             "  A",
                             " A ",

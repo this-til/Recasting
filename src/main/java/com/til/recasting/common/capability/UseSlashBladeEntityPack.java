@@ -32,8 +32,8 @@ public class UseSlashBladeEntityPack {
         slashBladePack = new SlashBladePack(entity.getHeldItemMainhand());
     }
 
-    public boolean isEffective() {
-        return concentrationRank != null && timeRun != null && slashBladePack.isEffective();
+    public boolean isEffective(SlashBladePack.EffectiveType effectiveType) {
+        return concentrationRank != null && timeRun != null && slashBladePack.isEffective(effectiveType);
     }
 
     public IConcentrationRank.ConcentrationRanks getConcentrationRank() {

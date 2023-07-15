@@ -7,9 +7,8 @@ import com.til.glowing_fire_glow.common.util.MapUtil;
 import com.til.glowing_fire_glow.common.util.ResourceLocationUtil;
 import com.til.recasting.common.data.IRecipeInItemPack;
 import com.til.recasting.common.data.IResultPack;
-import com.til.recasting.common.register.recipe.SlashBladeUpRecipeRegister;
+import com.til.recasting.common.register.recipe.SlashBladeRecipeSerializerRegister;
 import com.til.recasting.common.register.slash_blade.SlashBladeRegister;
-import com.til.recasting.common.register.slash_blade.recipe.SlashBladeRecipeRegister;
 import mods.flammpfeil.slashblade.SlashBlade;
 import mods.flammpfeil.slashblade.init.SBItems;
 import net.minecraft.item.ItemStack;
@@ -31,13 +30,13 @@ public class BlackSlashBladeRegister extends SlashBladeRegister {
     @Override
     protected void defaultItemStackConfig(ItemStack itemStack) {
         super.defaultItemStackConfig(itemStack);
-
         slashBladePack.slashBladeState.setBaseAttackModifier(4f);
         slashBladePack.slashBladeState.setColorCode(0x000000);
+        slashBladePack.iSlashBladeStateSupplement.setDurable(4);
     }
 
     @VoluntarilyRegister
-    public static class BlackSlashBladeUpRegister extends SlashBladeRecipeRegister {
+    public static class BlackSlashBladeUpRegister extends SlashBladeRecipeSerializerRegister.SlashBladeRecipeRegister {
 
         @VoluntarilyAssignment
         protected BlackSlashBladeRegister blackSlashBladeRegister;
@@ -46,8 +45,8 @@ public class BlackSlashBladeRegister extends SlashBladeRegister {
         protected NamelessSlashBladeRegister namelessSlashBladeRegister;
 
         @Override
-        protected SlashBladeUpRecipeRegister.SlashBladeUpPack defaultConfigSlashBladeUpPack() {
-            return new SlashBladeUpRecipeRegister.SlashBladeUpPack(
+        protected SlashBladeRecipeSerializerRegister.SlashBladeRecipeRecipePack defaultConfigSlashBladeRecipeRecipePack() {
+            return new SlashBladeRecipeSerializerRegister.SlashBladeRecipeRecipePack(
                     ListUtil.of("AAA", "BCB", "AAA"),
                     MapUtil.of(
                             "A", new IRecipeInItemPack.OfIngredient(Ingredient.fromItems(Items.OBSIDIAN)),
