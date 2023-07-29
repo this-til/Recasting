@@ -25,6 +25,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
  * 抵抗
  * 挥刀的时候获得伤害吸收
  */
+@VoluntarilyRegister
 public class ResistSE extends SE_Register {
 
 
@@ -72,7 +73,7 @@ public class ResistSE extends SE_Register {
                     ),
                     MapUtil.of(
                             "A", new IRecipeInItemPack.OfIngredient(Ingredient.fromItems(SBItems.proudsoul_crystal)),
-                            "B", new IRecipeInItemPack.OfTag(Tags.Items.ORES_GOLD.getName()),
+                            "B", new IRecipeInItemPack.OfTag(Tags.Items.INGOTS_GOLD.getName()),
                             "V", new IRecipeInItemPack.OfItemSE(cooperateWithSE)),
                     new IResultPack.OfItemStack(se_depositItemRegister.mackItemStack(resistSE))
             );

@@ -11,10 +11,9 @@ import com.til.glowing_fire_glow.common.register.recipe.RecipeRegister;
 import com.til.glowing_fire_glow.common.register.recipe.RecipeSerializerRegister;
 import com.til.glowing_fire_glow.common.util.Delayed;
 import com.til.glowing_fire_glow.common.util.gson.GsonManage;
-import com.til.recasting.common.capability.SlashBladePack;
+import com.til.recasting.common.data.SlashBladePack;
 import com.til.recasting.common.data.IRecipeInItemPack;
 import com.til.recasting.common.data.IResultPack;
-import com.til.recasting.common.register.slash_blade.AllSlashBladeRegister;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipeSerializer;
@@ -259,9 +258,6 @@ public class SlashBladeRecipeSerializerRegister extends RecipeSerializerRegister
         public Map<String, IRecipeInItemPack> key;
         public String mainSlashBladeKey;
         public IResultPack result;
-
-        public SlashBladeRecipeRecipePack() {
-        }
 
         public SlashBladeRecipeRecipePack(List<String> pattern, Map<String, IRecipeInItemPack> key, String mainSlashBladeKey, IResultPack result) {
             this.pattern = pattern;

@@ -61,7 +61,7 @@ public class SummondSwordEntityRender<T extends SummondSwordEntity> extends Enti
             matrixStack.rotate(Vector3f.XP.rotationDegrees(entity.getRoll()));
 
 
-            float scale = 0.0075f;
+            float scale = entity.getSize() * 0.0075f;
             matrixStack.scale(scale, scale, scale);
             matrixStack.rotate(Vector3f.YP.rotationDegrees(90.0F));
 

@@ -9,7 +9,7 @@ import com.til.glowing_fire_glow.common.util.StringUtil;
 import com.til.recasting.common.capability.CapabilityEvent;
 import com.til.recasting.common.capability.IItemSA;
 import com.til.recasting.common.register.capability.ItemSA_CapabilityRegister;
-import com.til.recasting.common.register.slash_blade.sa.AllSARegister;
+import com.til.recasting.common.register.slash_blade.sa.AllSA_Register;
 import com.til.recasting.common.register.slash_blade.sa.SA_Register;
 import com.til.recasting.common.register.util.StringFinal;
 import mods.flammpfeil.slashblade.SlashBlade;
@@ -33,7 +33,7 @@ public class SA_DepositItemRegister extends ItemRegister {
     protected static ItemSA_CapabilityRegister itemSA_capabilityRegister;
 
     @VoluntarilyAssignment
-    protected static AllSARegister allSARegister;
+    protected static AllSA_Register allSARegister;
 
     @Override
     protected Item initItem() {

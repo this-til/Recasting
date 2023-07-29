@@ -14,7 +14,6 @@ import com.til.recasting.common.data.IResultPack;
 import com.til.recasting.common.entity.SlashEffectEntity;
 import com.til.recasting.common.entity.SummondSwordEntity;
 import com.til.recasting.common.event.EventDoJudgementCut;
-import com.til.recasting.common.event.EventSlashBladeDoSlash;
 import com.til.recasting.common.register.entity_type.SlashEffectEntityTypeRegister;
 import com.til.recasting.common.register.recipe.SpecialRecipeSerializerRegister;
 import com.til.recasting.common.register.slash_blade.se.SE_Register;
@@ -62,14 +61,12 @@ public class SeverBreakSE extends SE_Register {
                 event.pack.entity.world, event.pack.entity);
         event.pack.slashBladePack.iSlashBladeStateSupplement.decorate(jc);
         jc.setPosition(pos.getX(), pos.getY(), pos.getZ());
-        jc.setRotationRoll(random.nextInt(360));
+        jc.setRoll(random.nextInt(360));
         jc.lookAt(attackPos, false);
         jc.setColor(event.pack.slashBladePack.slashBladeState.getColorCode());
         jc.setMute(false);
-        jc.setIsCritical(true);
-        jc.setDamage(attack.of(se_pack.getLevel()));
-        jc.setKnockBack(KnockBacks.cancel);
-        jc.setBaseSize((float) (desiredLength / 4));
+        jc.setDamage((float) attack.of(se_pack.getLevel()));
+        jc.setSize((float) (desiredLength / 4));
         event.pack.entity.world.addEntity(jc);
        /* AttackManager.doSlash(
                 event.pack.entity,
@@ -86,7 +83,7 @@ public class SeverBreakSE extends SE_Register {
     @Override
     public void defaultConfig() {
         super.defaultConfig();
-        attack = new NumberPack(0, 0.2);
+        attack = new NumberPack(0, 0.3);
         range = new NumberPack(1, 0.1);
     }
 

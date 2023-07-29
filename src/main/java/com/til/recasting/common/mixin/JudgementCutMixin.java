@@ -30,7 +30,7 @@ public class JudgementCutMixin {
      */
     @Overwrite
     static public EntityJudgementCut doJudgementCut(LivingEntity user) {
-        JudgementCutManage.doJudgementCut(user, 1, 10, null, null);
+        JudgementCutManage.doJudgementCut(user, 1, 10, null, null, null);
         return null;
     }
 /*    @Inject(at = @At("HEAD"), method = "doJudgementCutJust")

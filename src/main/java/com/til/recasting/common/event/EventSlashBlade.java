@@ -1,6 +1,6 @@
 package com.til.recasting.common.event;
 
-import com.til.recasting.common.capability.UseSlashBladeEntityPack;
+import com.til.recasting.common.data.UseSlashBladeEntityPack;
 import net.minecraftforge.eventbus.api.Event;
 
 /***

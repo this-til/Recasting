@@ -5,11 +5,11 @@ import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
 import com.til.recasting.common.capability.IItemSA;
 import com.til.recasting.common.capability.IItemSE;
 import com.til.recasting.common.capability.ISE;
-import com.til.recasting.common.capability.SlashBladePack;
+import com.til.recasting.common.data.SlashBladePack;
 import com.til.recasting.common.register.capability.ItemSA_CapabilityRegister;
 import com.til.recasting.common.register.capability.ItemSE_CapabilityRegister;
 import com.til.recasting.common.register.entity_type.StrengthenBladeStandEntityTypeRegister;
-import com.til.recasting.common.register.slash_blade.sa.AllSARegister;
+import com.til.recasting.common.register.slash_blade.sa.AllSA_Register;
 import com.til.recasting.common.register.slash_blade.sa.SA_Register;
 import com.til.recasting.common.register.slash_blade.se.SE_Register;
 import mods.flammpfeil.slashblade.entity.BladeStandEntity;
@@ -39,7 +39,7 @@ import java.util.Objects;
 public class StrengthenBladeStandEntity extends BladeStandEntity {
 
     @VoluntarilyAssignment
-    protected static AllSARegister allSARegister;
+    protected static AllSA_Register allSARegister;
 
     @VoluntarilyAssignment
     protected static ItemSA_CapabilityRegister itemSA_capabilityRegister;

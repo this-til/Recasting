@@ -1,6 +1,5 @@
 package com.til.recasting.common.register.slash_blade.se.instance;
 
-import com.til.glowing_fire_glow.common.CommonPlanRun;
 import com.til.glowing_fire_glow.common.capability.time_run.TimerCell;
 import com.til.glowing_fire_glow.common.config.ConfigField;
 import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
@@ -11,17 +10,16 @@ import com.til.glowing_fire_glow.common.util.math.NumberPack;
 import com.til.recasting.common.capability.ISE;
 import com.til.recasting.common.data.IRecipeInItemPack;
 import com.til.recasting.common.data.IResultPack;
+import com.til.recasting.common.entity.SlashEffectEntity;
 import com.til.recasting.common.event.EventSlashBladeDoSlash;
 import com.til.recasting.common.register.recipe.SpecialRecipeSerializerRegister;
 import com.til.recasting.common.register.slash_blade.se.SE_Register;
+import com.til.recasting.common.register.util.AttackManager;
 import com.til.recasting.common.register.world.item.SE_DepositItemRegister;
 import mods.flammpfeil.slashblade.init.SBItems;
-import mods.flammpfeil.slashblade.util.AttackManager;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-
-import java.util.Map;
 
 /***
  * 协同攻击
@@ -33,7 +31,7 @@ public class CooperateWithSE extends SE_Register {
     protected NumberPack probability;
 
     @ConfigField
-    protected NumberPack attack;
+    protected NumberPack attackRatio;
 
     @ConfigField
     protected int delay;
@@ -48,7 +46,18 @@ public class CooperateWithSE extends SE_Register {
             return;
         }
         event.pack.timeRun.addTimerCell(new TimerCell(
-                () -> AttackManager.doSlash(event.pack.entity, event.roll, event.colorCode, event.centerOffset, event.mute, event.critical, event.damage * attack.of(se_pack.getLevel()), event.knockback),
+                () -> {
+                    AttackManager.doSlash(
+                            event.pack.entity,
+                            event.slashEffectEntity.getRoll(),
+                            event.slashEffectEntity.getColor(),
+                            event.centerOffset,
+                            event.slashEffectEntity.isMute(),
+                            event.slashEffectEntity.isThump(),
+                            (float) (event.slashEffectEntity.getDamage() * attackRatio.of(se_pack.getLevel())),
+                            event.basicsRange,
+                            slashEffectEntity -> slashEffectEntity.setBackRunPack(event.slashEffectEntity.getBackRunPack()));
+                },
                 delay, 0));
     }
 
@@ -56,7 +65,7 @@ public class CooperateWithSE extends SE_Register {
     public void defaultConfig() {
         super.defaultConfig();
         probability = new NumberPack(0, 0.1);
-        attack = new NumberPack(0, 0.2);
+        attackRatio = new NumberPack(0, 0.1);
         delay = 10;
     }
 

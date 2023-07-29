@@ -5,7 +5,7 @@ import com.til.glowing_fire_glow.common.register.VoluntarilyRegister;
 import com.til.glowing_fire_glow.common.util.ListUtil;
 import com.til.glowing_fire_glow.common.util.MapUtil;
 import com.til.glowing_fire_glow.common.util.ResourceLocationUtil;
-import com.til.recasting.common.capability.SlashBladePack;
+import com.til.recasting.common.data.SlashBladePack;
 import com.til.recasting.common.data.IRecipeInItemPack;
 import com.til.recasting.common.data.IResultPack;
 import com.til.recasting.common.register.recipe.SlashBladeRecipeSerializerRegister;

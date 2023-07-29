@@ -1,8 +1,8 @@
 package com.til.recasting.common.register.util;
 
 import com.til.glowing_fire_glow.GlowingFireGlow;
-import com.til.recasting.common.capability.SlashBladePack;
-import com.til.recasting.common.capability.UseSlashBladeEntityPack;
+import com.til.recasting.common.data.SlashBladePack;
+import com.til.recasting.common.data.UseSlashBladeEntityPack;
 import com.til.recasting.common.entity.SlashEffectEntity;
 import com.til.recasting.common.event.EventDoAttack;
 import com.til.recasting.common.event.EventSlashBladeAreaAttack;
@@ -10,10 +10,8 @@ import com.til.recasting.common.event.EventSlashBladeDoSlash;
 import com.til.recasting.common.register.entity_type.SlashEffectEntityTypeRegister;
 import mods.flammpfeil.slashblade.ability.ArrowReflector;
 import mods.flammpfeil.slashblade.ability.TNTExtinguisher;
-import mods.flammpfeil.slashblade.entity.EntitySlashEffect;
 import mods.flammpfeil.slashblade.util.KnockBacks;
 import mods.flammpfeil.slashblade.util.VectorHelper;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
@@ -25,6 +23,7 @@ import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraftforge.common.MinecraftForge;
 
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -34,24 +33,14 @@ import java.util.function.Consumer;
 public class AttackManager {
 
 
-    public static SlashEffectEntity doSlash(LivingEntity playerIn, float roll, int colorCode, Vector3d centerOffset, boolean mute, boolean critical, double damage, double basicsRange,KnockBacks knockback) {
+    public static void doSlash(LivingEntity playerIn, float roll, int colorCode, Vector3d centerOffset, boolean mute, boolean thump, float damage, float basicsRange, @Nullable Consumer<SlashEffectEntity> advanceOperation) {
         if (playerIn.world.isRemote) {
-            return null;
+            return;
         }
         UseSlashBladeEntityPack useSlashBladeEntityPack = new UseSlashBladeEntityPack(playerIn);
         if (!useSlashBladeEntityPack.isEffective(SlashBladePack.EffectiveType.canUse)) {
-            return null;
+            return;
         }
-        EventSlashBladeDoSlash eventSlashBladeDoSlash = new EventSlashBladeDoSlash(useSlashBladeEntityPack, roll, colorCode, centerOffset, mute, critical, damage,basicsRange, knockback);
-        MinecraftForge.EVENT_BUS.post(eventSlashBladeDoSlash);
-        roll = eventSlashBladeDoSlash.roll;
-        centerOffset = eventSlashBladeDoSlash.centerOffset;
-        mute = eventSlashBladeDoSlash.mute;
-        critical = eventSlashBladeDoSlash.critical;
-        damage = eventSlashBladeDoSlash.damage;
-        knockback = eventSlashBladeDoSlash.knockback;
-        basicsRange = eventSlashBladeDoSlash.basicsRange;
-
 
         Vector3d pos = playerIn.getPositionVec()
                 .add(0.0D, (double) playerIn.getEyeHeight() * 0.75D, 0.0D)
@@ -65,15 +54,21 @@ public class AttackManager {
                 playerIn.world, playerIn);
         useSlashBladeEntityPack.slashBladePack.iSlashBladeStateSupplement.decorate(jc);
         jc.setPosition(pos.getX(), pos.getY(), pos.getZ());
-        jc.setRotationRoll(roll);
+        jc.setRoll(roll);
         jc.setColor(colorCode);
         jc.setMute(mute);
-        jc.setIsCritical(critical);
+        jc.setThump(thump);
         jc.setDamage(damage);
-        jc.setKnockBack(knockback);
-        jc.setBaseSize((float) (useSlashBladeEntityPack.slashBladePack.iSlashBladeStateSupplement.getAttackDistance() * basicsRange));
+        jc.setSize(useSlashBladeEntityPack.slashBladePack.iSlashBladeStateSupplement.getAttackDistance() * basicsRange);
+
+        if (advanceOperation != null) {
+            advanceOperation.accept(jc);
+        }
+
+        EventSlashBladeDoSlash eventSlashBladeDoSlash = new EventSlashBladeDoSlash(useSlashBladeEntityPack, jc, centerOffset, basicsRange);
+        MinecraftForge.EVENT_BUS.post(eventSlashBladeDoSlash);
+
         playerIn.world.addEntity(jc);
-        return jc;
     }
 
     public static List<Entity> areaAttack(LivingEntity playerIn, Entity slashEffectEntity, Consumer<LivingEntity> beforeHit, float range, float ratio, boolean forceHit, boolean resetHit, boolean mute, List<Entity> exclude) {
@@ -109,7 +104,7 @@ public class AttackManager {
     }
 
 
-    static public void doAttack(LivingEntity attacker, Entity target, float modifiedRatio, boolean forceHit, boolean resetHit) {
+    public static void doAttack(LivingEntity attacker, Entity target, float modifiedRatio, boolean forceHit, boolean resetHit) {
         UseSlashBladeEntityPack useSlashBladeEntityPack = new UseSlashBladeEntityPack(attacker);
         if (!useSlashBladeEntityPack.isEffective(SlashBladePack.EffectiveType.canUse)) {
             return;

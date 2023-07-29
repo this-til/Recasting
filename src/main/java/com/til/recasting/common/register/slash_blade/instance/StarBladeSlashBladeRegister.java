@@ -1,27 +1,40 @@
 package com.til.recasting.common.register.slash_blade.instance;
 
+import com.til.glowing_fire_glow.common.config.ConfigField;
 import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
 import com.til.glowing_fire_glow.common.register.VoluntarilyRegister;
 import com.til.glowing_fire_glow.common.util.ListUtil;
 import com.til.glowing_fire_glow.common.util.MapUtil;
+import com.til.glowing_fire_glow.common.util.Pos;
 import com.til.glowing_fire_glow.common.util.ResourceLocationUtil;
-import com.til.recasting.common.capability.SlashBladePack;
+import com.til.recasting.common.data.SlashBladePack;
 import com.til.recasting.common.data.IRecipeInItemPack;
 import com.til.recasting.common.data.IResultPack;
+import com.til.recasting.common.data.UseSlashBladeEntityPack;
+import com.til.recasting.common.entity.SummondSwordEntity;
+import com.til.recasting.common.register.back_type.SummondSwordBackTypeRegister;
+import com.til.recasting.common.register.entity_predicate.DefaultEntityPredicateRegister;
+import com.til.recasting.common.register.entity_type.SummondSwordEntityTypeRegister;
 import com.til.recasting.common.register.recipe.SlashBladeRecipeSerializerRegister;
 import com.til.recasting.common.register.slash_blade.SlashBladeRegister;
-import com.til.recasting.common.register.slash_blade.sa.instance.InfiniteDimensionalChoppingSA;
-import com.til.recasting.common.register.slash_blade.sa.instance.MultipleDimensionalChoppingSA;
+import com.til.recasting.common.register.slash_blade.sa.SA_Register;
 import com.til.recasting.common.register.slash_blade.se.instance.OverloadSE;
 import com.til.recasting.common.register.slash_blade.se.instance.SeverBreakSE;
 import com.til.recasting.common.register.slash_blade.se.instance.StormSE;
 import com.til.recasting.common.register.slash_blade.se.instance.StormVariantSE;
+import com.til.recasting.common.register.util.JudgementCutManage;
+import com.til.recasting.common.register.util.RayTraceUtil;
 import mods.flammpfeil.slashblade.SlashBlade;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvents;
+import net.minecraft.util.math.vector.Vector3d;
+
+import java.util.List;
 
 public abstract class StarBladeSlashBladeRegister extends SlashBladeRegister {
     @Override
@@ -31,6 +44,7 @@ public abstract class StarBladeSlashBladeRegister extends SlashBladeRegister {
         texture = new ResourceLocation(getName().getNamespace(), String.join("/", SlashBlade.modid, ResourceLocationUtil.ofPath(StarBladeSlashBladeRegister.class), "state" + getState(), "texture.png"));
 
         summondSwordModel = new ResourceLocation(getName().getNamespace(), String.join("/", "summond_sword", "star_blade", "model.obj"));
+        judgementCutModel = new ResourceLocation(getName().getNamespace(), String.join("/", "judgement_cut", "star_blade", "model.obj"));
     }
 
     @Override
@@ -41,8 +55,72 @@ public abstract class StarBladeSlashBladeRegister extends SlashBladeRegister {
 
     protected abstract int getState();
 
+    public static abstract class StarBlade_SA extends SA_Register {
+
+        @VoluntarilyAssignment
+        protected SummondSwordEntityTypeRegister summondSwordEntityTypeRegister;
+
+        @VoluntarilyAssignment
+        protected DefaultEntityPredicateRegister defaultEntityPredicateRegister;
+
+        @VoluntarilyAssignment
+        protected SummondSwordBackTypeRegister.AttackBackTypeRegister attackBackTypeRegister;
+
+        @ConfigField
+        protected int attackNumber;
+
+        @ConfigField
+        protected float attack;
+
+        @ConfigField
+        protected float judgementCutAttack;
+
+        @ConfigField
+        protected float range;
+
+        @Override
+        public void trigger(UseSlashBladeEntityPack slashBladeEntityPack) {
+            Vector3d attackPos = slashBladeEntityPack.getAttackPos();
+            List<Entity> entityList = slashBladeEntityPack.entity.world.getEntitiesInAABBexcluding(
+                    slashBladeEntityPack.entity,
+                    new Pos(attackPos).axisAlignedBB(range),
+                    entity -> defaultEntityPredicateRegister.canTarget(slashBladeEntityPack.entity, entity));
+            for (int i = 0; i < attackNumber; i++) {
+                SummondSwordEntity summondSwordEntity = new SummondSwordEntity(summondSwordEntityTypeRegister.getEntityType(), slashBladeEntityPack.entity.world, slashBladeEntityPack.entity);
+                slashBladeEntityPack.slashBladePack.iSlashBladeStateSupplement.decorate(summondSwordEntity);
+                summondSwordEntity.setColor(slashBladeEntityPack.slashBladePack.slashBladeState.getColorCode());
+                summondSwordEntity.setDamage(attack);
+                summondSwordEntity.setMaxDelay(20);
+                summondSwordEntity.setStartDelay(slashBladeEntityPack.entity.getRNG().nextInt(10));
+                if (!entityList.isEmpty()) {
+                    Entity entity = entityList.get(slashBladeEntityPack.entity.getRNG().nextInt(entityList.size()));
+                    summondSwordEntity.lookAt(RayTraceUtil.getPosition(entity), false);
+                } else {
+                    summondSwordEntity.lookAt(attackPos, false);
+                }
+                summondSwordEntity.getBackRunPack().addRunBack(attackBackTypeRegister,
+                        (summondSwordEntity1, hitEntity) -> JudgementCutManage.doJudgementCut(slashBladeEntityPack.entity, judgementCutAttack, 10, null, hitEntity, null));
+                slashBladeEntityPack.entity.world.addEntity(summondSwordEntity);
+            }
+            slashBladeEntityPack.entity.playSound(SoundEvents.ITEM_CHORUS_FRUIT_TELEPORT, 0.2F, 1.45F);
+        }
+
+        @Override
+        public void defaultConfig() {
+            super.defaultConfig();
+            attackNumber = 6;
+            attack = 0.25f;
+            judgementCutAttack = 0.5f;
+            range = 12;
+        }
+    }
+
     @VoluntarilyRegister
     public static class StarBlade_1_SlashBladeRegister extends StarBladeSlashBladeRegister {
+
+        @VoluntarilyAssignment
+        protected StarBlade_1_SA starBlade_1_sa;
+
 
         @Override
         protected void defaultItemStackConfig(ItemStack itemStack) {
@@ -50,7 +128,7 @@ public abstract class StarBladeSlashBladeRegister extends SlashBladeRegister {
             slashBladePack.slashBladeState.setBaseAttackModifier(4f);
             slashBladePack.iSlashBladeStateSupplement.setAttackDistance(0.75f);
             slashBladePack.iSlashBladeStateSupplement.setDurable(6);
-
+            slashBladePack.setSA(starBlade_1_sa);
         }
 
         @Override
@@ -76,7 +154,11 @@ public abstract class StarBladeSlashBladeRegister extends SlashBladeRegister {
                 blackSlashBlade.slashBladeState.setKillCount(250);
                 blackSlashBlade.slashBladeState.setRefine(35);
                 blackSlashBlade.ise.getPack(overloadSE).setLevel(1);
-                EnchantmentHelper.setEnchantments(MapUtil.of(Enchantments.PROTECTION, 3, Enchantments.INFINITY, 1), blackSlashBlade.itemStack);
+                EnchantmentHelper.setEnchantments(
+                        MapUtil.of(
+                                Enchantments.PROTECTION, 1,
+                                Enchantments.INFINITY, 1
+                        ), blackSlashBlade.itemStack);
 
                 return new SlashBladeRecipeSerializerRegister.SlashBladeRecipeRecipePack(
                         ListUtil.of(
@@ -84,7 +166,7 @@ public abstract class StarBladeSlashBladeRegister extends SlashBladeRegister {
                                 "AVA",
                                 "BA "
                         ),
-                        MapUtil.of("A", new IRecipeInItemPack.OfItemSE(overloadSE, 1, false),
+                        MapUtil.of("A", new IRecipeInItemPack.OfItemSE(overloadSE, 0.5f),
                                 "B", new IRecipeInItemPack.OfEntity(EntityType.PHANTOM),
                                 "V", new IRecipeInItemPack.OfSlashBlade(blackSlashBlade.itemStack)),
                         "V",
@@ -93,13 +175,17 @@ public abstract class StarBladeSlashBladeRegister extends SlashBladeRegister {
             }
         }
 
+        @VoluntarilyRegister
+        public static class StarBlade_1_SA extends StarBlade_SA {
+        }
+
     }
 
     @VoluntarilyRegister
     public static class StarBlade_2_SlashBladeRegister extends StarBladeSlashBladeRegister {
 
         @VoluntarilyAssignment
-        protected MultipleDimensionalChoppingSA multipleDimensionalChoppingSA;
+        protected StarBlade_2_SA starBlade_2_sa;
 
 
         @Override
@@ -107,7 +193,7 @@ public abstract class StarBladeSlashBladeRegister extends SlashBladeRegister {
             super.defaultItemStackConfig(itemStack);
             slashBladePack.slashBladeState.setColorCode(0xE7E5E6);
             slashBladePack.slashBladeState.setBaseAttackModifier(5f);
-            slashBladePack.setSA(multipleDimensionalChoppingSA);
+            slashBladePack.setSA(starBlade_2_sa);
             slashBladePack.iSlashBladeStateSupplement.setDurable(12);
         }
 
@@ -140,12 +226,12 @@ public abstract class StarBladeSlashBladeRegister extends SlashBladeRegister {
                 SlashBladePack starBlade_1 = starBlade_1_slashBladeRegister.getSlashBladePack();
                 starBlade_1.slashBladeState.setKillCount(1000);
                 starBlade_1.slashBladeState.setRefine(75);
-                starBlade_1.ise.getPack(overloadSE).setLevel(2);
+                starBlade_1.ise.getPack(overloadSE).setLevel(1);
                 starBlade_1.ise.getPack(stormSE).setLevel(1);
                 starBlade_1.ise.getPack(stormVariantSE).setLevel(1);
                 EnchantmentHelper.setEnchantments(MapUtil.of(
-                        Enchantments.PROTECTION, 4,
-                        Enchantments.EFFICIENCY, 3,
+                        Enchantments.PROTECTION, 2,
+                        Enchantments.EFFICIENCY, 2,
                         Enchantments.INFINITY, 1), starBlade_1.itemStack);
 
                 return new SlashBladeRecipeSerializerRegister.SlashBladeRecipeRecipePack(
@@ -155,12 +241,22 @@ public abstract class StarBladeSlashBladeRegister extends SlashBladeRegister {
                                 "B  "
                         ),
                         MapUtil.of(
-                                "A", new IRecipeInItemPack.OfItemSE(stormSE, 1, true),
-                                "B", new IRecipeInItemPack.OfItemSE(stormVariantSE, 1, true),
+                                "A", new IRecipeInItemPack.OfItemSE(stormSE, 1),
+                                "B", new IRecipeInItemPack.OfItemSE(stormVariantSE, 1),
                                 "V", new IRecipeInItemPack.OfSlashBlade(starBlade_1.itemStack)),
                         "V",
                         new IResultPack.OfSlashBladeRegister(starBlade_2_slashBladeRegister)
                 );
+            }
+        }
+
+        @VoluntarilyRegister
+        public static class StarBlade_2_SA extends StarBlade_SA {
+            @Override
+            public void defaultConfig() {
+                super.defaultConfig();
+                attackNumber = 8;
+                range = 16;
             }
         }
 
@@ -170,14 +266,14 @@ public abstract class StarBladeSlashBladeRegister extends SlashBladeRegister {
     public static class StarBlade_3_SlashBladeRegister extends StarBladeSlashBladeRegister {
 
         @VoluntarilyAssignment
-        protected MultipleDimensionalChoppingSA multipleDimensionalChoppingSA;
+        protected StarBlade_3_SA starBlade_3_sa;
 
         @Override
         protected void defaultItemStackConfig(ItemStack itemStack) {
             super.defaultItemStackConfig(itemStack);
             slashBladePack.slashBladeState.setBaseAttackModifier(6f);
             slashBladePack.iSlashBladeStateSupplement.setAttackDistance(1.5f);
-            slashBladePack.setSA(multipleDimensionalChoppingSA);
+            slashBladePack.setSA(starBlade_3_sa);
             slashBladePack.iSlashBladeStateSupplement.setDurable(24);
 
         }
@@ -211,12 +307,12 @@ public abstract class StarBladeSlashBladeRegister extends SlashBladeRegister {
                 SlashBladePack starBlade_2 = starBlade_2_slashBladeRegister.getSlashBladePack();
                 starBlade_2.slashBladeState.setKillCount(2000);
                 starBlade_2.slashBladeState.setRefine(275);
-                starBlade_2.ise.getPack(overloadSE).setLevel(3);
-                starBlade_2.ise.getPack(stormSE).setLevel(2);
-                starBlade_2.ise.getPack(stormVariantSE).setLevel(2);
+                starBlade_2.ise.getPack(overloadSE).setLevel(1);
+                starBlade_2.ise.getPack(stormSE).setLevel(1);
+                starBlade_2.ise.getPack(stormVariantSE).setLevel(1);
                 EnchantmentHelper.setEnchantments(MapUtil.of(
-                        Enchantments.PROTECTION, 4,
-                        Enchantments.EFFICIENCY, 3,
+                        Enchantments.PROTECTION, 2,
+                        Enchantments.EFFICIENCY, 2,
                         Enchantments.INFINITY, 1), starBlade_2.itemStack);
 
                 return new SlashBladeRecipeSerializerRegister.SlashBladeRecipeRecipePack(
@@ -226,9 +322,9 @@ public abstract class StarBladeSlashBladeRegister extends SlashBladeRegister {
                                 "CBA"
                         ),
                         MapUtil.of(
-                                "A", new IRecipeInItemPack.OfItemSE(overloadSE, 2, true),
-                                "B", new IRecipeInItemPack.OfItemSE(stormSE, 2, true),
-                                "C", new IRecipeInItemPack.OfItemSE(stormVariantSE, 2, true),
+                                "A", new IRecipeInItemPack.OfItemSE(overloadSE, 1),
+                                "B", new IRecipeInItemPack.OfItemSE(stormSE, 1),
+                                "C", new IRecipeInItemPack.OfItemSE(stormVariantSE, 1),
                                 "D", new IRecipeInItemPack.OfEntity(EntityType.WITCH),
                                 "V", new IRecipeInItemPack.OfSlashBlade(starBlade_2.itemStack)
                         ),
@@ -238,13 +334,22 @@ public abstract class StarBladeSlashBladeRegister extends SlashBladeRegister {
             }
         }
 
+        @VoluntarilyRegister
+        public static class StarBlade_3_SA extends StarBlade_SA {
+            @Override
+            public void defaultConfig() {
+                super.defaultConfig();
+                attackNumber = 12;
+                range = 20;
+            }
+        }
 
     }
 
     @VoluntarilyRegister
     public static class StarBlade_4_SlashBladeRegister extends StarBladeSlashBladeRegister {
         @VoluntarilyAssignment
-        protected InfiniteDimensionalChoppingSA infiniteDimensionalChoppingSA;
+        protected StarBlade_4_SA starBlade_4_sa;
 
 
         @Override
@@ -252,7 +357,7 @@ public abstract class StarBladeSlashBladeRegister extends SlashBladeRegister {
             super.defaultItemStackConfig(itemStack);
             slashBladePack.slashBladeState.setBaseAttackModifier(7f);
             slashBladePack.iSlashBladeStateSupplement.setAttackDistance(2f);
-            slashBladePack.setSA(infiniteDimensionalChoppingSA);
+            slashBladePack.setSA(starBlade_4_sa);
             slashBladePack.iSlashBladeStateSupplement.setDurable(48);
         }
 
@@ -307,7 +412,7 @@ public abstract class StarBladeSlashBladeRegister extends SlashBladeRegister {
                 starBlade_3.ise.getPack(severBreakSE).setLevel(4);
 
                 EnchantmentHelper.setEnchantments(MapUtil.of(
-                        Enchantments.PROTECTION, 4,
+                        Enchantments.PROTECTION, 3,
                         Enchantments.EFFICIENCY, 3,
                         Enchantments.INFINITY, 1), starBlade_3.itemStack);
 
@@ -324,6 +429,16 @@ public abstract class StarBladeSlashBladeRegister extends SlashBladeRegister {
                         "V",
                         new IResultPack.OfSlashBladeRegister(starBlade_4_slashBladeRegister)
                 );
+            }
+        }
+
+        @VoluntarilyRegister
+        public static class StarBlade_4_SA extends StarBlade_SA {
+            @Override
+            public void defaultConfig() {
+                super.defaultConfig();
+                attackNumber = 16;
+                range = 24;
             }
         }
 

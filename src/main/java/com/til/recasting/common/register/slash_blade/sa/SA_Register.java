@@ -2,8 +2,8 @@ package com.til.recasting.common.register.slash_blade.sa;
 
 import com.til.glowing_fire_glow.common.register.RegisterBasics;
 import com.til.glowing_fire_glow.common.util.StringUtil;
-import com.til.recasting.common.capability.SlashBladePack;
-import com.til.recasting.common.capability.UseSlashBladeEntityPack;
+import com.til.recasting.common.data.SlashBladePack;
+import com.til.recasting.common.data.UseSlashBladeEntityPack;
 import mods.flammpfeil.slashblade.ability.StunManager;
 import mods.flammpfeil.slashblade.capability.slashblade.ComboState;
 import mods.flammpfeil.slashblade.capability.slashblade.combo.Extra;

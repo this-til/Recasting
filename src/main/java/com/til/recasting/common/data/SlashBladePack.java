@@ -1,7 +1,9 @@
-package com.til.recasting.common.capability;
+package com.til.recasting.common.data;
 
 import com.til.glowing_fire_glow.common.register.StaticVoluntarilyAssignment;
 import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
+import com.til.recasting.common.capability.ISE;
+import com.til.recasting.common.capability.ISlashBladeStateSupplement;
 import com.til.recasting.common.register.capability.ISlashBladeStateSupplement_CapabilityRegister;
 import com.til.recasting.common.register.capability.SE_CapabilityRegister;
 import com.til.recasting.common.register.slash_blade.sa.SA_Register;
@@ -12,7 +14,6 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.item.ItemStack;
 
-import java.util.HashMap;
 import java.util.Map;
 
 @StaticVoluntarilyAssignment
@@ -70,7 +71,10 @@ public class SlashBladePack {
         Map<Enchantment, Integer> mainEnchantmentMap = EnchantmentHelper.getEnchantments(itemStack);
         Map<Enchantment, Integer> enchantmentMap = EnchantmentHelper.getEnchantments(itemStack);
         for (Map.Entry<Enchantment, Integer> enchantmentIntegerEntry : mainEnchantmentMap.entrySet()) {
-            if (!enchantmentMap.containsKey(enchantmentIntegerEntry.getKey()) || enchantmentMap.get(enchantmentIntegerEntry.getKey()) < enchantmentIntegerEntry.getValue()) {
+            if (!enchantmentMap.containsKey(enchantmentIntegerEntry.getKey())) {
+                return false;
+            }
+            if (enchantmentMap.get(enchantmentIntegerEntry.getKey()) < Math.min(enchantmentIntegerEntry.getValue(), enchantmentIntegerEntry.getKey().getMaxLevel())) {
                 return false;
             }
         }
@@ -82,7 +86,7 @@ public class SlashBladePack {
             if (!slashBladePack.ise.hasSE(se_registerSE_packEntry.getKey())) {
                 return false;
             }
-            if (slashBladePack.ise.getPack(se_registerSE_packEntry.getKey()).getLevel() < se_registerSE_packEntry.getValue().getLevel()) {
+            if (slashBladePack.ise.getPack(se_registerSE_packEntry.getKey()).getLevel() < Math.min(se_registerSE_packEntry.getValue().getLevel(), se_registerSE_packEntry.getKey().getMaxLevel())) {
                 return false;
             }
         }
@@ -100,17 +104,19 @@ public class SlashBladePack {
         SlashBladePack outSlashBladePack = new SlashBladePack(outItemStack);
         outSlashBladePack.slashBladeState.setKillCount(slashBladePack.slashBladeState.getKillCount());
         outSlashBladePack.slashBladeState.setRefine(slashBladePack.slashBladeState.getRefine() / 2);
-        for (Map.Entry<SE_Register, ISE.SE_Pack> se_registerSE_packEntry : slashBladePack.ise.getAllSE().entrySet()) {
-            if (se_registerSE_packEntry.getValue().isEmpty()) {
+
+        for (Map.Entry<SE_Register, ISE.SE_Pack> entry : slashBladePack.ise.getAllSE().entrySet()) {
+            if (entry.getValue().isEmpty()) {
                 continue;
             }
-            ISE.SE_Pack se_pack = outSlashBladePack.ise.getPack(se_registerSE_packEntry.getKey());
-            se_pack.setLevel(se_pack.getLevel() - 1);
+            ISE.SE_Pack outPack = outSlashBladePack.ise.getPack(entry.getKey());
+            outPack.setLevel(Math.max(outPack.getLevel(), entry.getValue().getLevel() - 1));
         }
+
+        Map<Enchantment, Integer> outEnchantmentMap = EnchantmentHelper.getEnchantments(outItemStack);
         Map<Enchantment, Integer> enchantmentMap = EnchantmentHelper.getEnchantments(slashBladePack.itemStack);
-        Map<Enchantment, Integer> outEnchantmentMap = new HashMap<>(enchantmentMap);
-        for (Map.Entry<Enchantment, Integer> enchantmentIntegerEntry : enchantmentMap.entrySet()) {
-            outEnchantmentMap.put(enchantmentIntegerEntry.getKey(), enchantmentIntegerEntry.getValue() - 1);
+        for (Map.Entry<Enchantment, Integer> entry : enchantmentMap.entrySet()) {
+            outEnchantmentMap.put(entry.getKey(), Math.max(outEnchantmentMap.get(entry.getKey()), entry.getValue() - 1));
         }
         EnchantmentHelper.setEnchantments(outEnchantmentMap, outItemStack);
         return outSlashBladePack;

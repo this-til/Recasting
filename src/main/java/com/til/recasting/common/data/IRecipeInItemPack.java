@@ -8,7 +8,6 @@ import com.til.glowing_fire_glow.common.util.gson.AcceptTypeJson;
 import com.til.glowing_fire_glow.common.util.gson.type_adapter.factory.ForgeRegistryItemTypeAdapterFactory;
 import com.til.recasting.common.capability.IItemSA;
 import com.til.recasting.common.capability.IItemSE;
-import com.til.recasting.common.capability.SlashBladePack;
 import com.til.recasting.common.register.capability.IItemBiome_CapabilityRegister;
 import com.til.recasting.common.register.capability.IItemEntity_CapabilityRegister;
 import com.til.recasting.common.register.capability.ItemSA_CapabilityRegister;
@@ -16,27 +15,21 @@ import com.til.recasting.common.register.capability.ItemSE_CapabilityRegister;
 import com.til.recasting.common.register.slash_blade.SlashBladeRegister;
 import com.til.recasting.common.register.slash_blade.sa.SA_Register;
 import com.til.recasting.common.register.slash_blade.se.SE_Register;
-import com.til.recasting.common.register.slash_blade.se.instance.StormSE;
 import com.til.recasting.common.register.world.item.Biome_DepositItemRegister;
 import com.til.recasting.common.register.world.item.Entity_DepositItemRegister;
 import com.til.recasting.common.register.world.item.SA_DepositItemRegister;
 import com.til.recasting.common.register.world.item.SE_DepositItemRegister;
 import net.minecraft.entity.EntityType;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.tags.ITag;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 @AcceptTypeJson
 @StaticVoluntarilyAssignment
@@ -115,23 +108,19 @@ public interface IRecipeInItemPack extends Predicate<ItemStack> {
         protected SE_Register se_register;
         protected float successRate;
 
-        protected boolean protect;
 
-
-
-        public OfItemSE(SE_Register se_register, float successRate, boolean protect) {
+        public OfItemSE(SE_Register se_register, float successRate) {
             this.se_register = se_register;
             this.successRate = successRate;
-            this.protect = protect;
         }
 
         public OfItemSE(SE_Register se_register) {
-            this(se_register, 0, false);
+            this(se_register, 0);
         }
 
         @Override
         public Ingredient toIngredient() {
-            return new ItemStackIngredient(se_depositItemRegister.mackItemStack(se_register, successRate, protect));
+            return new ItemStackIngredient(se_depositItemRegister.mackItemStack(se_register, successRate));
         }
 
         @Override
@@ -148,7 +137,7 @@ public interface IRecipeInItemPack extends Predicate<ItemStack> {
             if (iItemSE.getBasicsSuccessRate() - successRate > 0.01) {
                 return false;
             }
-            return !protect || iItemSE.isProtect();
+            return true;
         }
     }
 

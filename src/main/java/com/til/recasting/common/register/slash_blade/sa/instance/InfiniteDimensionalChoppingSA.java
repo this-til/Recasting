@@ -1,13 +1,11 @@
 package com.til.recasting.common.register.slash_blade.sa.instance;
 
-import com.til.glowing_fire_glow.GlowingFireGlow;
 import com.til.glowing_fire_glow.common.capability.time_run.TimerCell;
 import com.til.glowing_fire_glow.common.config.ConfigField;
 import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
 import com.til.glowing_fire_glow.common.register.VoluntarilyRegister;
 import com.til.glowing_fire_glow.common.util.Pos;
-import com.til.recasting.common.capability.UseSlashBladeEntityPack;
-import com.til.recasting.common.entity.JudgementCutEntity;
+import com.til.recasting.common.data.UseSlashBladeEntityPack;
 import com.til.recasting.common.register.entity_predicate.DefaultEntityPredicateRegister;
 import com.til.recasting.common.register.slash_blade.sa.SA_Register;
 import com.til.recasting.common.register.target_selector.DefaultTargetSelectorRegister;
@@ -19,7 +17,6 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.vector.Vector3d;
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 /***
  * 无限次元斩
@@ -66,7 +63,7 @@ public class InfiniteDimensionalChoppingSA extends SA_Register {
             slashBladeEntityPack.timeRun.addTimerCell(new TimerCell(() -> {
                 while (true) {
                     if (attackEntity.isEmpty()) {
-                        JudgementCutManage.doJudgementCut(slashBladeEntityPack.entity, hit, 10, attackPos, null);
+                        JudgementCutManage.doJudgementCut(slashBladeEntityPack.entity, hit, 10, attackPos, null, null);
                         return;
                     }
                     Entity entity = attackEntity.get(slashBladeEntityPack.entity.getRNG().nextInt(attackEntity.size()));
@@ -74,7 +71,7 @@ public class InfiniteDimensionalChoppingSA extends SA_Register {
                         attackEntity.remove(entity);
                         continue;
                     }
-                    JudgementCutManage.doJudgementCut(slashBladeEntityPack.entity, hit, 10, RayTraceUtil.getPosition(entity), null);
+                    JudgementCutManage.doJudgementCut(slashBladeEntityPack.entity, hit, 10, RayTraceUtil.getPosition(entity), null, null);
                     return;
                 }
             }, _delay, 0));

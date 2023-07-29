@@ -16,14 +16,10 @@ import com.til.recasting.common.register.recipe.SpecialRecipeSerializerRegister;
 import com.til.recasting.common.register.slash_blade.se.SE_Register;
 import com.til.recasting.common.register.util.RayTraceUtil;
 import com.til.recasting.common.register.world.item.SE_DepositItemRegister;
-import mods.flammpfeil.slashblade.init.SBItems;
 import net.minecraft.entity.Entity;
-import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.SoundEvents;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-
-import java.util.List;
 
 /***
  * 须臾
@@ -44,15 +40,12 @@ public class MomentSE extends SE_Register {
             return;
         }
         ISE.SE_Pack se_pack = event.pack.slashBladePack.ise.getPack(this);
-        Entity targetEntity = event.pack.slashBladePack.slashBladeState.getTargetEntity(event.pack.entity.world);
         SummondSwordEntity summondSwordEntity = new SummondSwordEntity(summondSwordEntityTypeRegister.getEntityType(), event.pack.entity.world, event.pack.entity);
         event.pack.slashBladePack.iSlashBladeStateSupplement.decorate(summondSwordEntity);
         summondSwordEntity.setColor(event.pack.slashBladePack.slashBladeState.getColorCode());
-        summondSwordEntity.setDamage(attack.of(se_pack.getLevel()));
-        summondSwordEntity.setDelay(20);
-        if (targetEntity != null) {
-            summondSwordEntity.lookAt(RayTraceUtil.getPosition(targetEntity), false);
-        }
+        summondSwordEntity.setDamage((float) attack.of(se_pack.getLevel()));
+        summondSwordEntity.setMaxDelay(20);
+        summondSwordEntity.lookAt(event.pack.getAttackPos(), false);
         event.pack.entity.world.addEntity(summondSwordEntity);
         event.pack.entity.playSound(SoundEvents.ITEM_CHORUS_FRUIT_TELEPORT, 0.2F, 1.45F);
     }
@@ -89,8 +82,8 @@ public class MomentSE extends SE_Register {
                     ),
                     MapUtil.of(
                             "A", new IRecipeInItemPack.OfTag(Tags.Items.GEMS_EMERALD.getName()),
-                            "B", new IRecipeInItemPack.OfItemSE(cooperateWithSE),
-                            "V", new IRecipeInItemPack.OfItemSE(impactSE)
+                            "V", new IRecipeInItemPack.OfItemSE(cooperateWithSE),
+                            "B", new IRecipeInItemPack.OfItemSE(impactSE)
                     ),
                     new IResultPack.OfItemStack(se_depositItemRegister.mackItemStack(momentSE))
             );

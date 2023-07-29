@@ -4,13 +4,13 @@ import com.til.glowing_fire_glow.GlowingFireGlow;
 import com.til.glowing_fire_glow.common.register.RegisterBasics;
 import com.til.glowing_fire_glow.common.util.StringUtil;
 import com.til.recasting.common.capability.ISE;
-import com.til.recasting.common.capability.SlashBladePack;
+import com.til.recasting.common.data.SlashBladePack;
 import com.til.recasting.common.data.IRecipeInItemPack;
 import com.til.recasting.common.data.IResultPack;
 import com.til.recasting.common.register.recipe.SlashBladeRecipeSerializerRegister;
 import com.til.recasting.common.register.slash_blade.AllSlashBladeRegister;
 import com.til.recasting.common.register.slash_blade.SlashBladeRegister;
-import com.til.recasting.common.register.slash_blade.sa.AllSARegister;
+import com.til.recasting.common.register.slash_blade.sa.AllSA_Register;
 import com.til.recasting.common.register.slash_blade.sa.SA_Register;
 import com.til.recasting.common.register.slash_blade.se.SE_Register;
 import mods.flammpfeil.slashblade.item.ItemSlashBlade;
@@ -181,7 +181,7 @@ public abstract class ItemSlashBladeMixin {
         tooltip.add(new StringTextComponent(""));
 
 
-        SA_Register sa_register = GlowingFireGlow.getInstance().getWorldComponent(AllSARegister.class).getSA_Register(slashBladePack.slashBladeState.getSlashArts());
+        SA_Register sa_register = GlowingFireGlow.getInstance().getWorldComponent(AllSA_Register.class).getSA_Register(slashBladePack.slashBladeState.getSlashArts());
         if (sa_register != null) {
             tooltip.add(new TranslationTextComponent("SA:%s",
                     new TranslationTextComponent(StringUtil.formatLang(sa_register.getName()))));

@@ -16,6 +16,8 @@ import net.minecraft.item.Items;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
 
+import java.awt.*;
+
 @VoluntarilyRegister
 public class BlackSlashBladeRegister extends SlashBladeRegister {
 
@@ -31,7 +33,7 @@ public class BlackSlashBladeRegister extends SlashBladeRegister {
     protected void defaultItemStackConfig(ItemStack itemStack) {
         super.defaultItemStackConfig(itemStack);
         slashBladePack.slashBladeState.setBaseAttackModifier(4f);
-        slashBladePack.slashBladeState.setColorCode(0x000000);
+        slashBladePack.slashBladeState.setColorCode(new Color(12, 12, 12, 255).getRGB());
         slashBladePack.iSlashBladeStateSupplement.setDurable(4);
     }
 

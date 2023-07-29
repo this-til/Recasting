@@ -1,14 +1,13 @@
 package com.til.recasting.common.register.slash_blade.sa;
 
 import com.til.glowing_fire_glow.common.register.RegisterManage;
-import com.til.recasting.common.register.slash_blade.sa.SA_Register;
 import mods.flammpfeil.slashblade.specialattack.SlashArts;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AllSARegister extends RegisterManage<SA_Register> {
+public class AllSA_Register extends RegisterManage<SA_Register> {
 
     protected final Map<SlashArts, SA_Register> slashArtsMap = new HashMap<>();
 

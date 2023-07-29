@@ -23,13 +23,10 @@ import java.awt.*;
 @OnlyIn(Dist.CLIENT)
 public class JudgementCutEntityRender<E extends JudgementCutEntity> extends EntityRenderer<E> {
 
-    public static final ResourceLocation RESOURCE_LOCATION = new ResourceLocation(SlashBlade.modid, "model/util/slashdim.obj");
-    public static final ResourceLocation RESOURCE_LOCATION1 = new ResourceLocation(SlashBlade.modid, "model/util/slashdim.png");
-
     @Nullable
     @Override
     public ResourceLocation getEntityTexture(E entity) {
-        return RESOURCE_LOCATION1;
+        return entity.getTexture();
     }
 
     public JudgementCutEntityRender(EntityRendererManager renderManagerIn) {
@@ -45,9 +42,9 @@ public class JudgementCutEntityRender<E extends JudgementCutEntity> extends Enti
             matrixStackIn.rotate(Vector3f.ZP.rotationDegrees(MathHelper.lerp(partialTicks, entity.prevRotationPitch, entity.rotationPitch)));
 
 
-            WavefrontObject model = BladeModelManager.getInstance().getModel(RESOURCE_LOCATION);
+            WavefrontObject model = BladeModelManager.getInstance().getModel(entity.getModel());
 
-            int lifetime = entity.getLifetime();
+            int lifetime = entity.getMaxLifeTime();
 
             double deathTime = lifetime;
             //double baseAlpha = Math.sin(Math.PI * 0.5 * (Math.min(deathTime, Math.max(0, (lifetime - (entity.ticksExisted) - partialTicks))) / deathTime));
@@ -59,7 +56,7 @@ public class JudgementCutEntityRender<E extends JudgementCutEntity> extends Enti
             matrixStackIn.rotate(Vector3f.YP.rotationDegrees(seed));
 
 
-            float scale = 0.01f;
+            float scale = entity.getSize() * 0.01f;
             matrixStackIn.scale(scale, scale, scale);
 
             int color = entity.getColor() & 0xFFFFFF;
@@ -82,7 +79,7 @@ public class JudgementCutEntityRender<E extends JudgementCutEntity> extends Enti
                 try (MSAutoCloser msacB = MSAutoCloser.pushMatrix(matrixStackIn)) {
                     float cycleTicks = 15;
                     float wave = (entity.ticksExisted + (cycleTicks / (float) loop * l) + partialTicks) % cycleTicks;
-                    float waveScale = 1.0f + 0.03f * wave;
+                    float waveScale = 1 + 0.03f * wave;
                     matrixStackIn.scale(waveScale, waveScale, waveScale);
 
                     BladeRenderState.setCol(baseColor | ((int) (0x88 * ((cycleTicks - wave) / cycleTicks) * baseAlpha) << 24));

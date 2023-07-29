@@ -1,6 +1,7 @@
 package com.til.recasting.common.capability;
 
 import com.til.glowing_fire_glow.common.save.SaveField;
+import com.til.recasting.common.data.SlashBladePack;
 import com.til.recasting.common.register.slash_blade.se.SE_Register;
 
 import java.util.Random;
@@ -23,10 +24,6 @@ public interface IItemSE {
 
     void setBasicsSuccessRate(float successRate);
 
-    boolean isProtect();
-
-    void setProtect(boolean protect);
-
 
     /***
      * 尝试升级
@@ -43,9 +40,6 @@ public interface IItemSE {
             se_pack.setLevel(se_pack.getLevel() + 1);
             return true;
         }
-        if (!isProtect()) {
-            se_pack.setLevel(se_pack.getLevel() - 1);
-        }
         return false;
     }
 
@@ -57,8 +51,6 @@ public interface IItemSE {
         @SaveField
         protected float successRate;
 
-        @SaveField
-        protected boolean protect;
 
         @Override
         public SE_Register getSE() {
@@ -80,14 +72,5 @@ public interface IItemSE {
             this.successRate = successRate;
         }
 
-        @Override
-        public boolean isProtect() {
-            return protect;
-        }
-
-        @Override
-        public void setProtect(boolean protect) {
-            this.protect = protect;
-        }
     }
 }

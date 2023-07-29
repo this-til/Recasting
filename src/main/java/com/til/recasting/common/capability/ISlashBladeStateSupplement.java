@@ -3,6 +3,7 @@ package com.til.recasting.common.capability;
 
 import com.til.glowing_fire_glow.common.register.particle_register.ParticleRegister;
 import com.til.glowing_fire_glow.common.save.SaveField;
+import com.til.recasting.common.entity.JudgementCutEntity;
 import com.til.recasting.common.entity.SlashEffectEntity;
 import com.til.recasting.common.entity.SummondSwordEntity;
 import net.minecraft.util.ResourceLocation;
@@ -29,6 +30,16 @@ public interface ISlashBladeStateSupplement {
     void setSummondSwordTexture(ResourceLocation summondSwordTexture);
 
     @Nullable
+    ResourceLocation getJudgementCutModel();
+
+    void setJudgementCutModel(@Nullable ResourceLocation judgementCutModel);
+
+    @Nullable
+    ResourceLocation getJudgementCutTexture();
+
+    void setJudgementCutTexture(@Nullable ResourceLocation judgementCutTexture);
+
+    @Nullable
     ResourceLocation getSlashEffectTexture();
 
     void setSlashEffectTexture(ResourceLocation slashEffectTexture);
@@ -36,6 +47,8 @@ public interface ISlashBladeStateSupplement {
     void decorate(SummondSwordEntity summondSwordEntity);
 
     void decorate(SlashEffectEntity slashEffectEntity);
+
+    void decorate(JudgementCutEntity judgementCutEntity);
 
     float getDurable();
 
@@ -58,6 +71,13 @@ public interface ISlashBladeStateSupplement {
         @SaveField
         @Nullable
         protected ResourceLocation slashEffectTexture;
+
+        @SaveField
+        @Nullable
+        protected ResourceLocation judgementCutModel;
+        @SaveField
+        @Nullable
+        protected ResourceLocation judgementCutTexture;
 
         /***
          * 攻击的效果
@@ -105,6 +125,28 @@ public interface ISlashBladeStateSupplement {
             this.summondSwordTexture = summondSwordTexture;
         }
 
+        @Override
+        @Nullable
+        public ResourceLocation getJudgementCutModel() {
+            return judgementCutModel;
+        }
+
+        @Override
+        public void setJudgementCutModel(@Nullable ResourceLocation judgementCutModel) {
+            this.judgementCutModel = judgementCutModel;
+        }
+
+        @Override
+        @Nullable
+        public ResourceLocation getJudgementCutTexture() {
+            return judgementCutTexture;
+        }
+
+        @Override
+        public void setJudgementCutTexture(@Nullable ResourceLocation judgementCutTexture) {
+            this.judgementCutTexture = judgementCutTexture;
+        }
+
         @Nullable
         @Override
         public ResourceLocation getSlashEffectTexture() {
@@ -130,6 +172,16 @@ public interface ISlashBladeStateSupplement {
         public void decorate(SlashEffectEntity slashEffectEntity) {
             if (getSlashEffectTexture() != null) {
                 slashEffectEntity.setTexture(getSlashEffectTexture());
+            }
+        }
+
+        @Override
+        public void decorate(JudgementCutEntity judgementCutEntity) {
+            if (getJudgementCutModel() != null) {
+                judgementCutEntity.setModel(getJudgementCutModel());
+            }
+            if (getJudgementCutTexture() != null) {
+                judgementCutEntity.setTexture(getJudgementCutTexture());
             }
         }
 

@@ -23,8 +23,6 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
-import java.util.List;
-
 /***
  * 冲击，造成伤害有几率召唤幻影剑造成瞬间伤害
  */
@@ -55,8 +53,8 @@ public class ImpactSE extends SE_Register {
         summondSwordEntity.lookAt(pos, false);
         summondSwordEntity.setPosition(pos.getX(), pos.getY(), pos.getZ());
         summondSwordEntity.setColor(event.pack.slashBladePack.slashBladeState.getColorCode());
-        summondSwordEntity.setDamage(attack.of(se_pack.getLevel()));
-        summondSwordEntity.setDelay(100);
+        summondSwordEntity.setDamage((float) attack.of(se_pack.getLevel()));
+        summondSwordEntity.setMaxDelay(100);
         summondSwordEntity.doForceHitEntity(event.target);
         event.pack.entity.world.addEntity(summondSwordEntity);
         event.target.playSound(SoundEvents.ITEM_CHORUS_FRUIT_TELEPORT, 0.2F, 1.45F);
@@ -67,7 +65,7 @@ public class ImpactSE extends SE_Register {
     public void defaultConfig() {
         super.defaultConfig();
         probability = new NumberPack(0, 0.07);
-        attack = new NumberPack(0, 0.15);
+        attack = new NumberPack(0, 0.1);
     }
 
     @VoluntarilyRegister

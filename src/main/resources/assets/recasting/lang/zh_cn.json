@@ -6,19 +6,41 @@
   "recasting.void_sword_3_slash_blade_register" : "洞虚利刃[猩红]",
 
   "recasting.star_blade_slash_blade_register" : "星流利刃",
+
   "recasting.star_blade_1_slash_blade_register" : "星流利刃I",
+  "recasting.star_blade_1_sa" : "流星I",
+  "recasting.star_blade_1_sa.introduce" : "召唤数枚幻影剑攻击指定范围内的实体，对命中的实体追加次元斩攻击",
   "recasting.star_blade_2_slash_blade_register" : "星流利刃II",
+  "recasting.star_blade_2_sa" : "流星II",
+  "recasting.star_blade_2_sa.introduce" : "召唤数枚幻影剑攻击指定范围内的实体，对命中的实体追加次元斩攻击",
   "recasting.star_blade_3_slash_blade_register" : "星流利刃III",
+  "recasting.star_blade_3_sa" : "流星III",
+  "recasting.star_blade_3_sa.introduce" : "召唤数枚幻影剑攻击指定范围内的实体，对命中的实体追加次元斩攻击",
   "recasting.star_blade_4_slash_blade_register" : "星流利刃IV",
+  "recasting.star_blade_4_sa" : "流星IV",
+  "recasting.star_blade_4_sa.introduce" : "召唤数枚幻影剑攻击指定范围内的实体，对命中的实体追加次元斩攻击",
 
   "recasting.ba_gua_slash_blade_register" : "八卦剑",
 
   "recasting.black_slash_blade_register" : "黑刃",
 
   "recasting.blue_cloud_slash_blade_register" : "青云",
+  "recasting.blue_cloud_light_sa": "青芒",
+  "recasting.blue_cloud_light_sa.introduce": "在前方挥刀进行多次剑气攻击",
 
   "recasting.cool_mint_slash_blade_register" : "冰薄荷",
+  "recasting.cool_mint_slash_blade_sa": "乱舞",
+  "recasting.cool_mint_slash_blade_sa.introduce": "在前方挥刀进行多次剑气攻击",
 
+  "recasting.fluorescence_slash_blade_register" : "荧光",
+  "recasting.fluorescence_1_slash_blade_register" : "荧光",
+  "recasting.fluorescence_2_slash_blade_register" : "荧光[剑]",
+  "recasting.fluorescence_3_slash_blade_register" : "荧光[砍刀]",
+  "recasting.fluorescence_4_slash_blade_register" : "荧光[刀]",
+  "recasting.fluorescence_5_slash_blade_register" : "荧光[战斧]",
+  "recasting.fluorescence_6_slash_blade_register" : "荧光[闪电]",
+  "recasting.fluorescence_7_slash_blade_register" : "荧光[锤子]",
+  "recasting.fluorescence_8_slash_blade_register" : "荧光[镰刀]",
 
 
   "recasting": "重铸",
@@ -33,8 +55,8 @@
   "recasting.default_sa.introduce": "在目标位置进行次元斩攻击",
   "recasting.epidemic_summoned_sword_sa": "风暴幻影剑",
   "recasting.epidemic_summoned_sword_sa.introduce": "召唤幻影剑攻击指定位置",
-  "recasting.fanatical_dance_sa": "乱舞",
-  "recasting.fanatical_dance_sa.introduce": "在前方进行多次剑气攻击",
+
+
   "recasting.infinite_dimensional_chopping_sa": "无限次元斩",
   "recasting.infinite_dimensional_chopping_sa.introduce": "召唤次元斩攻击指定位置范围内的生物",
 
@@ -45,7 +67,7 @@
   "recasting.moment_se": "须臾",
   "recasting.moment_se.introduce": "挥刀时召唤幻影剑协同攻击",
   "recasting.overload_se": "过载",
-  "recasting.overload_se.introduce": "挥刀的时候有小概率触发审判",
+  "recasting.overload_se.introduce": "挥刀的时候有小概率触发次元斩",
   "recasting.storm_se": "风暴",
   "recasting.storm_se.introduce": "触发次元斩时，召唤幻影剑进行攻击",
   "recasting.storm_variant_se": "风暴·变体",
@@ -56,7 +78,10 @@
   "recasting.backtrack_se.introduce": "挥刀的时候恢复耐久",
   "recasting.grow_se": "生长",
   "recasting.grow_se.introduce": "挥刀时恢复生命",
-
+  "recasting.fluorescence_se" : "荧光",
+  "recasting.fluorescence_se.introduce" : "对攻击到的目标添加荧光效果",
+  "recasting.cross_chop_se" : "十字斩",
+  "recasting.cross_chop_se.introduce" : "挥刀的时候追加一道剑气",
   "recasting.sever_break_se": "断却",
   "recasting.sever_break_se.introduce": "触发次元斩之后造成一次大伤害和大范围的劈砍",
 

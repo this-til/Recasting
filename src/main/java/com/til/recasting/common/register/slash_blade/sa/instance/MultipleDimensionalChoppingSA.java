@@ -3,7 +3,7 @@ package com.til.recasting.common.register.slash_blade.sa.instance;
 import com.til.glowing_fire_glow.common.capability.time_run.TimerCell;
 import com.til.glowing_fire_glow.common.config.ConfigField;
 import com.til.glowing_fire_glow.common.register.VoluntarilyRegister;
-import com.til.recasting.common.capability.UseSlashBladeEntityPack;
+import com.til.recasting.common.data.UseSlashBladeEntityPack;
 import com.til.recasting.common.entity.JudgementCutEntity;
 import com.til.recasting.common.register.slash_blade.sa.SA_Register;
 import com.til.recasting.common.register.util.JudgementCutManage;
@@ -33,9 +33,10 @@ public class MultipleDimensionalChoppingSA extends SA_Register {
         for (int i = 0; i < attackNumber; i++) {
             int _delay = delay * i;
             slashBladeEntityPack.timeRun.addTimerCell(new TimerCell(() -> {
-                JudgementCutEntity judgementCutEntity = JudgementCutManage.doJudgementCut(slashBladeEntityPack.entity, hit, 10, pos.get(), null);
-                if (judgementCutEntity != null) {
-                    pos.set(judgementCutEntity.getPositionVec());
+                AtomicReference<JudgementCutEntity> judgementCutEntity = new AtomicReference<>();
+                JudgementCutManage.doJudgementCut(slashBladeEntityPack.entity, hit, 10, pos.get(), null, judgementCutEntity::set);
+                if (judgementCutEntity.get() != null) {
+                    pos.set(judgementCutEntity.get().getPositionVec());
                 }
             }, _delay, 0));
         }

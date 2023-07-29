@@ -75,7 +75,7 @@ public class OverloadSE extends SE_Register {
                             "D", new IRecipeInItemPack.OfTag(Tags.Items.SEEDS.getName()),
                             "E", new IRecipeInItemPack.OfTag(Tags.Items.STONE.getName()),
                             "F", new IRecipeInItemPack.OfTag(Tags.Items.SAND_RED.getName()),
-                            "G", new IRecipeInItemPack.OfTag(Tags.Items.ORES_QUARTZ.getName()),
+                            "G", new IRecipeInItemPack.OfTag(Tags.Items.GEMS_QUARTZ.getName()),
                             "H", new IRecipeInItemPack.OfTag(Tags.Items.MUSHROOMS.getName()),
                             "V", new IRecipeInItemPack.OfItemSE(cooperateWithSE)
                             ),

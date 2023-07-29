@@ -1,5 +1,6 @@
 package com.til.recasting.common.capability;
 
+import com.google.gson.annotations.Expose;
 import com.til.glowing_fire_glow.common.save.SaveField;
 import com.til.glowing_fire_glow.common.util.MathUtil;
 import com.til.recasting.common.register.slash_blade.se.SE_Register;
@@ -39,6 +40,12 @@ public interface ISE {
         protected int level;
 
         /***
+         * 用来记录冷却行星，或者别的什么
+         */
+        @Expose
+        protected long oldTime;
+
+        /***
          * se的自定义数据
          */
         protected CompoundNBT customData;
@@ -58,6 +65,13 @@ public interface ISE {
             this.level = MathUtil.clamp(level, se_register.getMaxLevel(), 0);
         }
 
+        public long getOldTime() {
+            return oldTime;
+        }
+
+        public void setOldTime(long oldTime) {
+            this.oldTime = oldTime;
+        }
 
         public CompoundNBT getCustomData() {
             if (customData == null) {

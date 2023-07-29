@@ -71,7 +71,7 @@ public class StormVariantSE extends SE_Register {
     public void defaultConfig() {
         super.defaultConfig();
         attack = new NumberPack(0, 0.05);
-        number = new NumberPack(4, 2);
+        number = new NumberPack(2, 1);
     }
 
     @VoluntarilyRegister

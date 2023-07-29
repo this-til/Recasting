@@ -2,7 +2,7 @@ package com.til.recasting.common.register.util;
 
 import com.til.glowing_fire_glow.common.main.IWorldComponent;
 import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
-import com.til.recasting.common.capability.UseSlashBladeEntityPack;
+import com.til.recasting.common.data.UseSlashBladeEntityPack;
 import com.til.recasting.common.register.target_selector.DefaultTargetSelectorRegister;
 import mods.flammpfeil.slashblade.event.InputCommandEvent;
 import mods.flammpfeil.slashblade.util.InputCommand;

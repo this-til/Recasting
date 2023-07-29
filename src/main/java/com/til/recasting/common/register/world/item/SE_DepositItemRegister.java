@@ -63,18 +63,14 @@ public class SE_DepositItemRegister extends ItemRegister {
     }
 
     public ItemStack mackItemStack(SE_Register se_register) {
-        return mackItemStack(se_register, successRate, false);
+        return mackItemStack(se_register, successRate);
     }
 
-    public ItemStack mackItemStack(SE_Register se_register, boolean p) {
-        return mackItemStack(se_register, successRate, p);
-    }
 
-    public ItemStack mackItemStack(SE_Register se_register, float successRate, boolean protect) {
+    public ItemStack mackItemStack(SE_Register se_register, float successRate) {
         ItemStack itemStack = new ItemStack(getItem());
         itemStack.getCapability(itemSE_CapabilityRegister.getCapability()).ifPresent(pack -> {
             pack.setSE(se_register);
-            pack.setProtect(protect);
             pack.setBasicsSuccessRate(successRate);
         });
         return itemStack;
@@ -98,11 +94,12 @@ public class SE_DepositItemRegister extends ItemRegister {
 
         @Override
         public boolean hasEffect(ItemStack stack) {
-            IItemSE iItemSE = stack.getCapability(itemSE_CapabilityRegister.getCapability()).orElse(null);
+          /*  IItemSE iItemSE = stack.getCapability(itemSE_CapabilityRegister.getCapability()).orElse(null);
             if (iItemSE == null) {
                 return false;
             }
-            return iItemSE.isProtect();
+            return iItemSE.isProtect();*/
+            return true;
         }
 
         @Override
@@ -133,8 +130,8 @@ public class SE_DepositItemRegister extends ItemRegister {
                 return;
             }
             for (SE_Register se_register : allSE_register.forAll()) {
-                items.add(se_depositItemRegister.mackItemStack(se_register, true));
-                items.add(se_depositItemRegister.mackItemStack(se_register, false));
+                items.add(se_depositItemRegister.mackItemStack(se_register));
+                items.add(se_depositItemRegister.mackItemStack(se_register, Integer.MAX_VALUE));
             }
         }
     }

@@ -46,12 +46,12 @@ public class SlashEffectEntityRender<T extends SlashEffectEntity> extends Entity
 
             matrixStackIn.rotate(Vector3f.YP.rotationDegrees(-MathHelper.lerp(partialTicks, entity.prevRotationYaw, entity.rotationYaw) - 90.0F));
             matrixStackIn.rotate(Vector3f.ZP.rotationDegrees(MathHelper.lerp(partialTicks, entity.prevRotationPitch, entity.rotationPitch)));
-            matrixStackIn.rotate(Vector3f.XP.rotationDegrees(entity.getRotationRoll()));
+            matrixStackIn.rotate(Vector3f.XP.rotationDegrees(entity.getRoll()));
 
 
             WavefrontObject model = BladeModelManager.getInstance().getModel(entity.getModel());
 
-            int lifetime = entity.getLifetime();
+            int lifetime = entity.getMaxLifeTime();
 
             float progress = Math.min(lifetime, (entity.ticksExisted + partialTicks)) / lifetime;
 
@@ -72,7 +72,7 @@ public class SlashEffectEntityRender<T extends SlashEffectEntity> extends Entity
             matrixStackIn.scale(baseScale, baseScale, baseScale);
 
             float yscale = 0.03f;
-            float scale = entity.getBaseSize() * MathHelper.lerp(progress, 0.03f, 0.035f);
+            float scale = entity.getSize() * MathHelper.lerp(progress, 0.03f, 0.035f);
 
             int color = entity.getColor() & 0xFFFFFF;
 
@@ -83,7 +83,7 @@ public class SlashEffectEntityRender<T extends SlashEffectEntity> extends Entity
 
             //black alpha inside
             try (MSAutoCloser msacb = MSAutoCloser.pushMatrix(matrixStackIn)) {
-                float windscale = entity.getBaseSize() * MathHelper.lerp(progress, 0.035f, 0.03f);
+                float windscale = entity.getSize() * MathHelper.lerp(progress, 0.035f, 0.03f);
                 matrixStackIn.scale(windscale, yscale, windscale);
                 Face.setAlphaOverride(Face.alphaOverrideYZZ);
                 Face.setUvOperator(1, 1, 0, -0.8f + progress * 0.3f);
@@ -102,7 +102,7 @@ public class SlashEffectEntityRender<T extends SlashEffectEntity> extends Entity
 
             //white add outside
             try (MSAutoCloser msacb = MSAutoCloser.pushMatrix(matrixStackIn)) {
-                float windscale = entity.getBaseSize() * MathHelper.lerp(progress, 0.03f, 0.0375f);
+                float windscale = entity.getSize() * MathHelper.lerp(progress, 0.03f, 0.0375f);
                 matrixStackIn.scale(windscale, yscale, windscale);
                 Face.setAlphaOverride(Face.alphaOverrideYZZ);
                 Face.setUvOperator(1, 1, 0, -0.5f + progress * -0.2f);

@@ -6,9 +6,9 @@ import com.til.glowing_fire_glow.common.register.RegisterBasics;
 import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
 import com.til.glowing_fire_glow.common.util.Delayed;
 import com.til.glowing_fire_glow.common.util.StringUtil;
-import com.til.recasting.common.capability.SlashBladePack;
-import com.til.recasting.common.register.slash_blade.sa.SA_Register;
+import com.til.recasting.common.data.SlashBladePack;
 import mods.flammpfeil.slashblade.SlashBlade;
+import mods.flammpfeil.slashblade.client.renderer.model.obj.WavefrontObject;
 import mods.flammpfeil.slashblade.init.SBItems;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -28,6 +28,11 @@ public abstract class SlashBladeRegister extends RegisterBasics {
     protected ResourceLocation summondSwordModel;
     @Nullable
     protected ResourceLocation summondSwordTexture;
+
+    @Nullable
+    protected ResourceLocation judgementCutModel;
+    @Nullable
+    protected ResourceLocation judgementCutTexture;
 
     @Nullable
     protected ResourceLocation slashEffectTexture;
@@ -56,6 +61,8 @@ public abstract class SlashBladeRegister extends RegisterBasics {
         slashBladePack.iSlashBladeStateSupplement.setSummondSwordModel(summondSwordModel);
         slashBladePack.iSlashBladeStateSupplement.setSummondSwordTexture(summondSwordTexture);
         slashBladePack.iSlashBladeStateSupplement.setSlashEffectTexture(slashEffectTexture);
+        slashBladePack.iSlashBladeStateSupplement.setJudgementCutModel(judgementCutModel);
+        slashBladePack.iSlashBladeStateSupplement.setJudgementCutTexture(judgementCutTexture);
     }
 
     public SlashBladePack getSlashBladePack() {

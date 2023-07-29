@@ -35,7 +35,7 @@ public class AnvilRepairManage implements IWorldComponent {
             return;
         }
         float newSuccessRate = leftItemSE.getBasicsSuccessRate() * leftItemStack.getCount() + rightItemSE.getBasicsSuccessRate() * rightItemStack.getCount();
-        event.setOutput(se_depositItemRegister.mackItemStack(leftItemSE.getSE(), newSuccessRate, false));
+        event.setOutput(se_depositItemRegister.mackItemStack(leftItemSE.getSE(), newSuccessRate));
         event.setCost(1 + (int) newSuccessRate * 10);
         event.setMaterialCost(rightItemStack.getCount());
     }
