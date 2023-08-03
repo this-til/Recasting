@@ -30,11 +30,11 @@ public class BacktrackSE extends SE_Register {
 
     @SubscribeEvent
     protected void onEventSlashBladeDoSlash(EventSlashBladeDoSlash event) {
-        if (!event.pack.slashBladePack.ise.hasSE(this)) {
+        if (!event.pack.getSlashBladePack().getIse().hasSE(this)) {
             return;
         }
-        ISE.SE_Pack se_pack = event.pack.slashBladePack.ise.getPack(this);
-        event.pack.slashBladePack.itemStack.setDamage(event.pack.slashBladePack.itemStack.getDamage() - (int) reply.of(se_pack.getLevel()));
+        ISE.SE_Pack se_pack = event.pack.getSlashBladePack().getIse().getPack(this);
+        event.pack.getSlashBladePack().getItemStack().setDamage(event.pack.getSlashBladePack().getItemStack().getDamage() - (int) reply.of(se_pack.getLevel()));
     }
 
     @Override

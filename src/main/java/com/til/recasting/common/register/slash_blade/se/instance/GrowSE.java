@@ -16,7 +16,6 @@ import com.til.recasting.common.register.world.item.SE_DepositItemRegister;
 import mods.flammpfeil.slashblade.init.SBItems;
 import net.minecraft.item.Items;
 import net.minecraft.item.crafting.Ingredient;
-import net.minecraftforge.common.Tags;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 /***
@@ -32,11 +31,11 @@ public class GrowSE extends SE_Register {
 
     @SubscribeEvent
     protected void onEventSlashBladeDoSlash(EventSlashBladeDoSlash event) {
-        if (!event.pack.slashBladePack.ise.hasSE(this)) {
+        if (!event.pack.getSlashBladePack().getIse().hasSE(this)) {
             return;
         }
-        ISE.SE_Pack se_pack = event.pack.slashBladePack.ise.getPack(this);
-        event.pack.entity.setHealth((float) (event.pack.entity.getHealth() + life.of(se_pack.getLevel())));
+        ISE.SE_Pack se_pack = event.pack.getSlashBladePack().getIse().getPack(this);
+        event.pack.getEntity().setHealth((float) (event.pack.getEntity().getHealth() + life.of(se_pack.getLevel())));
     }
 
     @Override

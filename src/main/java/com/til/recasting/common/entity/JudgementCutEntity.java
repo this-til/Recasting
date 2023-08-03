@@ -2,6 +2,7 @@ package com.til.recasting.common.entity;
 
 import com.til.glowing_fire_glow.common.register.StaticVoluntarilyAssignment;
 import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
+import com.til.recasting.common.register.back_type.JudgementCutBackTypeRegister;
 import com.til.recasting.common.register.entity_type.SlashEffectEntityTypeRegister;
 import com.til.recasting.common.register.util.AttackManager;
 import com.til.recasting.common.register.util.HitAssessment;
@@ -45,6 +46,15 @@ import java.util.List;
 public class JudgementCutEntity extends StandardizationAttackEntity {
 
 
+    @VoluntarilyAssignment
+    protected static JudgementCutBackTypeRegister.JudgementCutTickBackTypeRegister judgementCutTickBackTypeRegister;
+
+    @VoluntarilyAssignment
+    protected static JudgementCutBackTypeRegister.JudgementCutAttackBackTypeRegister judgementCutAttackBackTypeRegister;
+
+    @VoluntarilyAssignment
+    protected static JudgementCutBackTypeRegister.JudgementCutDeathBackTypeRegister judgementCutDeathBackTypeRegister;
+
 
     protected int seed;
     protected List<Entity> excludeEntity = new ArrayList<>();
@@ -65,6 +75,11 @@ public class JudgementCutEntity extends StandardizationAttackEntity {
             excludeEntity.add(shooting);
             setShooter(shooter);
         }
+        getBackRunPack().addRunBack(judgementCutAttackBackTypeRegister, (judgementCutEntity, hitEntity) -> {
+            if (hitEntity instanceof LivingEntity) {
+                KnockBacks.cancel.action.accept((LivingEntity) hitEntity);
+            }
+        });
     }
 
     @Override
@@ -106,10 +121,21 @@ public class JudgementCutEntity extends StandardizationAttackEntity {
         }
 
         if (!world.isRemote) {
+
+            getBackRunPack().runBack(judgementCutTickBackTypeRegister, a -> a.tick(this));
+
             //cyclehit
             if (this.ticksExisted % 2 == 0) {
-                KnockBacks knockBackType = KnockBacks.cancel;
-                AttackManager.areaAttack(getShooter(), this, knockBackType.action, 4.0f, (float) getDamage(), false, true, true, excludeEntity);
+                AttackManager.areaAttack(
+                        getShooter(),
+                        this,
+                        entity -> getBackRunPack().runBack(judgementCutAttackBackTypeRegister, a -> a.attack(this, entity)),
+                        4.0f,
+                        getDamage(),
+                        false,
+                        true,
+                        true,
+                        excludeEntity);
             }
 
            /* final int count = 3;
@@ -156,10 +182,12 @@ public class JudgementCutEntity extends StandardizationAttackEntity {
                 affectEntity(e, factor);
             }
         });
+        getBackRunPack().runBack(judgementCutDeathBackTypeRegister, a -> a.death(this));
     }
 
     public static final ResourceLocation RESOURCE_LOCATION = new ResourceLocation(SlashBlade.modid, "model/util/slashdim.obj");
     public static final ResourceLocation RESOURCE_LOCATION1 = new ResourceLocation(SlashBlade.modid, "model/util/slashdim.png");
+
     @Override
     public ResourceLocation getDefaultModel() {
         return RESOURCE_LOCATION;

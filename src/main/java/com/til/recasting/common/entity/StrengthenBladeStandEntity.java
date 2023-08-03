@@ -18,9 +18,6 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
@@ -50,7 +47,6 @@ public class StrengthenBladeStandEntity extends BladeStandEntity {
     @VoluntarilyAssignment
     protected static StrengthenBladeStandEntityTypeRegister strengthenBladeStandEntityTypeRegister;
 
-    protected static final DataParameter<Direction> DIRECTION = EntityDataManager.createKey(StrengthenBladeStandEntity.class, DataSerializers.DIRECTION);
 
     public StrengthenBladeStandEntity(EntityType<? extends BladeStandEntity> entityType, World world) {
         super(entityType, world);
@@ -60,7 +56,6 @@ public class StrengthenBladeStandEntity extends BladeStandEntity {
     @Override
     protected void registerData() {
         super.registerData();
-        this.dataManager.register(DIRECTION, Direction.NORTH);
     }
 
     @Override
@@ -94,12 +89,12 @@ public class StrengthenBladeStandEntity extends BladeStandEntity {
 
 
         if (iItemSA != null) {
-            SA_Register sa_register = allSARegister.getSA_Register(slashBladePack.slashBladeState.getSlashArts());
+            SA_Register sa_register = allSARegister.getSA_Register(slashBladePack.getSlashBladeState().getSlashArts());
             if (Objects.equals(sa_register, iItemSA.getSA())) {
                 return ActionResultType.SUCCESS;
             }
             iItemSA.tryReplace(slashBladePack);
-            setDisplayedItem(slashBladePack.itemStack);
+            setDisplayedItem(slashBladePack.getItemStack());
             itemstack.shrink(1);
             player.setHeldItem(Hand.MAIN_HAND, itemstack);
             playSound(SoundEvents.BLOCK_GLASS_BREAK, 1f, 1f);
@@ -109,12 +104,12 @@ public class StrengthenBladeStandEntity extends BladeStandEntity {
 
         if (iItemSE != null) {
             SE_Register se_register = iItemSE.getSE();
-            ISE.SE_Pack se_pack = slashBladePack.ise.getPack(se_register);
+            ISE.SE_Pack se_pack = slashBladePack.getIse().getPack(se_register);
             if (se_pack.getLevel() >= se_register.getMaxLevel()) {
                 return ActionResultType.SUCCESS;
             }
             if (iItemSE.tryUp(slashBladePack)) {
-                setDisplayedItem(slashBladePack.itemStack);
+                setDisplayedItem(slashBladePack.getItemStack());
                 playSound(SoundEvents.BLOCK_GLASS_BREAK, 1f, 1f);
                 ((ServerWorld) world).spawnParticle(ParticleTypes.CRIT, this.getPosX(), this.getPosY(), this.getPosZ(), 16, 0.5, 0.5, 0.5, 0.25f);
             } else {
@@ -127,31 +122,6 @@ public class StrengthenBladeStandEntity extends BladeStandEntity {
         }
 
         return ActionResultType.PASS;
-    }
-
-    public void setLock(Direction direction) {
-
-
-        switch (direction) {
-
-            case DOWN:
-            case UP:
-                return;
-            case NORTH:
-                setItemRotation(0);
-                break;
-            case SOUTH:
-                setItemRotation(180);
-                break;
-            case WEST:
-                setItemRotation(90);
-                break;
-            case EAST:
-                setItemRotation(-90);
-                break;
-        }
-
-        this.dataManager.set(DIRECTION, direction);
     }
 
     public static BladeStandEntity createInstanceFromPos(World worldIn, BlockPos placePos, Direction dir, Item type) {

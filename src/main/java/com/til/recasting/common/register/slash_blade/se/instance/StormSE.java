@@ -38,22 +38,22 @@ public class StormSE extends SE_Register {
 
     @SubscribeEvent
     protected void onEventDoJudgementCut(EventDoJudgementCut event) {
-        if (!event.pack.slashBladePack.ise.hasSE(this)) {
+        if (!event.pack.getSlashBladePack().getIse().hasSE(this)) {
             return;
         }
-        ISE.SE_Pack se_pack = event.pack.slashBladePack.ise.getPack(this);
+        ISE.SE_Pack se_pack = event.pack.getSlashBladePack().getIse().getPack(this);
         int n = (int) number.of(se_pack.getLevel());
         float a = (float) attack.of(se_pack.getLevel());
         for (int i = 0; i < n; i++) {
-            SummondSwordEntity summondSwordEntity = new SummondSwordEntity(summondSwordEntityTypeRegister.getEntityType(), event.pack.entity.world, event.pack.entity);
-            event.pack.slashBladePack.iSlashBladeStateSupplement.decorate(summondSwordEntity);
+            SummondSwordEntity summondSwordEntity = new SummondSwordEntity(summondSwordEntityTypeRegister.getEntityType(), event.pack.getEntity().world, event.pack.getEntity());
+            event.pack.getSlashBladePack().getSlashBladeStateSupplement().decorate(summondSwordEntity);
             summondSwordEntity.lookAt(event.pos, false);
-            summondSwordEntity.setColor(event.pack.slashBladePack.slashBladeState.getColorCode());
+            summondSwordEntity.setColor(event.pack.getSlashBladePack().getSlashBladeState().getColorCode());
             summondSwordEntity.setDamage(a);
-            summondSwordEntity.setStartDelay(event.pack.entity.getRNG().nextInt(10));
-            event.pack.entity.world.addEntity(summondSwordEntity);
+            summondSwordEntity.setStartDelay(event.pack.getEntity().getRNG().nextInt(10));
+            event.pack.getEntity().world.addEntity(summondSwordEntity);
         }
-        event.pack.entity.playSound(SoundEvents.ITEM_CHORUS_FRUIT_TELEPORT, 0.2F, 1.45F);
+        event.pack.getEntity().playSound(SoundEvents.ITEM_CHORUS_FRUIT_TELEPORT, 0.2F, 1.45F);
     }
 
     @Override

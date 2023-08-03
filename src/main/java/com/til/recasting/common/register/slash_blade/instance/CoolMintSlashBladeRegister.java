@@ -22,6 +22,8 @@ import net.minecraft.enchantment.Enchantments;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.vector.Vector3d;
 
+import java.awt.*;
+
 @VoluntarilyRegister
 public class CoolMintSlashBladeRegister extends SlashBladeRegister {
 
@@ -32,10 +34,10 @@ public class CoolMintSlashBladeRegister extends SlashBladeRegister {
     @Override
     protected void defaultItemStackConfig(ItemStack itemStack) {
         super.defaultItemStackConfig(itemStack);
-        slashBladePack.slashBladeState.setColorCode(0xC7F3CB);
-        slashBladePack.slashBladeState.setBaseAttackModifier(7f);
-        slashBladePack.slashBladeState.setSlashArtsKey(fanaticalDanceSA.getSlashArts().getName());
-        slashBladePack.iSlashBladeStateSupplement.setDurable(16);
+        slashBladePack.getSlashBladeState().setEffectColor(new Color(0xC7F3CB));
+        slashBladePack.getSlashBladeState().setBaseAttackModifier(7f);
+        slashBladePack.getSlashBladeState().setSlashArtsKey(fanaticalDanceSA.getSlashArts().getName());
+        slashBladePack.getSlashBladeStateSupplement().setDurable(16);
 
     }
 
@@ -61,10 +63,10 @@ public class CoolMintSlashBladeRegister extends SlashBladeRegister {
         protected SlashBladeRecipeSerializerRegister.SlashBladeRecipeRecipePack defaultConfigSlashBladeRecipeRecipePack() {
 
             SlashBladePack blueCloudSlashBlade = blueCloudSlashBladeRegister.getSlashBladePack();
-            blueCloudSlashBlade.slashBladeState.setKillCount(2500);
-            blueCloudSlashBlade.slashBladeState.setRefine(300);
-            blueCloudSlashBlade.ise.getPack(crossChopSE).setLevel(1);
-            blueCloudSlashBlade.ise.getPack(cooperateWithSE).setLevel(1);
+            blueCloudSlashBlade.getSlashBladeState().setKillCount(2500);
+            blueCloudSlashBlade.getSlashBladeState().setRefine(300);
+            blueCloudSlashBlade.getIse().getPack(crossChopSE).setLevel(1);
+            blueCloudSlashBlade.getIse().getPack(cooperateWithSE).setLevel(1);
             EnchantmentHelper.setEnchantments(MapUtil.of(
                             Enchantments.SMITE, 2,
                             Enchantments.BANE_OF_ARTHROPODS, 2,
@@ -72,17 +74,17 @@ public class CoolMintSlashBladeRegister extends SlashBladeRegister {
                             Enchantments.EFFICIENCY, 2,
                             Enchantments.PIERCING, 1,
                             Enchantments.FIRE_ASPECT, 1),
-                    blueCloudSlashBlade.itemStack);
+                    blueCloudSlashBlade.getItemStack());
 
             SlashBladePack blackSlashBlade = blackSlashBladeRegister.getSlashBladePack();
-            blackSlashBlade.slashBladeState.setKillCount(1500);
-            blackSlashBlade.slashBladeState.setRefine(150);
+            blackSlashBlade.getSlashBladeState().setKillCount(1500);
+            blackSlashBlade.getSlashBladeState().setRefine(150);
             EnchantmentHelper.setEnchantments(MapUtil.of(
                             Enchantments.PROTECTION, 1,
                             Enchantments.FIRE_PROTECTION, 1,
                             Enchantments.BLAST_PROTECTION, 1,
                             Enchantments.PROJECTILE_PROTECTION, 1),
-                    blackSlashBlade.itemStack);
+                    blackSlashBlade.getItemStack());
 
 
             return new SlashBladeRecipeSerializerRegister.SlashBladeRecipeRecipePack(
@@ -93,8 +95,8 @@ public class CoolMintSlashBladeRegister extends SlashBladeRegister {
                     ),
                     MapUtil.of("A", new IRecipeInItemPack.OfItemSE(cooperateWithSE, 2),
                             "C", new IRecipeInItemPack.OfItemSE(crossChopSE, 2),
-                            "B", new IRecipeInItemPack.OfSlashBlade(blackSlashBlade.itemStack),
-                            "V", new IRecipeInItemPack.OfSlashBlade(blueCloudSlashBlade.itemStack)),
+                            "B", new IRecipeInItemPack.OfSlashBlade(blackSlashBlade.getItemStack()),
+                            "V", new IRecipeInItemPack.OfSlashBlade(blueCloudSlashBlade.getItemStack())),
                     "V",
                     new IResultPack.OfSlashBladeRegister(coolMintSlashBladeRegister)
             );
@@ -128,14 +130,14 @@ public class CoolMintSlashBladeRegister extends SlashBladeRegister {
 
         @Override
         public void trigger(UseSlashBladeEntityPack slashBladeEntityPack) {
-            int number = attackNumber + slashBladeEntityPack.entity.getRNG().nextInt(attackDeviation);
+            int number = attackNumber + slashBladeEntityPack.getEntity().getRNG().nextInt(attackDeviation);
             for (int i = 0; i < number; i++) {
                 int _delay = delay * i;
-                slashBladeEntityPack.timeRun.addTimerCell(new TimerCell(() -> {
+                slashBladeEntityPack.getTimeRun().addTimerCell(new TimerCell(() -> {
                     AttackManager.doSlash(
-                            slashBladeEntityPack.entity,
-                            slashBladeEntityPack.entity.getRNG().nextInt(360),
-                            new Vector3d(slashBladeEntityPack.entity.getRNG().nextFloat() - 0.5f, slashBladeEntityPack.entity.getRNG().nextFloat() - 0.5f, 0).scale(offset),
+                            slashBladeEntityPack.getEntity(),
+                            slashBladeEntityPack.getEntity().getRNG().nextInt(360),
+                            new Vector3d(slashBladeEntityPack.getEntity().getRNG().nextFloat() - 0.5f, slashBladeEntityPack.getEntity().getRNG().nextFloat() - 0.5f, 0).scale(offset),
                             false,
                             true,
                             hit

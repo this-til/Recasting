@@ -21,6 +21,8 @@ public class JudgementCutEntityTypeRegister extends EntityTypeRegister<Judgement
     public void defaultConfig() {
         super.defaultConfig();
         updateInterval = 20;
+        disableSerialization = true;
+        immuneToFire = true;
     }
 
 }

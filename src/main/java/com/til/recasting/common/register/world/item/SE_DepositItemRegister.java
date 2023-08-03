@@ -27,6 +27,7 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 import java.text.NumberFormat;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -129,10 +130,13 @@ public class SE_DepositItemRegister extends ItemRegister {
             if (!this.isInGroup(group)) {
                 return;
             }
-            for (SE_Register se_register : allSE_register.forAll()) {
-                items.add(se_depositItemRegister.mackItemStack(se_register));
-                items.add(se_depositItemRegister.mackItemStack(se_register, Integer.MAX_VALUE));
-            }
+            allSE_register.forAll()
+                    .stream()
+                    .sorted(Comparator.comparing(a -> a.getName().toString()))
+                    .forEach(seRegister -> {
+                        items.add(se_depositItemRegister.mackItemStack(seRegister));
+                        items.add(se_depositItemRegister.mackItemStack(seRegister, Integer.MAX_VALUE));
+                    });
         }
     }
 }

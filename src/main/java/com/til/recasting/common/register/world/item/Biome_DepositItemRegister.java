@@ -33,6 +33,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Comparator;
 import java.util.List;
 
 @VoluntarilyRegister
@@ -94,9 +95,10 @@ public class Biome_DepositItemRegister extends ItemRegister {
                 return;
             }
             items.add(biome_depositItemRegister.mackItemStack(null));
-            for (Biome biome : ForgeRegistries.BIOMES) {
-                items.add(biome_depositItemRegister.mackItemStack(biome));
-            }
+            ForgeRegistries.BIOMES.getValues()
+                    .stream()
+                    .sorted(Comparator.comparing(a -> a.getRegistryName().toString()))
+                    .forEach(biome -> items.add(biome_depositItemRegister.mackItemStack(biome)));
         }
     }
 

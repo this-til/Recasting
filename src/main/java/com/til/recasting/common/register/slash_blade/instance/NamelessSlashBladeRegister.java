@@ -19,7 +19,7 @@ public class NamelessSlashBladeRegister extends SlashBladeRegister {
     @Override
     protected void defaultItemStackConfig(ItemStack itemStack) {
         super.defaultItemStackConfig(itemStack);
-        slashBladePack.slashBladeState.setTranslationKey("");
+        slashBladePack.getSlashBladeState().setTranslationKey("");
     }
 
     @Override

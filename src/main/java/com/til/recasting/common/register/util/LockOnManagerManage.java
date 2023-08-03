@@ -38,13 +38,13 @@ public class LockOnManagerManage implements IWorldComponent {
 
 
         if (event.getOld().contains(InputCommand.SNEAK) && !event.getCurrent().contains(InputCommand.SNEAK)) {
-            useSlashBladeEntityPack.slashBladePack.slashBladeState.setTargetEntityId(null);
+            useSlashBladeEntityPack.getSlashBladePack().getSlashBladeState().setTargetEntityId(null);
             return;
         }
 
         RayTraceResult rayTraceResult = defaultTargetSelectorRegister.selector(player);
         if (rayTraceResult.getType() == RayTraceResult.Type.ENTITY) {
-            useSlashBladeEntityPack.slashBladePack.slashBladeState.setTargetEntityId(((EntityRayTraceResult) rayTraceResult).getEntity());
+            useSlashBladeEntityPack.getSlashBladePack().getSlashBladeState().setTargetEntityId(((EntityRayTraceResult) rayTraceResult).getEntity());
             return;
         }
 
@@ -53,7 +53,7 @@ public class LockOnManagerManage implements IWorldComponent {
         if (foundEntity instanceof PartEntity) {
             foundEntity = ((PartEntity<?>) foundEntity).getParent();
         }
-        useSlashBladeEntityPack.slashBladePack.slashBladeState.setTargetEntityId(foundEntity);
+        useSlashBladeEntityPack.getSlashBladePack().getSlashBladeState().setTargetEntityId(foundEntity);
     }
 
 

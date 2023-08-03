@@ -21,6 +21,8 @@ import net.minecraft.enchantment.Enchantments;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 
+import java.awt.*;
+
 @VoluntarilyRegister
 public class BlueCloudSlashBladeRegister extends SlashBladeRegister {
 
@@ -30,9 +32,9 @@ public class BlueCloudSlashBladeRegister extends SlashBladeRegister {
     @Override
     protected void defaultItemStackConfig(ItemStack itemStack) {
         super.defaultItemStackConfig(itemStack);
-        slashBladePack.slashBladeState.setBaseAttackModifier(6f);
-        slashBladePack.slashBladeState.setColorCode(0xA7C683);
-        slashBladePack.iSlashBladeStateSupplement.setDurable(4);
+        slashBladePack.getSlashBladeState().setBaseAttackModifier(6f);
+        slashBladePack.getSlashBladeState().setEffectColor(new Color(0xA7C683));
+        slashBladePack.getSlashBladeStateSupplement().setDurable(4);
         slashBladePack.setSA(blueCloudLightSA);
     }
 
@@ -58,17 +60,17 @@ public class BlueCloudSlashBladeRegister extends SlashBladeRegister {
         protected SlashBladeRecipeSerializerRegister.SlashBladeRecipeRecipePack defaultConfigSlashBladeRecipeRecipePack() {
 
             SlashBladePack baGuaSlashBlade = baGuaSlashBladeRegister.getSlashBladePack();
-            baGuaSlashBlade.slashBladeState.setKillCount(1000);
-            baGuaSlashBlade.slashBladeState.setRefine(150);
+            baGuaSlashBlade.getSlashBladeState().setKillCount(1000);
+            baGuaSlashBlade.getSlashBladeState().setRefine(150);
 
             EnchantmentHelper.setEnchantments(MapUtil.of(
                             Enchantments.SMITE, 1,
                             Enchantments.BANE_OF_ARTHROPODS, 1,
                             Enchantments.SHARPNESS, 2,
                             Enchantments.EFFICIENCY, 2),
-                    baGuaSlashBlade.itemStack);
+                    baGuaSlashBlade.getItemStack());
 
-            baGuaSlashBlade.ise.getPack(cooperateWithSE).setLevel(2);
+            baGuaSlashBlade.getIse().getPack(cooperateWithSE).setLevel(2);
 
 
             return new SlashBladeRecipeSerializerRegister.SlashBladeRecipeRecipePack(
@@ -81,7 +83,7 @@ public class BlueCloudSlashBladeRegister extends SlashBladeRegister {
                             "A", new IRecipeInItemPack.OfItemSE(cooperateWithSE, 0.5f),
                             "B", new IRecipeInItemPack.OfIngredient(Ingredient.fromItems(soulCubeItemRegister.getItem())),
                             "C", new IRecipeInItemPack.OfIngredient(Ingredient.fromItems(soulCubeChangeItemRegister.getItem())),
-                            "V", new IRecipeInItemPack.OfSlashBlade(baGuaSlashBlade.itemStack)),
+                            "V", new IRecipeInItemPack.OfSlashBlade(baGuaSlashBlade.getItemStack())),
                     "V",
                     new IResultPack.OfSlashBladeRegister(blueCloudSlashBladeRecipeRegister)
             );
@@ -106,9 +108,9 @@ public class BlueCloudSlashBladeRegister extends SlashBladeRegister {
             for (int i = 0; i < attackNumber; i++) {
                 int _delay = delay * i;
                 int finalI = i;
-                slashBladeEntityPack.timeRun.addTimerCell(new TimerCell(() -> {
+                slashBladeEntityPack.getTimeRun().addTimerCell(new TimerCell(() -> {
                     AttackManager.doSlash(
-                            slashBladeEntityPack.entity,
+                            slashBladeEntityPack.getEntity(),
                             r * finalI,
                             false,
                             false,

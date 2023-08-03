@@ -29,10 +29,10 @@ public interface IItemSE {
      * 尝试升级
      */
     default boolean tryUp(SlashBladePack slashBladePack) {
-        ISE.SE_Pack se_pack = slashBladePack.ise.getPack(getSE());
+        ISE.SE_Pack se_pack = slashBladePack.getIse().getPack(getSE());
         float successRate = getBasicsSuccessRate();
         int allLevel = 1;
-        for (ISE.SE_Pack value : slashBladePack.ise.getAllSE().values()) {
+        for (ISE.SE_Pack value : slashBladePack.getIse().getAllSE().values()) {
             allLevel += value.getLevel();
         }
         successRate = successRate / (allLevel + 1);

@@ -19,11 +19,11 @@ public class ConvictSE extends SE_Register {
     protected NumberPack attack;
 
     protected void onEventSlashBladeSA(EventSlashBladeSA event) {
-        if (!event.pack.slashBladePack.ise.hasSE(this)) {
+        if (!event.pack.getSlashBladePack().getIse().hasSE(this)) {
             return;
         }
-        ISE.SE_Pack se_pack = event.pack.slashBladePack.ise.getPack(this);
-        JudgementCutManage.doJudgementCut(event.pack.entity, (float) attack.of(se_pack.getLevel()), 20, null, null, null);
+        ISE.SE_Pack se_pack = event.pack.getSlashBladePack().getIse().getPack(this);
+        JudgementCutManage.doJudgementCut(event.pack.getEntity(), (float) attack.of(se_pack.getLevel()), 20, null, null, null);
     }
 
     @Override

@@ -16,7 +16,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -65,8 +64,8 @@ public class SummonedSwordArtsManage implements IWorldComponent {
                     GlowingFireGlow.getInstance().getReflexManage().getVoluntarilyRegisterOfClass(SummondSwordEntityTypeRegister.class).getEntityType(),
                     sender.world,
                     sender);
-            uesSlashBladeEntityPack.slashBladePack.iSlashBladeStateSupplement.decorate(summondSwordEntity);
-            summondSwordEntity.setColor(uesSlashBladeEntityPack.slashBladePack.slashBladeState.getColorCode());
+            uesSlashBladeEntityPack.getSlashBladePack().getSlashBladeStateSupplement().decorate(summondSwordEntity);
+            summondSwordEntity.setColor(uesSlashBladeEntityPack.getSlashBladePack().getSlashBladeState().getColorCode());
             //todo 伤害评估器
             summondSwordEntity.setDamage(summondSwordOverallConfig.getOrdinaryAttack());
             summondSwordEntity.setMaxDelay(100);
@@ -95,7 +94,7 @@ public class SummonedSwordArtsManage implements IWorldComponent {
             }
             timMap.remove(player);
             UseSlashBladeEntityPack useSlashBladeEntityPack = new UseSlashBladeEntityPack(player);
-            EnumSet<InputCommand> inputCommands = useSlashBladeEntityPack.iInputState.getCommands();
+            EnumSet<InputCommand> inputCommands = useSlashBladeEntityPack.getInputState().getCommands();
 
             if (!useSlashBladeEntityPack.isEffective(SlashBladePack.EffectiveType.canUse)) {
                 return;
@@ -122,18 +121,18 @@ public class SummonedSwordArtsManage implements IWorldComponent {
                 case SPIRAL_SWORD:
                     amount = summondSwordOverallConfig.getSpiralSwordAttackNumber();
                     stepping = Math.PI * 2 / amount;
-                     pos = RayTraceUtil.getPosition(useSlashBladeEntityPack.entity);
+                     pos = RayTraceUtil.getPosition(useSlashBladeEntityPack.getEntity());
                     for (int i = 0; i < amount; i++) {
                         SummondSwordEntity summondSwordEntity = new SummondSwordEntity(
                                 GlowingFireGlow.getInstance().getReflexManage().getVoluntarilyRegisterOfClass(SummondSwordEntityTypeRegister.class).getEntityType(),
                                 player.world,
                                 player);
-                        useSlashBladeEntityPack.slashBladePack.iSlashBladeStateSupplement.decorate(summondSwordEntity);
-                        summondSwordEntity.setColor(useSlashBladeEntityPack.slashBladePack.slashBladeState.getColorCode());
+                        useSlashBladeEntityPack.getSlashBladePack().getSlashBladeStateSupplement().decorate(summondSwordEntity);
+                        summondSwordEntity.setColor(useSlashBladeEntityPack.getSlashBladePack().getSlashBladeState().getColorCode());
                         summondSwordEntity.setDamage(summondSwordOverallConfig.getSpiralSwordAttack());
                         summondSwordEntity.setMaxPierce(summondSwordOverallConfig.getSpiralSwordPierceNumber());
                         summondSwordEntity.setPosition(pos.getX(), pos.getY(), pos.getZ());
-                        float yaw = useSlashBladeEntityPack.entity.rotationYaw;
+                        float yaw = useSlashBladeEntityPack.getEntity().rotationYaw;
                         yaw = yaw / 180;
                         yaw += stepping * i;
                         Vector3d lookAtPosRotated = new Vector3d(Math.sin(yaw), 0, Math.cos(yaw));
@@ -150,8 +149,8 @@ public class SummonedSwordArtsManage implements IWorldComponent {
                                 GlowingFireGlow.getInstance().getReflexManage().getVoluntarilyRegisterOfClass(SummondSwordEntityTypeRegister.class).getEntityType(),
                                 player.world,
                                 player);
-                        useSlashBladeEntityPack.slashBladePack.iSlashBladeStateSupplement.decorate(summondSwordEntity);
-                        summondSwordEntity.setColor(useSlashBladeEntityPack.slashBladePack.slashBladeState.getColorCode());
+                        useSlashBladeEntityPack.getSlashBladePack().getSlashBladeStateSupplement().decorate(summondSwordEntity);
+                        summondSwordEntity.setColor(useSlashBladeEntityPack.getSlashBladePack().getSlashBladeState().getColorCode());
                         summondSwordEntity.setDamage(summondSwordOverallConfig.getBlisteringAttack());
                         summondSwordEntity.setMaxDelay(100);
                         summondSwordEntity.setStartDelay((dir / 2) * 2);
@@ -173,8 +172,8 @@ public class SummonedSwordArtsManage implements IWorldComponent {
                                 GlowingFireGlow.getInstance().getReflexManage().getVoluntarilyRegisterOfClass(SummondSwordEntityTypeRegister.class).getEntityType(),
                                 player.world,
                                 player);
-                        useSlashBladeEntityPack.slashBladePack.iSlashBladeStateSupplement.decorate(summondSwordEntity);
-                        summondSwordEntity.setColor(useSlashBladeEntityPack.slashBladePack.slashBladeState.getColorCode());
+                        useSlashBladeEntityPack.getSlashBladePack().getSlashBladeStateSupplement().decorate(summondSwordEntity);
+                        summondSwordEntity.setColor(useSlashBladeEntityPack.getSlashBladePack().getSlashBladeState().getColorCode());
                         summondSwordEntity.setStartDelay(5);
                         summondSwordEntity.setDamage(summondSwordOverallConfig.getStormSwordAttack());
                         summondSwordEntity.setMaxDelay(20);
@@ -192,7 +191,7 @@ public class SummonedSwordArtsManage implements IWorldComponent {
                     Vector3d centerAttackPos = attackPos.add(0, summondSwordOverallConfig.getHeavyRainYOffset(), 0);
                     Vector3d offset = summondSwordOverallConfig.getHeavyRainOffset();
                     amount = summondSwordOverallConfig.getHeavyRainAttackNumber();
-                    Random random = useSlashBladeEntityPack.entity.getRNG();
+                    Random random = useSlashBladeEntityPack.getEntity().getRNG();
                     for (int i = 0; i < amount; i++) {
                         pos = centerAttackPos.add(
                                 -offset.getX() / 2 + random.nextDouble() * offset.getX(),
@@ -201,11 +200,11 @@ public class SummonedSwordArtsManage implements IWorldComponent {
 
                         SummondSwordEntity summondSwordEntity = new SummondSwordEntity(
                                 summondSwordEntityTypeRegister.getEntityType(),
-                                useSlashBladeEntityPack.entity.world,
-                                useSlashBladeEntityPack.entity
+                                useSlashBladeEntityPack.getEntity().world,
+                                useSlashBladeEntityPack.getEntity()
                         );
-                        useSlashBladeEntityPack.slashBladePack.iSlashBladeStateSupplement.decorate(summondSwordEntity);
-                        summondSwordEntity.setColor(useSlashBladeEntityPack.slashBladePack.slashBladeState.getColorCode());
+                        useSlashBladeEntityPack.getSlashBladePack().getSlashBladeStateSupplement().decorate(summondSwordEntity);
+                        summondSwordEntity.setColor(useSlashBladeEntityPack.getSlashBladePack().getSlashBladeState().getColorCode());
                         summondSwordEntity.setDamage(summondSwordOverallConfig.getHeavyRainAttack());
                         summondSwordEntity.setMaxDelay(10 + random.nextInt(10));
                         summondSwordEntity.setStartDelay(random.nextInt(10));
@@ -215,7 +214,7 @@ public class SummonedSwordArtsManage implements IWorldComponent {
                                 -summondSwordOverallConfig.getHeavyRainYOffset() - offset.getY() / 2 + random.nextDouble() * offset.getY(),
                                 -offset.getZ() / 2 + random.nextDouble() * offset.getZ()
                         ), true);
-                        summondSwordEntity.setRoll(useSlashBladeEntityPack.entity.getRNG().nextInt(360));
+                        summondSwordEntity.setRoll(useSlashBladeEntityPack.getEntity().getRNG().nextInt(360));
                         player.world.addEntity(summondSwordEntity);
                     }
                     player.playSound(SoundEvents.ITEM_CHORUS_FRUIT_TELEPORT, 0.2F, 1.45F);

@@ -32,9 +32,9 @@ public class MultipleDimensionalChoppingSA extends SA_Register {
         AtomicReference<Vector3d> pos = new AtomicReference<>();
         for (int i = 0; i < attackNumber; i++) {
             int _delay = delay * i;
-            slashBladeEntityPack.timeRun.addTimerCell(new TimerCell(() -> {
+            slashBladeEntityPack.getTimeRun().addTimerCell(new TimerCell(() -> {
                 AtomicReference<JudgementCutEntity> judgementCutEntity = new AtomicReference<>();
-                JudgementCutManage.doJudgementCut(slashBladeEntityPack.entity, hit, 10, pos.get(), null, judgementCutEntity::set);
+                JudgementCutManage.doJudgementCut(slashBladeEntityPack.getEntity(), hit, 10, pos.get(), null, judgementCutEntity::set);
                 if (judgementCutEntity.get() != null) {
                     pos.set(judgementCutEntity.get().getPositionVec());
                 }

@@ -33,7 +33,7 @@ public interface IResultPack {
 
         @Override
         public ItemStack getOutItemStack() {
-            return slashBladeRegister.getSlashBladePack().itemStack;
+            return slashBladeRegister.getSlashBladePack().getItemStack();
         }
     }
 }

@@ -20,5 +20,7 @@ public class SummondSwordEntityTypeRegister extends EntityTypeRegister<SummondSw
     public void defaultConfig() {
         super.defaultConfig();
         updateInterval = 20;
+        disableSerialization = true;
+        immuneToFire = true;
     }
 }

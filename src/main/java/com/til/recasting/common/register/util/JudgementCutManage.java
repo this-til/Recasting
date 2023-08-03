@@ -6,13 +6,10 @@ import com.til.recasting.common.data.UseSlashBladeEntityPack;
 import com.til.recasting.common.entity.JudgementCutEntity;
 import com.til.recasting.common.event.EventDoJudgementCut;
 import com.til.recasting.common.register.entity_type.JudgementCutEntityTypeRegister;
-import com.til.recasting.common.register.target_selector.DefaultTargetSelectorRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.EntityRayTraceResult;
-import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
@@ -20,8 +17,8 @@ import net.minecraftforge.common.MinecraftForge;
 import javax.annotation.Nullable;
 import java.util.function.Consumer;
 
-
 public class JudgementCutManage {
+
 
     public static void doJudgementCut(LivingEntity user, float hit, int life, @Nullable Vector3d attackPos, @Nullable Entity targetEntity, @Nullable Consumer<JudgementCutEntity> advanceOperation) {
         UseSlashBladeEntityPack useSlashBladeEntityPack = new UseSlashBladeEntityPack(user);
@@ -34,10 +31,10 @@ public class JudgementCutManage {
             attackPos = targetEntity != null ? RayTraceUtil.getPosition(targetEntity) : useSlashBladeEntityPack.getAttackPos();
         }
         JudgementCutEntity jc = new JudgementCutEntity(GlowingFireGlow.getInstance().getReflexManage().getVoluntarilyRegisterOfClass(JudgementCutEntityTypeRegister.class).getEntityType(), worldIn, user);
-        useSlashBladeEntityPack.slashBladePack.iSlashBladeStateSupplement.decorate(jc);
+        useSlashBladeEntityPack.getSlashBladePack().getSlashBladeStateSupplement().decorate(jc);
         jc.setPosition(attackPos.x, attackPos.y, attackPos.z);
         jc.setShooter(user);
-        jc.setColor(useSlashBladeEntityPack.slashBladePack.slashBladeState.getColorCode());
+        jc.setColor(useSlashBladeEntityPack.getSlashBladePack().getSlashBladeState().getColorCode());
         jc.setDamage(hit);
         jc.setMaxLifeTime(life);
 

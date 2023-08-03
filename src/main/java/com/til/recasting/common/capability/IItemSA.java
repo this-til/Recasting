@@ -13,7 +13,7 @@ public interface IItemSA {
      * 尝试更好
      */
     default void tryReplace(SlashBladePack slashBladePack) {
-        slashBladePack.slashBladeState.setSlashArtsKey(getSA().getSlashArts().getName());
+        slashBladePack.getSlashBladeState().setSlashArtsKey(getSA().getSlashArts().getName());
     }
 
     class ItemSA implements IItemSA {

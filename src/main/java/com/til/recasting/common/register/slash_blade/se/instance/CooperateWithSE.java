@@ -10,7 +10,6 @@ import com.til.glowing_fire_glow.common.util.math.NumberPack;
 import com.til.recasting.common.capability.ISE;
 import com.til.recasting.common.data.IRecipeInItemPack;
 import com.til.recasting.common.data.IResultPack;
-import com.til.recasting.common.entity.SlashEffectEntity;
 import com.til.recasting.common.event.EventSlashBladeDoSlash;
 import com.til.recasting.common.register.recipe.SpecialRecipeSerializerRegister;
 import com.til.recasting.common.register.slash_blade.se.SE_Register;
@@ -38,17 +37,17 @@ public class CooperateWithSE extends SE_Register {
 
     @SubscribeEvent
     protected void onEventSlashBladeDoSlash(EventSlashBladeDoSlash event) {
-        if (!event.pack.slashBladePack.ise.hasSE(this)) {
+        if (!event.pack.getSlashBladePack().getIse().hasSE(this)) {
             return;
         }
-        ISE.SE_Pack se_pack = event.pack.slashBladePack.ise.getPack(this);
-        if (event.pack.entity.getRNG().nextDouble() >= probability.of(se_pack.getLevel())) {
+        ISE.SE_Pack se_pack = event.pack.getSlashBladePack().getIse().getPack(this);
+        if (event.pack.getEntity().getRNG().nextDouble() >= probability.of(se_pack.getLevel())) {
             return;
         }
-        event.pack.timeRun.addTimerCell(new TimerCell(
+        event.pack.getTimeRun().addTimerCell(new TimerCell(
                 () -> {
                     AttackManager.doSlash(
-                            event.pack.entity,
+                            event.pack.getEntity(),
                             event.slashEffectEntity.getRoll(),
                             event.slashEffectEntity.getColor(),
                             event.centerOffset,

@@ -21,6 +21,8 @@ public class SlashEffectEntityTypeRegister extends EntityTypeRegister<SlashEffec
     public void defaultConfig() {
         super.defaultConfig();
         updateInterval = 20;
+        disableSerialization = true;
+        immuneToFire = true;
     }
 
 }

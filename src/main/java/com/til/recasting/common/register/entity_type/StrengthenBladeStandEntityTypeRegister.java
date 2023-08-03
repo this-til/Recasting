@@ -23,5 +23,6 @@ public class StrengthenBladeStandEntityTypeRegister extends EntityTypeRegister<S
         updateInterval = 20;
         trackingRange = 10;
         shouldReceiveVelocityUpdates = false;
+        immuneToFire = true;
     }
 }

@@ -160,7 +160,7 @@ public class SlashBladeRecipeSerializerRegister extends RecipeSerializerRegister
                 int mainKeyId,
                 SlashBladePack outSlashBladePack,
                 SlashBladeRecipeRecipePack slashBladeUpPack) {
-            super(idIn, groupIn, recipeWidthIn, recipeHeightIn, null, outSlashBladePack.itemStack);
+            super(idIn, groupIn, recipeWidthIn, recipeHeightIn, null, outSlashBladePack.getItemStack());
             this.serializer = serializer;
             this.outSlashBladePack = outSlashBladePack;
             this.recipeItems = recipeItemsIn;
@@ -216,12 +216,12 @@ public class SlashBladeRecipeSerializerRegister extends RecipeSerializerRegister
                 for (int j = 0; j <= inv.getHeight() - this.getRecipeHeight(); ++j) {
                     slashBladePack = this.getResultSlashBladePack(inv, i, j);
                     if (slashBladePack != null) {
-                        return outSlashBladePack.getRecipeResult(slashBladePack).itemStack;
+                        return outSlashBladePack.getRecipeResult(slashBladePack).getItemStack();
                     }
                 }
             }
 
-            return outSlashBladePack.itemStack;
+            return outSlashBladePack.getItemStack();
         }
 
         @Nullable

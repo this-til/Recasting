@@ -47,31 +47,31 @@ public class InfiniteDimensionalChoppingSA extends SA_Register {
     @Override
     public void trigger(UseSlashBladeEntityPack slashBladeEntityPack) {
 
-        Entity targetEntity = slashBladeEntityPack.slashBladePack.slashBladeState.getTargetEntity(slashBladeEntityPack.entity.world);
-        RayTraceResult rayTraceResult = targetEntity == null ? defaultTargetSelectorRegister.selector(slashBladeEntityPack.entity) : new EntityRayTraceResult(targetEntity);
+        Entity targetEntity = slashBladeEntityPack.getSlashBladePack().getSlashBladeState().getTargetEntity(slashBladeEntityPack.getEntity().world);
+        RayTraceResult rayTraceResult = targetEntity == null ? defaultTargetSelectorRegister.selector(slashBladeEntityPack.getEntity()) : new EntityRayTraceResult(targetEntity);
         Vector3d attackPos = targetEntity == null ? rayTraceResult.getHitVec() : RayTraceUtil.getPosition(targetEntity);
 
-        List<Entity> attackEntity = slashBladeEntityPack.entity.world
+        List<Entity> attackEntity = slashBladeEntityPack.getEntity().world
                 .getEntitiesInAABBexcluding(
-                        slashBladeEntityPack.entity,
+                        slashBladeEntityPack.getEntity(),
                         new Pos(attackPos).axisAlignedBB(attackRange),
-                        entity -> defaultEntityPredicateRegister.canTarget(slashBladeEntityPack.entity, entity));
+                        entity -> defaultEntityPredicateRegister.canTarget(slashBladeEntityPack.getEntity(), entity));
 
 
         for (int i = 0; i < attackNumber; i++) {
             int _delay = delay * i;
-            slashBladeEntityPack.timeRun.addTimerCell(new TimerCell(() -> {
+            slashBladeEntityPack.getTimeRun().addTimerCell(new TimerCell(() -> {
                 while (true) {
                     if (attackEntity.isEmpty()) {
-                        JudgementCutManage.doJudgementCut(slashBladeEntityPack.entity, hit, 10, attackPos, null, null);
+                        JudgementCutManage.doJudgementCut(slashBladeEntityPack.getEntity(), hit, 10, attackPos, null, null);
                         return;
                     }
-                    Entity entity = attackEntity.get(slashBladeEntityPack.entity.getRNG().nextInt(attackEntity.size()));
+                    Entity entity = attackEntity.get(slashBladeEntityPack.getEntity().getRNG().nextInt(attackEntity.size()));
                     if (!entity.isAlive()) {
                         attackEntity.remove(entity);
                         continue;
                     }
-                    JudgementCutManage.doJudgementCut(slashBladeEntityPack.entity, hit, 10, RayTraceUtil.getPosition(entity), null, null);
+                    JudgementCutManage.doJudgementCut(slashBladeEntityPack.getEntity(), hit, 10, RayTraceUtil.getPosition(entity), null, null);
                     return;
                 }
             }, _delay, 0));

@@ -27,43 +27,69 @@ public class UseSlashBladeEntityPack {
     protected static DefaultTargetSelectorRegister defaultTargetSelectorRegister;
 
 
-    public final LivingEntity entity;
+    protected LivingEntity entity;
 
-    public final IConcentrationRank concentrationRank;
-    public final ITimeRun timeRun;
-    public final IInputState iInputState;
+    protected IConcentrationRank concentrationRank;
+    protected ITimeRun timeRun;
+    protected IInputState iInputState;
 
-    public final SlashBladePack slashBladePack;
+    protected SlashBladePack slashBladePack;
+
+    protected boolean basicEffective;
 
     public UseSlashBladeEntityPack(LivingEntity entity) {
         this.entity = entity;
-        concentrationRank = entity.getCapability(ConcentrationRankCapabilityProvider.RANK_POINT).orElse(null);
-        iInputState = entity.getCapability(InputStateCapabilityProvider.INPUT_STATE).orElse(null);
-        timeRun = entity.getCapability(timeRunCapabilityRegister.getCapability()).orElse(null);
-        slashBladePack = new SlashBladePack(entity.getHeldItemMainhand());
+        try {
+            concentrationRank = entity.getCapability(ConcentrationRankCapabilityProvider.RANK_POINT).orElse(null);
+            iInputState = entity.getCapability(InputStateCapabilityProvider.INPUT_STATE).orElse(null);
+            timeRun = entity.getCapability(timeRunCapabilityRegister.getCapability()).orElse(null);
+            slashBladePack = new SlashBladePack(entity.getHeldItemMainhand());
+            basicEffective = getConcentrationRank() != null && getInputState() != null && getTimeRun() != null;
+        } catch (RuntimeException runtimeException) {
+            basicEffective = false;
+        }
     }
 
     public boolean isEffective(SlashBladePack.EffectiveType effectiveType) {
-        return concentrationRank != null && iInputState != null && timeRun != null && slashBladePack.isEffective(effectiveType);
+        return basicEffective && getSlashBladePack().isEffective(effectiveType);
     }
 
-    public IConcentrationRank.ConcentrationRanks getConcentrationRank() {
-        return concentrationRank.getRank(entity.world.getGameTime());
+    public IConcentrationRank.ConcentrationRanks getRank() {
+        return concentrationRank.getRank(getEntity().world.getGameTime());
     }
 
     /***
      * 获取伤害比例
      */
     public double getDamageRatio(double basics) {
-        return basics * (1 + getConcentrationRank().level / 7f) * (1 + slashBladePack.slashBladeState.getRefine() * 0.01);
+        return basics * (1 + getRank().level / 7f) * (1 + getSlashBladePack().getSlashBladeState().getRefine() * 0.01);
     }
 
     public Vector3d getAttackPos() {
-        Entity attackMove = slashBladePack.slashBladeState.getTargetEntity(entity.world);
+        Entity attackMove = getSlashBladePack().getSlashBladeState().getTargetEntity(getEntity().world);
         if (attackMove != null) {
             return RayTraceUtil.getPosition(attackMove);
         }
-        return defaultTargetSelectorRegister.selector(entity).getHitVec();
+        return defaultTargetSelectorRegister.selector(getEntity()).getHitVec();
     }
 
+    public IConcentrationRank getConcentrationRank() {
+        return concentrationRank;
+    }
+
+    public LivingEntity getEntity() {
+        return entity;
+    }
+
+    public ITimeRun getTimeRun() {
+        return timeRun;
+    }
+
+    public IInputState getInputState() {
+        return iInputState;
+    }
+
+    public SlashBladePack getSlashBladePack() {
+        return slashBladePack;
+    }
 }

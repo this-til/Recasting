@@ -7,7 +7,6 @@ import com.til.recasting.common.register.back_type.SlashEffectEntityBackTypeRegi
 import com.til.recasting.common.register.util.AttackManager;
 import mods.flammpfeil.slashblade.SlashBlade;
 import mods.flammpfeil.slashblade.event.FallHandler;
-import mods.flammpfeil.slashblade.util.KnockBacks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -35,7 +34,7 @@ import java.util.List;
 public class SlashEffectEntity extends StandardizationAttackEntity {
 
     @VoluntarilyAssignment
-    protected static SlashEffectEntityBackTypeRegister.AttackBackTypeRegister attackBackTypeRegister;
+    protected static SlashEffectEntityBackTypeRegister.SlashEffectAttackBackTypeRegister attackBackTypeRegister;
 
     static private final ResourceLocation DEFAULT_MODEL_NAME = new ResourceLocation(SlashBlade.modid, "model/util/slash.obj");
     static private final ResourceLocation DEFAULT_TEXTURE_NAME = new ResourceLocation(SlashBlade.modid, "model/util/slash.png");

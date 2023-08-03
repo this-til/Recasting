@@ -3,6 +3,7 @@ package com.til.recasting.client.render.entity;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.til.recasting.common.entity.SummondSwordEntity;
 import mods.flammpfeil.slashblade.client.renderer.model.BladeModelManager;
+import mods.flammpfeil.slashblade.client.renderer.model.obj.Face;
 import mods.flammpfeil.slashblade.client.renderer.model.obj.WavefrontObject;
 import mods.flammpfeil.slashblade.client.renderer.util.BladeRenderState;
 import mods.flammpfeil.slashblade.client.renderer.util.MSAutoCloser;
@@ -66,7 +67,7 @@ public class SummondSwordEntityRender<T extends SummondSwordEntity> extends Enti
             matrixStack.rotate(Vector3f.YP.rotationDegrees(90.0F));
 
             WavefrontObject model = BladeModelManager.getInstance().getModel(entity.getModel());
-            BladeRenderState.setCol(entity.getColor(), false);
+            BladeRenderState.setCol(entity.getColor());
             BladeRenderState.renderOverridedLuminous(ItemStack.EMPTY, model, "ss", getEntityTexture(entity), matrixStack, bufferIn, packedLightIn);
         }
     }

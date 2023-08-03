@@ -40,23 +40,23 @@ public class ImpactSE extends SE_Register {
 
     @SubscribeEvent
     protected void onEventSlashBladeDoSlash(EventDoAttack event) {
-        if (!event.pack.slashBladePack.ise.hasSE(this)) {
+        if (!event.pack.getSlashBladePack().getIse().hasSE(this)) {
             return;
         }
-        ISE.SE_Pack se_pack = event.pack.slashBladePack.ise.getPack(this);
-        if (event.pack.entity.getRNG().nextDouble() >= probability.of(se_pack.getLevel())) {
+        ISE.SE_Pack se_pack = event.pack.getSlashBladePack().getIse().getPack(this);
+        if (event.pack.getEntity().getRNG().nextDouble() >= probability.of(se_pack.getLevel())) {
             return;
         }
-        SummondSwordEntity summondSwordEntity = new SummondSwordEntity(summondSwordEntityTypeRegister.getEntityType(), event.pack.entity.world, event.pack.entity);
-        event.pack.slashBladePack.iSlashBladeStateSupplement.decorate(summondSwordEntity);
+        SummondSwordEntity summondSwordEntity = new SummondSwordEntity(summondSwordEntityTypeRegister.getEntityType(), event.pack.getEntity().world, event.pack.getEntity());
+        event.pack.getSlashBladePack().getSlashBladeStateSupplement().decorate(summondSwordEntity);
         Vector3d pos = RayTraceUtil.getPosition(event.target);
         summondSwordEntity.lookAt(pos, false);
         summondSwordEntity.setPosition(pos.getX(), pos.getY(), pos.getZ());
-        summondSwordEntity.setColor(event.pack.slashBladePack.slashBladeState.getColorCode());
+        summondSwordEntity.setColor(event.pack.getSlashBladePack().getSlashBladeState().getColorCode());
         summondSwordEntity.setDamage((float) attack.of(se_pack.getLevel()));
         summondSwordEntity.setMaxDelay(100);
         summondSwordEntity.doForceHitEntity(event.target);
-        event.pack.entity.world.addEntity(summondSwordEntity);
+        event.pack.getEntity().world.addEntity(summondSwordEntity);
         event.target.playSound(SoundEvents.ITEM_CHORUS_FRUIT_TELEPORT, 0.2F, 1.45F);
     }
 

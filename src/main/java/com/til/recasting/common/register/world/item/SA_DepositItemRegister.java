@@ -23,7 +23,8 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @StaticVoluntarilyAssignment
 @VoluntarilyRegister(priority = 10)
@@ -81,9 +82,10 @@ public class SA_DepositItemRegister extends ItemRegister {
             if (!this.isInGroup(group)) {
                 return;
             }
-            for (SA_Register sa_register : allSARegister.forAll()) {
-                items.add(sa_depositItemRegister.mackItemStack(sa_register));
-            }
+            allSARegister.forAll()
+                    .stream()
+                    .sorted(Comparator.comparing(a -> a.getName().toString()))
+                    .forEach(sa_register -> items.add(sa_depositItemRegister.mackItemStack(sa_register)));
         }
 
         @Override

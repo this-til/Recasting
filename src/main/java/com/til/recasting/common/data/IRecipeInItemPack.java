@@ -277,7 +277,7 @@ public interface IRecipeInItemPack extends Predicate<ItemStack> {
         @Override
         public Ingredient toIngredient() {
             if (ofSlashBlade == null) {
-                ofSlashBlade = new OfSlashBlade(slashBladeRegister.getSlashBladePack().itemStack);
+                ofSlashBlade = new OfSlashBlade(slashBladeRegister.getSlashBladePack().getItemStack());
             }
             return ofSlashBlade.toIngredient();
         }
@@ -285,7 +285,7 @@ public interface IRecipeInItemPack extends Predicate<ItemStack> {
         @Override
         public boolean test(ItemStack itemStack) {
             if (ofSlashBlade == null) {
-                ofSlashBlade = new OfSlashBlade(slashBladeRegister.getSlashBladePack().itemStack);
+                ofSlashBlade = new OfSlashBlade(slashBladeRegister.getSlashBladePack().getItemStack());
             }
             return ofSlashBlade.test(itemStack);
         }

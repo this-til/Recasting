@@ -258,6 +258,9 @@ public class SummondSwordEntity extends StandardizationAttackEntity {
         }
         if (!isTransmit) {
             isTransmit = true;
+           /* if (getStartDelay() > 0) {
+                updateMotion(getSeep());
+            }*/
             backRunPack.runBack(transmitBackTypeRegister, a -> a.transmit(this));
         }
 
@@ -308,7 +311,7 @@ public class SummondSwordEntity extends StandardizationAttackEntity {
                 for (AxisAlignedBB axisalignedbb : voxelshape.toBoundingBoxList()) {
                     if (axisalignedbb.offset(blockpos).contains(new Vector3d(this.getPosX(), this.getPosY(), this.getPosZ()))) {
                         this.inGround = true;
-                        setMaxLifeTime(getMaxDelay());
+                        setMaxLifeTime(ticksExisted + getMaxDelay());
                         break;
                     }
                 }
@@ -391,7 +394,7 @@ public class SummondSwordEntity extends StandardizationAttackEntity {
             this.onHit(raytraceresult);
             this.isAirBorne = true;
             if (raytraceresult.getType() != RayTraceResult.Type.MISS) {
-                setMaxLifeTime(getMaxDelay());
+                setMaxLifeTime(ticksExisted + getMaxDelay());
             }
         }
 
@@ -511,7 +514,9 @@ public class SummondSwordEntity extends StandardizationAttackEntity {
         if (pierce != null && pierce.contains(targetEntity.getEntityId())) {
             return;
         }
-        doAttackEntity(hits, isEnd);
+        if (!world.isRemote) {
+            doAttackEntity(hits, isEnd);
+        }
         if (pierce == null || !this.world.isRemote && this.getMaxPierce() == pierce.size()) {
             setHitEntity(hits);
         }

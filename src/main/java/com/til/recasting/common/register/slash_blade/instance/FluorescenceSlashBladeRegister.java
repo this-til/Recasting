@@ -35,7 +35,6 @@ import net.minecraft.item.Items;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
-import net.minecraft.potion.PotionUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.vector.Vector3d;
@@ -43,7 +42,6 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import java.awt.*;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 @VoluntarilyRegister
 public abstract class FluorescenceSlashBladeRegister extends SlashBladeRegister {
@@ -62,12 +60,12 @@ public abstract class FluorescenceSlashBladeRegister extends SlashBladeRegister 
     @Override
     protected void defaultItemStackConfig(ItemStack itemStack) {
         super.defaultItemStackConfig(itemStack);
-        slashBladePack.slashBladeState.setColorCode(new Color(51, 51, 255).getRGB());
-        slashBladePack.iSlashBladeStateSupplement.setDurable(12);
-        slashBladePack.iSlashBladeStateSupplement.setAttackDistance(1.25f);
-        slashBladePack.slashBladeState.setBaseAttackModifier(2f);
+        slashBladePack.getSlashBladeState().setEffectColor(new Color(51, 51, 255));
+        slashBladePack.getSlashBladeStateSupplement().setDurable(12);
+        slashBladePack.getSlashBladeStateSupplement().setAttackDistance(1.25f);
+        slashBladePack.getSlashBladeState().setBaseAttackModifier(2f);
 
-        slashBladePack.ise.getPack(fluorescenceSE).setLevel(1);
+        slashBladePack.getIse().getPack(fluorescenceSE).setLevel(1);
     }
 
     public abstract int getState();
@@ -81,10 +79,10 @@ public abstract class FluorescenceSlashBladeRegister extends SlashBladeRegister 
 
         @SubscribeEvent
         protected void onEventDoAttack(EventDoAttack event) {
-            if (!event.pack.slashBladePack.ise.hasSE(this)) {
+            if (!event.pack.getSlashBladePack().getIse().hasSE(this)) {
                 return;
             }
-            ISE.SE_Pack se_pack = event.pack.slashBladePack.ise.getPack(this);
+            ISE.SE_Pack se_pack = event.pack.getSlashBladePack().getIse().getPack(this);
             if (!(event.target instanceof LivingEntity)) {
                 return;
             }
@@ -117,7 +115,7 @@ public abstract class FluorescenceSlashBladeRegister extends SlashBladeRegister 
         @Override
         protected void defaultItemStackConfig(ItemStack itemStack) {
             super.defaultItemStackConfig(itemStack);
-            slashBladePack.slashBladeState.setBaseAttackModifier(4f);
+            slashBladePack.getSlashBladeState().setBaseAttackModifier(4f);
             slashBladePack.setSA(fluorescence_1_sa);
         }
 
@@ -138,13 +136,13 @@ public abstract class FluorescenceSlashBladeRegister extends SlashBladeRegister 
             @Override
             protected SlashBladeRecipeSerializerRegister.SlashBladeRecipeRecipePack defaultConfigSlashBladeRecipeRecipePack() {
                 SlashBladePack nameless = namelessSlashBladeRegister.getSlashBladePack();
-                nameless.slashBladeState.setKillCount(150);
-                nameless.slashBladeState.setRefine(30);
+                nameless.getSlashBladeState().setKillCount(150);
+                nameless.getSlashBladeState().setRefine(30);
                 EnchantmentHelper.setEnchantments(
                         MapUtil.of(
                                 Enchantments.UNBREAKING, 3,
                                 Enchantments.MENDING, 1),
-                        nameless.itemStack
+                        nameless.getItemStack()
                 );
                 return new SlashBladeRecipeSerializerRegister.SlashBladeRecipeRecipePack(
                         ListUtil.of(
@@ -155,7 +153,7 @@ public abstract class FluorescenceSlashBladeRegister extends SlashBladeRegister 
                         MapUtil.of(
                                 "A", new IRecipeInItemPack.OfIngredient(Ingredient.fromItems(Items.PAPER)),
                                 "B", new IRecipeInItemPack.OfIngredient(Ingredient.fromItems(SBItems.proudsoul_crystal)),
-                                "V", new IRecipeInItemPack.OfSlashBlade(nameless.itemStack)
+                                "V", new IRecipeInItemPack.OfSlashBlade(nameless.getItemStack())
                         ),
                         "V",
                         new IResultPack.OfSlashBladeRegister(fluorescence_1_slashBladeRegister)
@@ -184,7 +182,7 @@ public abstract class FluorescenceSlashBladeRegister extends SlashBladeRegister 
 
             @Override
             public void trigger(UseSlashBladeEntityPack slashBladeEntityPack) {
-                JudgementCutManage.doJudgementCut(slashBladeEntityPack.entity, attack, 10, null, null,
+                JudgementCutManage.doJudgementCut(slashBladeEntityPack.getEntity(), attack, 10, null, null,
                         judgementCutEntity -> judgementCutEntity.setEffectInstanceList(ListUtil.of(new EffectInstance(Effects.GLOWING, time))));
             }
 
@@ -205,7 +203,7 @@ public abstract class FluorescenceSlashBladeRegister extends SlashBladeRegister 
         @Override
         protected void defaultItemStackConfig(ItemStack itemStack) {
             super.defaultItemStackConfig(itemStack);
-            slashBladePack.slashBladeState.setBaseAttackModifier(4f);
+            slashBladePack.getSlashBladeState().setBaseAttackModifier(4f);
             slashBladePack.setSA(fluorescence_2_sa);
         }
 
@@ -246,30 +244,30 @@ public abstract class FluorescenceSlashBladeRegister extends SlashBladeRegister 
 
             @Override
             public void trigger(UseSlashBladeEntityPack slashBladeEntityPack) {
-                JudgementCutManage.doJudgementCut(slashBladeEntityPack.entity, attack, 10, null, null,
+                JudgementCutManage.doJudgementCut(slashBladeEntityPack.getEntity(), attack, 10, null, null,
                         judgementCutEntity -> judgementCutEntity.setEffectInstanceList(ListUtil.of(new EffectInstance(Effects.GLOWING, time))));
                 Vector3d attackPos = slashBladeEntityPack.getAttackPos();
-                List<Entity> entityList = slashBladeEntityPack.entity.world.getEntitiesInAABBexcluding(
-                        slashBladeEntityPack.entity,
+                List<Entity> entityList = slashBladeEntityPack.getEntity().world.getEntitiesInAABBexcluding(
+                        slashBladeEntityPack.getEntity(),
                         new Pos(attackPos).axisAlignedBB(range),
-                        entity -> defaultEntityPredicateRegister.canTarget(slashBladeEntityPack.entity, entity));
+                        entity -> defaultEntityPredicateRegister.canTarget(slashBladeEntityPack.getEntity(), entity));
                 for (int i = 0; i < number; i++) {
-                    SummondSwordEntity summondSwordEntity = new SummondSwordEntity(summondSwordEntityTypeRegister.getEntityType(), slashBladeEntityPack.entity.world, slashBladeEntityPack.entity);
-                    slashBladeEntityPack.slashBladePack.iSlashBladeStateSupplement.decorate(summondSwordEntity);
-                    summondSwordEntity.setColor(slashBladeEntityPack.slashBladePack.slashBladeState.getColorCode());
+                    SummondSwordEntity summondSwordEntity = new SummondSwordEntity(summondSwordEntityTypeRegister.getEntityType(), slashBladeEntityPack.getEntity().world, slashBladeEntityPack.getEntity());
+                    slashBladeEntityPack.getSlashBladePack().getSlashBladeStateSupplement().decorate(summondSwordEntity);
+                    summondSwordEntity.setColor(slashBladeEntityPack.getSlashBladePack().getSlashBladeState().getColorCode());
                     summondSwordEntity.setDamage(attack);
                     summondSwordEntity.setMaxDelay(20);
-                    summondSwordEntity.setStartDelay(slashBladeEntityPack.entity.getRNG().nextInt(10));
+                    summondSwordEntity.setStartDelay(slashBladeEntityPack.getEntity().getRNG().nextInt(10));
                     if (!entityList.isEmpty()) {
-                        Entity entity = entityList.get(slashBladeEntityPack.entity.getRNG().nextInt(entityList.size()));
+                        Entity entity = entityList.get(slashBladeEntityPack.getEntity().getRNG().nextInt(entityList.size()));
                         summondSwordEntity.lookAt(RayTraceUtil.getPosition(entity), false);
                     } else {
                         summondSwordEntity.lookAt(attackPos, false);
                     }
                     summondSwordEntity.setEffectInstanceList(ListUtil.of(new EffectInstance(Effects.GLOWING, time)));
-                    slashBladeEntityPack.entity.world.addEntity(summondSwordEntity);
+                    slashBladeEntityPack.getEntity().world.addEntity(summondSwordEntity);
                 }
-                slashBladeEntityPack.entity.playSound(SoundEvents.ITEM_CHORUS_FRUIT_TELEPORT, 0.2F, 1.45F);
+                slashBladeEntityPack.getEntity().playSound(SoundEvents.ITEM_CHORUS_FRUIT_TELEPORT, 0.2F, 1.45F);
             }
 
             @Override
@@ -290,7 +288,7 @@ public abstract class FluorescenceSlashBladeRegister extends SlashBladeRegister 
         @Override
         protected void defaultItemStackConfig(ItemStack itemStack) {
             super.defaultItemStackConfig(itemStack);
-            slashBladePack.slashBladeState.setBaseAttackModifier(4f);
+            slashBladePack.getSlashBladeState().setBaseAttackModifier(4f);
         }
 
         @Override
@@ -305,7 +303,7 @@ public abstract class FluorescenceSlashBladeRegister extends SlashBladeRegister 
         @Override
         protected void defaultItemStackConfig(ItemStack itemStack) {
             super.defaultItemStackConfig(itemStack);
-            slashBladePack.slashBladeState.setBaseAttackModifier(4f);
+            slashBladePack.getSlashBladeState().setBaseAttackModifier(4f);
         }
 
         @Override
@@ -320,7 +318,7 @@ public abstract class FluorescenceSlashBladeRegister extends SlashBladeRegister 
         @Override
         protected void defaultItemStackConfig(ItemStack itemStack) {
             super.defaultItemStackConfig(itemStack);
-            slashBladePack.slashBladeState.setBaseAttackModifier(4f);
+            slashBladePack.getSlashBladeState().setBaseAttackModifier(4f);
         }
 
         @Override
@@ -335,7 +333,7 @@ public abstract class FluorescenceSlashBladeRegister extends SlashBladeRegister 
         @Override
         protected void defaultItemStackConfig(ItemStack itemStack) {
             super.defaultItemStackConfig(itemStack);
-            slashBladePack.slashBladeState.setBaseAttackModifier(4f);
+            slashBladePack.getSlashBladeState().setBaseAttackModifier(4f);
         }
 
         @Override
@@ -351,7 +349,7 @@ public abstract class FluorescenceSlashBladeRegister extends SlashBladeRegister 
         @Override
         protected void defaultItemStackConfig(ItemStack itemStack) {
             super.defaultItemStackConfig(itemStack);
-            slashBladePack.slashBladeState.setBaseAttackModifier(4f);
+            slashBladePack.getSlashBladeState().setBaseAttackModifier(4f);
         }
 
         @Override
@@ -366,7 +364,7 @@ public abstract class FluorescenceSlashBladeRegister extends SlashBladeRegister 
         @Override
         protected void defaultItemStackConfig(ItemStack itemStack) {
             super.defaultItemStackConfig(itemStack);
-            slashBladePack.slashBladeState.setBaseAttackModifier(4f);
+            slashBladePack.getSlashBladeState().setBaseAttackModifier(4f);
         }
 
         @Override

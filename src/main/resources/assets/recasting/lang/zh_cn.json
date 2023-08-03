@@ -2,8 +2,14 @@
 
   "recasting.void_sword_slash_blade_register" : "洞虚利刃",
   "recasting.void_sword_1_slash_blade_register" : "洞虚利刃",
+  "recasting.void_sword_1_sa": "拟似黑洞",
+  "recasting.void_sword_1_sa.introduce": "你见过星星粉碎的样子吗",
   "recasting.void_sword_2_slash_blade_register" : "洞虚利刃[漆黑]",
+  "recasting.void_sword_2_sa": "拟似黑洞[漆黑]",
+  "recasting.void_sword_2_sa.introduce": "你见过星星粉碎的样子吗",
   "recasting.void_sword_3_slash_blade_register" : "洞虚利刃[猩红]",
+  "recasting.void_sword_3_sa": "拟似黑洞[猩红]",
+  "recasting.void_sword_3_sa.introduce": "你见过星星粉碎的样子吗",
 
   "recasting.star_blade_slash_blade_register" : "星流利刃",
 
@@ -34,7 +40,11 @@
 
   "recasting.fluorescence_slash_blade_register" : "荧光",
   "recasting.fluorescence_1_slash_blade_register" : "荧光",
+  "recasting.fluorescence_1_sa": "荧光反应",
+  "recasting.fluorescence_1_sa.introduce": "在目标位置进行次元斩攻击，对攻击到的实体施加发光效果",
   "recasting.fluorescence_2_slash_blade_register" : "荧光[剑]",
+  "recasting.fluorescence_2_sa": "荧光反应[剑]",
+  "recasting.fluorescence_2_sa.introduce": "在目标位置进行次元斩和数枚幻影剑进行攻击，对攻击到的实体施加发光效果",
   "recasting.fluorescence_3_slash_blade_register" : "荧光[砍刀]",
   "recasting.fluorescence_4_slash_blade_register" : "荧光[刀]",
   "recasting.fluorescence_5_slash_blade_register" : "荧光[战斧]",
@@ -43,22 +53,31 @@
   "recasting.fluorescence_8_slash_blade_register" : "荧光[镰刀]",
 
 
-  "recasting": "重铸",
-  "recasting.lock_client_key_register": "锁定",
-  "recasting.special_action_client_key_register": "特殊行动",
-  "recasting.summoned_sword_client_key_register": "召唤幻影剑",
-  "recasting.information_client_key_register": "详细信息",
 
-  "recasting.multiple_dimensional_chopping_sa": "多从次元斩",
-  "recasting.multiple_dimensional_chopping_sa.introduce": "进行至多4次次元斩进行攻击",
+
   "recasting.default_sa": "次元斩",
   "recasting.default_sa.introduce": "在目标位置进行次元斩攻击",
+
   "recasting.epidemic_summoned_sword_sa": "风暴幻影剑",
   "recasting.epidemic_summoned_sword_sa.introduce": "召唤幻影剑攻击指定位置",
 
+  "recasting.cloud_wheel_sa" : "云轮",
+  "recasting.cloud_wheel_sa.introduce": "召唤数枚幻影剑攻击目标，其中一枚幻影剑会附带闪电攻击",
+
+  "recasting.cloud_wheel_storm_sa" : "云轮风暴",
+  "recasting.cloud_wheel_storm_sa.introduce": "召唤数枚幻影剑攻击目标，其中多枚幻影剑会附带闪电攻击",
+
+  "recasting.heaven_twelve_hit_sa" : "苍穹十二连",
+  "recasting.heaven_twelve_hit_sa.introduce": "召唤数枚幻影剑攻击目标，幻影剑会附带闪电攻击",
+
+  "recasting.multiple_dimensional_chopping_sa": "多从次元斩",
+  "recasting.multiple_dimensional_chopping_sa.introduce": "进行至多4次次元斩进行攻击",
 
   "recasting.infinite_dimensional_chopping_sa": "无限次元斩",
   "recasting.infinite_dimensional_chopping_sa.introduce": "召唤次元斩攻击指定位置范围内的生物",
+
+  "recasting.sword_rain_sa": "剑雨",
+  "recasting.sword_rain_sa.introduce": "召唤大量幻影剑进行攻击",
 
   "recasting.cooperate_with_se": "同协",
   "recasting.cooperate_with_se.introduce": "挥刀的时候有概率再次进行挥刀",
@@ -101,6 +120,11 @@
   "recasting.protect.true": "强化失败不会降低等级",
   "recasting.protect.false": "强化失败将会降低等级",
 
-  "information.introduce": "按住%s键查看详细信息"
+  "information.introduce": "按住%s键查看详细信息",
 
+  "recasting": "重铸",
+  "recasting.lock_client_key_register": "锁定",
+  "recasting.special_action_client_key_register": "特殊行动",
+  "recasting.summoned_sword_client_key_register": "召唤幻影剑",
+  "recasting.information_client_key_register": "详细信息"
 }

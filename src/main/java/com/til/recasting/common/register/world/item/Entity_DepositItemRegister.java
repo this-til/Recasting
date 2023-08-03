@@ -24,6 +24,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 
@@ -85,12 +86,13 @@ public class Entity_DepositItemRegister extends ItemRegister {
                     EntityClassification.CREATURE,
                     EntityClassification.WATER_CREATURE
             );
-            for (EntityType<?> value : ForgeRegistries.ENTITIES.getValues()) {
-                if (!entityClassifications.contains(value.getClassification())) {
-                    continue;
-                }
-                items.add(entity_depositItemRegister.mackItemStack(value));
-            }
+
+            ForgeRegistries.ENTITIES.getValues()
+                    .stream()
+                    .filter(entityType -> entityClassifications.contains(entityType.getClassification()))
+                    .sorted(Comparator.comparing(a -> a.getName().toString()))
+                    .forEach(sa_register -> items.add(entity_depositItemRegister.mackItemStack(sa_register)));
+
         }
     }
 }

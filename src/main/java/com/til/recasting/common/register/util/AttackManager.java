@@ -10,7 +10,6 @@ import com.til.recasting.common.event.EventSlashBladeDoSlash;
 import com.til.recasting.common.register.entity_type.SlashEffectEntityTypeRegister;
 import mods.flammpfeil.slashblade.ability.ArrowReflector;
 import mods.flammpfeil.slashblade.ability.TNTExtinguisher;
-import mods.flammpfeil.slashblade.util.KnockBacks;
 import mods.flammpfeil.slashblade.util.VectorHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -52,14 +51,14 @@ public class AttackManager {
 
         SlashEffectEntity jc = new SlashEffectEntity(GlowingFireGlow.getInstance().getReflexManage().getVoluntarilyRegisterOfClass(SlashEffectEntityTypeRegister.class).getEntityType(),
                 playerIn.world, playerIn);
-        useSlashBladeEntityPack.slashBladePack.iSlashBladeStateSupplement.decorate(jc);
+        useSlashBladeEntityPack.getSlashBladePack().getSlashBladeStateSupplement().decorate(jc);
         jc.setPosition(pos.getX(), pos.getY(), pos.getZ());
         jc.setRoll(roll);
         jc.setColor(colorCode);
         jc.setMute(mute);
         jc.setThump(thump);
         jc.setDamage(damage);
-        jc.setSize(useSlashBladeEntityPack.slashBladePack.iSlashBladeStateSupplement.getAttackDistance() * basicsRange);
+        jc.setSize(useSlashBladeEntityPack.getSlashBladePack().getSlashBladeStateSupplement().getAttackDistance() * basicsRange);
 
         if (advanceOperation != null) {
             advanceOperation.accept(jc);
@@ -121,7 +120,7 @@ public class AttackManager {
 
         AttributeModifier am = new AttributeModifier("RankDamageBonus", useSlashBladeEntityPack.getDamageRatio(modifiedRatio), AttributeModifier.Operation.MULTIPLY_BASE);
         try {
-            useSlashBladeEntityPack.slashBladePack.slashBladeState.setOnClick(true);
+            useSlashBladeEntityPack.getSlashBladePack().getSlashBladeState().setOnClick(true);
             attacker.getAttribute(Attributes.ATTACK_DAMAGE).applyNonPersistentModifier(am);
             if (attacker instanceof PlayerEntity) {
                 ((PlayerEntity) attacker).attackTargetEntityWithCurrentItem(target);
@@ -131,7 +130,7 @@ public class AttackManager {
             }
         } finally {
             attacker.getAttribute(Attributes.ATTACK_DAMAGE).removeModifier(am);
-            useSlashBladeEntityPack.slashBladePack.slashBladeState.setOnClick(false);
+            useSlashBladeEntityPack.getSlashBladePack().getSlashBladeState().setOnClick(false);
         }
 
         if (resetHit) {

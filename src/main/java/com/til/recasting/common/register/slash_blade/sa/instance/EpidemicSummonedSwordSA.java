@@ -40,30 +40,30 @@ public class EpidemicSummonedSwordSA extends SA_Register {
 
     @Override
     public void trigger(UseSlashBladeEntityPack slashBladeEntityPack) {
-        World worldIn = slashBladeEntityPack.entity.world;
+        World worldIn = slashBladeEntityPack.getEntity().world;
         RayTraceResult rayTraceResult;
 
         @Nullable
-        Entity targetEntity = slashBladeEntityPack.slashBladePack.slashBladeState.getTargetEntity(worldIn);
-        rayTraceResult = targetEntity == null ? targetSelectorRegister.selector(slashBladeEntityPack.entity) : new EntityRayTraceResult(targetEntity);
+        Entity targetEntity = slashBladeEntityPack.getSlashBladePack().getSlashBladeState().getTargetEntity(worldIn);
+        rayTraceResult = targetEntity == null ? targetSelectorRegister.selector(slashBladeEntityPack.getEntity()) : new EntityRayTraceResult(targetEntity);
 
         Vector3d attackPos = targetEntity == null ? rayTraceResult.getHitVec() : RayTraceUtil.getPosition(targetEntity);
 
-        Vector3d pos = slashBladeEntityPack.entity.getEyePosition(1.0f)
-                .add(VectorHelper.getVectorForRotation(0.0f, slashBladeEntityPack.entity.getYaw(0) + 90).scale(slashBladeEntityPack.entity.getRNG().nextBoolean() ? 1 : -1));
+        Vector3d pos = slashBladeEntityPack.getEntity().getEyePosition(1.0f)
+                .add(VectorHelper.getVectorForRotation(0.0f, slashBladeEntityPack.getEntity().getYaw(0) + 90).scale(slashBladeEntityPack.getEntity().getRNG().nextBoolean() ? 1 : -1));
 
         for (int i = 0; i < number; i++) {
-            SummondSwordEntity summondSwordEntity = new SummondSwordEntity(summondSwordEntityTypeRegister.getEntityType(), worldIn, slashBladeEntityPack.entity);
-            slashBladeEntityPack.slashBladePack.iSlashBladeStateSupplement.decorate(summondSwordEntity);
+            SummondSwordEntity summondSwordEntity = new SummondSwordEntity(summondSwordEntityTypeRegister.getEntityType(), worldIn, slashBladeEntityPack.getEntity());
+            slashBladeEntityPack.getSlashBladePack().getSlashBladeStateSupplement().decorate(summondSwordEntity);
             summondSwordEntity.setPosition(pos.getX(), pos.getY(), pos.getZ());
             summondSwordEntity.lookAt(attackPos, false);
-            summondSwordEntity.setColor(slashBladeEntityPack.slashBladePack.slashBladeState.getColorCode());
+            summondSwordEntity.setColor(slashBladeEntityPack.getSlashBladePack().getSlashBladeState().getColorCode());
             summondSwordEntity.setStartDelay(i);
             summondSwordEntity.setMaxLifeTime(100 + 5 + i);
             worldIn.addEntity(summondSwordEntity);
         }
 
-        slashBladeEntityPack.entity.playSound(SoundEvents.ITEM_CHORUS_FRUIT_TELEPORT, 0.2F, 1.45F);
+        slashBladeEntityPack.getEntity().playSound(SoundEvents.ITEM_CHORUS_FRUIT_TELEPORT, 0.2F, 1.45F);
 
     }
 

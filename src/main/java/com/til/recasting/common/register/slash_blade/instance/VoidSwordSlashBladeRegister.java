@@ -1,23 +1,35 @@
 package com.til.recasting.common.register.slash_blade.instance;
 
+import com.til.glowing_fire_glow.common.config.ConfigField;
 import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
 import com.til.glowing_fire_glow.common.register.VoluntarilyRegister;
 import com.til.glowing_fire_glow.common.util.ListUtil;
 import com.til.glowing_fire_glow.common.util.MapUtil;
+import com.til.glowing_fire_glow.common.util.Pos;
 import com.til.glowing_fire_glow.common.util.ResourceLocationUtil;
 import com.til.recasting.common.data.SlashBladePack;
 import com.til.recasting.common.data.IRecipeInItemPack;
 import com.til.recasting.common.data.IResultPack;
+import com.til.recasting.common.data.UseSlashBladeEntityPack;
+import com.til.recasting.common.register.back_type.JudgementCutBackTypeRegister;
+import com.til.recasting.common.register.entity_predicate.DefaultEntityPredicateRegister;
 import com.til.recasting.common.register.recipe.SlashBladeRecipeSerializerRegister;
 import com.til.recasting.common.register.slash_blade.SlashBladeRegister;
+import com.til.recasting.common.register.slash_blade.sa.SA_Register;
 import com.til.recasting.common.register.slash_blade.sa.instance.DefaultSA;
 import com.til.recasting.common.register.slash_blade.sa.instance.MultipleDimensionalChoppingSA;
+import com.til.recasting.common.register.util.JudgementCutManage;
 import com.til.recasting.common.register.world.item.SoulItemRegister;
 import mods.flammpfeil.slashblade.SlashBlade;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.vector.Vector3d;
+
+import java.awt.*;
+import java.util.List;
 
 public abstract class VoidSwordSlashBladeRegister extends SlashBladeRegister {
 
@@ -31,20 +43,85 @@ public abstract class VoidSwordSlashBladeRegister extends SlashBladeRegister {
     @Override
     protected void defaultItemStackConfig(ItemStack itemStack) {
         super.defaultItemStackConfig(itemStack);
-        slashBladePack.iSlashBladeStateSupplement.setAttackDistance(1.5f);
+        slashBladePack.getSlashBladeStateSupplement().setAttackDistance(1.5f);
+        slashBladePack.getSlashBladeState().setEffectColor(new Color(0xFF001E));
     }
 
     protected abstract int getState();
 
+    public static abstract class VoidSword_SA extends SA_Register {
+
+        @VoluntarilyAssignment
+        protected JudgementCutBackTypeRegister.JudgementCutTickBackTypeRegister judgementCutTickBackTypeRegister;
+
+        @VoluntarilyAssignment
+        protected DefaultEntityPredicateRegister defaultEntityPredicateRegister;
+
+        @ConfigField
+        protected float attack;
+
+        @ConfigField
+        protected int life;
+
+        @ConfigField
+        protected float size;
+
+        @ConfigField
+        protected float range;
+
+        @ConfigField
+        protected float power;
+
+        @Override
+        public void trigger(UseSlashBladeEntityPack slashBladeEntityPack) {
+            JudgementCutManage.doJudgementCut(slashBladeEntityPack.getEntity(), attack, life, null, null, judgementCutEntity -> {
+                judgementCutEntity.setSize(size);
+                judgementCutEntity.getBackRunPack().addRunBack(judgementCutTickBackTypeRegister, judgementCutEntity1 -> {
+                    List<Entity> entityList = judgementCutEntity1.world.getEntitiesInAABBexcluding(judgementCutEntity, new Pos(judgementCutEntity1.getPositionVec()).axisAlignedBB(range), entity -> defaultEntityPredicateRegister.canTarget(entity, slashBladeEntityPack.getEntity()));
+                    for (Entity entity : entityList) {
+                        Vector3d direction = judgementCutEntity1.getPositionVec().subtract(entity.getPositionVec());
+                        double length = direction.length();
+                        if (length > range) {
+                            continue;
+                        }
+                        double lengthRatio = length / range;
+                        double strength = (1 - lengthRatio) * (1 - lengthRatio);
+                        double _power = power * range;
+
+                        Vector3d move = entity.getMotion();
+                        entity.setMotion(move.add(
+                                (direction.getX() / length) * strength * _power,
+                                (direction.getY() / length) * strength * _power,
+                                (direction.getZ() / length) * strength * _power));
+                    }
+                });
+            });
+
+        }
+
+        @Override
+        public void defaultConfig() {
+            super.defaultConfig();
+            attack = 0.05f;
+            life = 20;
+            size = 4;
+            range = 32;
+            power = 0.05f;
+        }
+    }
+
     @VoluntarilyRegister
     public static class VoidSword_1_SlashBladeRegister extends VoidSwordSlashBladeRegister {
+
+        @VoluntarilyAssignment
+        protected VoidSword_1_SA voidSwordSlashBlade_1_sa;
 
         @Override
         protected void defaultItemStackConfig(ItemStack itemStack) {
             super.defaultItemStackConfig(itemStack);
-            slashBladePack.slashBladeState.setBaseAttackModifier(8f);
-            slashBladePack.slashBladeState.setColorCode(0xD25968);
-            slashBladePack.iSlashBladeStateSupplement.setDurable(12);
+            slashBladePack.getSlashBladeState().setBaseAttackModifier(8f);
+            slashBladePack.getSlashBladeStateSupplement().setDurable(12);
+            slashBladePack.setSA(voidSwordSlashBlade_1_sa);
         }
 
 
@@ -73,40 +150,34 @@ public abstract class VoidSwordSlashBladeRegister extends SlashBladeRegister {
             @Override
             protected SlashBladeRecipeSerializerRegister.SlashBladeRecipeRecipePack defaultConfigSlashBladeRecipeRecipePack() {
                 SlashBladePack blackSlash = blackSlashBladeRegister.getSlashBladePack();
-                blackSlash.slashBladeState.setKillCount(1200);
-                blackSlash.slashBladeState.setRefine(145);
+                blackSlash.getSlashBladeState().setKillCount(1200);
+                blackSlash.getSlashBladeState().setRefine(145);
 
                 SlashBladePack blueCloudSlashBlade = blueCloudSlashBladeRegister.getSlashBladePack();
-                blueCloudSlashBlade.slashBladeState.setKillCount(4500);
-                blueCloudSlashBlade.slashBladeState.setRefine(350);
+                blueCloudSlashBlade.getSlashBladeState().setKillCount(4500);
+                blueCloudSlashBlade.getSlashBladeState().setRefine(350);
 
-                return new SlashBladeRecipeSerializerRegister.SlashBladeRecipeRecipePack(
-                        ListUtil.of(
-                                "ACA",
-                                "BVB",
-                                "ACA"
-                        ),
-                        MapUtil.of(
-                                "A", new IRecipeInItemPack.OfIngredient(Ingredient.fromItems(soulCubeItemRegister.getItem())),
-                                "B", new IRecipeInItemPack.OfSlashBlade(blackSlash.itemStack),
-                                "C", new IRecipeInItemPack.OfItemSA(defaultSA),
-                                "V", new IRecipeInItemPack.OfSlashBlade(blueCloudSlashBlade.itemStack)),
-                        "V",
-                        new IResultPack.OfSlashBladeRegister(voidSword_1_slashBladeRegister)
-                );
+                return new SlashBladeRecipeSerializerRegister.SlashBladeRecipeRecipePack(ListUtil.of("ACA", "BVB", "ACA"), MapUtil.of("A", new IRecipeInItemPack.OfIngredient(Ingredient.fromItems(soulCubeItemRegister.getItem())), "B", new IRecipeInItemPack.OfSlashBlade(blackSlash.getItemStack()), "C", new IRecipeInItemPack.OfItemSA(defaultSA), "V", new IRecipeInItemPack.OfSlashBlade(blueCloudSlashBlade.getItemStack())), "V", new IResultPack.OfSlashBladeRegister(voidSword_1_slashBladeRegister));
             }
+        }
+
+        @VoluntarilyRegister
+        public static class VoidSword_1_SA extends VoidSword_SA {
         }
     }
 
     @VoluntarilyRegister
     public static class VoidSword_2_SlashBladeRegister extends VoidSwordSlashBladeRegister {
 
+        @VoluntarilyAssignment
+        protected VoidSword_2_SA voidSwordSlashBlade_2_sa;
+
         @Override
         protected void defaultItemStackConfig(ItemStack itemStack) {
             super.defaultItemStackConfig(itemStack);
-            slashBladePack.slashBladeState.setBaseAttackModifier(7f);
-            slashBladePack.slashBladeState.setColorCode(0xD25968);
-            slashBladePack.iSlashBladeStateSupplement.setDurable(48);
+            slashBladePack.getSlashBladeState().setBaseAttackModifier(7f);
+            slashBladePack.getSlashBladeStateSupplement().setDurable(48);
+            slashBladePack.setSA(voidSwordSlashBlade_2_sa);
         }
 
         @Override
@@ -134,42 +205,43 @@ public abstract class VoidSwordSlashBladeRegister extends SlashBladeRegister {
             @Override
             protected SlashBladeRecipeSerializerRegister.SlashBladeRecipeRecipePack defaultConfigSlashBladeRecipeRecipePack() {
                 SlashBladePack blueCloudSlashBlade = blueCloudSlashBladeRegister.getSlashBladePack();
-                blueCloudSlashBlade.slashBladeState.setKillCount(4200);
-                blueCloudSlashBlade.slashBladeState.setRefine(245);
+                blueCloudSlashBlade.getSlashBladeState().setKillCount(4200);
+                blueCloudSlashBlade.getSlashBladeState().setRefine(245);
 
                 SlashBladePack voidSword_1_slashBlade = voidSword_1_slashBladeRegister.getSlashBladePack();
-                voidSword_1_slashBlade.slashBladeState.setKillCount(10000);
-                voidSword_1_slashBlade.slashBladeState.setRefine(1350);
+                voidSword_1_slashBlade.getSlashBladeState().setKillCount(10000);
+                voidSword_1_slashBlade.getSlashBladeState().setRefine(1350);
 
-                return new SlashBladeRecipeSerializerRegister.SlashBladeRecipeRecipePack(
-                        ListUtil.of(
-                                "ACA",
-                                "BVB",
-                                "ACA"
-                        ),
-                        MapUtil.of(
-                                "A", new IRecipeInItemPack.OfIngredient(Ingredient.fromItems(soulCubeItemRegister.getItem())),
-                                "B", new IRecipeInItemPack.OfSlashBlade(blueCloudSlashBlade.itemStack),
-                                "C", new IRecipeInItemPack.OfItemSA(multipleDimensionalChoppingSA),
-                                "V", new IRecipeInItemPack.OfSlashBlade(voidSword_1_slashBlade.itemStack)),
-                        "V",
-                        new IResultPack.OfSlashBladeRegister(voidSword_2_slashBladeRegister)
-                );
+                return new SlashBladeRecipeSerializerRegister.SlashBladeRecipeRecipePack(ListUtil.of("ACA", "BVB", "ACA"), MapUtil.of("A", new IRecipeInItemPack.OfIngredient(Ingredient.fromItems(soulCubeItemRegister.getItem())), "B", new IRecipeInItemPack.OfSlashBlade(blueCloudSlashBlade.getItemStack()), "C", new IRecipeInItemPack.OfItemSA(multipleDimensionalChoppingSA), "V", new IRecipeInItemPack.OfSlashBlade(voidSword_1_slashBlade.getItemStack())), "V", new IResultPack.OfSlashBladeRegister(voidSword_2_slashBladeRegister));
             }
         }
 
+        @VoluntarilyRegister
+        public static class VoidSword_2_SA extends VoidSword_SA {
+            @Override
+            public void defaultConfig() {
+                super.defaultConfig();
+                life = 40;
+                size = 6;
+                range = 48;
+                power = 0.1f;
+            }
+        }
 
     }
 
     @VoluntarilyRegister
     public static class VoidSword_3_SlashBladeRegister extends VoidSwordSlashBladeRegister {
+        @VoluntarilyAssignment
+        protected VoidSword_3_SA voidSwordSlashBlade_3_sa;
+
 
         @Override
         protected void defaultItemStackConfig(ItemStack itemStack) {
             super.defaultItemStackConfig(itemStack);
-            slashBladePack.slashBladeState.setBaseAttackModifier(8f);
-            slashBladePack.slashBladeState.setColorCode(0xD25968);
-            slashBladePack.iSlashBladeStateSupplement.setDurable(1024);
+            slashBladePack.getSlashBladeState().setBaseAttackModifier(8f);
+            slashBladePack.getSlashBladeStateSupplement().setDurable(1024);
+            slashBladePack.setSA(voidSwordSlashBlade_3_sa);
         }
 
         @Override
@@ -190,23 +262,24 @@ public abstract class VoidSwordSlashBladeRegister extends SlashBladeRegister {
             @Override
             protected SlashBladeRecipeSerializerRegister.SlashBladeRecipeRecipePack defaultConfigSlashBladeRecipeRecipePack() {
                 SlashBladePack voidSword_2_slashBlade = voidSword_2_slashBladeRegister.getSlashBladePack();
-                voidSword_2_slashBlade.slashBladeState.setKillCount(30000);
-                voidSword_2_slashBlade.slashBladeState.setRefine(2500);
+                voidSword_2_slashBlade.getSlashBladeState().setKillCount(30000);
+                voidSword_2_slashBlade.getSlashBladeState().setRefine(2500);
 
 
-                return new SlashBladeRecipeSerializerRegister.SlashBladeRecipeRecipePack(
-                        ListUtil.of(
-                                "AAA",
-                                "AVA",
-                                "AAA"
-                        ),
-                        MapUtil.of(
-                                "A", new IRecipeInItemPack.OfEntity(EntityType.WITHER),
-                                "V", new IRecipeInItemPack.OfSlashBlade(voidSword_2_slashBlade.itemStack)),
-                        "V",
-                        new IResultPack.OfSlashBladeRegister(voidSword_3_slashBladeRegister)
-                );
+                return new SlashBladeRecipeSerializerRegister.SlashBladeRecipeRecipePack(ListUtil.of("AAA", "AVA", "AAA"), MapUtil.of("A", new IRecipeInItemPack.OfEntity(EntityType.WITHER), "V", new IRecipeInItemPack.OfSlashBlade(voidSword_2_slashBlade.getItemStack())), "V", new IResultPack.OfSlashBladeRegister(voidSword_3_slashBladeRegister));
 
+            }
+        }
+
+        @VoluntarilyRegister
+        public static class VoidSword_3_SA extends VoidSword_SA {
+            @Override
+            public void defaultConfig() {
+                super.defaultConfig();
+                life = 80;
+                size = 8;
+                range = 64;
+                power = 0.15f;
             }
         }
     }

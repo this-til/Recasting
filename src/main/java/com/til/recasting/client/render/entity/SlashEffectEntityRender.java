@@ -20,6 +20,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
+import java.awt.*;
 
 /**
  * @author til
@@ -74,12 +75,14 @@ public class SlashEffectEntityRender<T extends SlashEffectEntity> extends Entity
             float yscale = 0.03f;
             float scale = entity.getSize() * MathHelper.lerp(progress, 0.03f, 0.035f);
 
-            int color = entity.getColor() & 0xFFFFFF;
+            Color color = new Color(entity.getColor());
 
             ResourceLocation rl = getEntityTexture(entity);
 
             //baseAlpha = 1.0f;
+            baseAlpha = baseAlpha * (color.getAlpha() / 255f);
             int alpha = ((0xFF & (int) (0xFF * baseAlpha)) << 24);
+
 
             //black alpha inside
             try (MSAutoCloser msacb = MSAutoCloser.pushMatrix(matrixStackIn)) {
@@ -96,7 +99,7 @@ public class SlashEffectEntityRender<T extends SlashEffectEntity> extends Entity
                 matrixStackIn.scale(scale, yscale, scale);
                 Face.setAlphaOverride(Face.alphaOverrideYZZ);
                 Face.setUvOperator(1, 1, 0, -0.35f + progress * -0.15f);
-                BladeRenderState.setCol(color | alpha);
+                BladeRenderState.setCol((color.getRGB() & 0xFFFFFF) | alpha);
                 BladeRenderState.renderOverridedColorWrite(ItemStack.EMPTY, model, "base", rl, matrixStackIn, bufferIn, packedLightIn);
             }
 
@@ -115,7 +118,7 @@ public class SlashEffectEntityRender<T extends SlashEffectEntity> extends Entity
                 matrixStackIn.scale(scale, yscale, scale);
                 Face.setAlphaOverride(Face.alphaOverrideYZZ);
                 Face.setUvOperator(1, 1, 0, -0.35f + progress * -0.15f);
-                BladeRenderState.setCol(color | alpha);
+                BladeRenderState.setCol((color.getRGB() & 0xFFFFFF) | alpha);
                 BladeRenderState.renderOverridedLuminous(ItemStack.EMPTY, model, "base", rl, matrixStackIn, bufferIn, packedLightIn);
             }
         }

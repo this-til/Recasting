@@ -14,9 +14,7 @@ import com.til.recasting.common.event.EventSlashBladeDoSlash;
 import com.til.recasting.common.register.entity_type.SummondSwordEntityTypeRegister;
 import com.til.recasting.common.register.recipe.SpecialRecipeSerializerRegister;
 import com.til.recasting.common.register.slash_blade.se.SE_Register;
-import com.til.recasting.common.register.util.RayTraceUtil;
 import com.til.recasting.common.register.world.item.SE_DepositItemRegister;
-import net.minecraft.entity.Entity;
 import net.minecraft.util.SoundEvents;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -36,18 +34,18 @@ public class MomentSE extends SE_Register {
 
     @SubscribeEvent
     protected void onEventSlashBladeDoSlash(EventSlashBladeDoSlash event) {
-        if (!event.pack.slashBladePack.ise.hasSE(this)) {
+        if (!event.pack.getSlashBladePack().getIse().hasSE(this)) {
             return;
         }
-        ISE.SE_Pack se_pack = event.pack.slashBladePack.ise.getPack(this);
-        SummondSwordEntity summondSwordEntity = new SummondSwordEntity(summondSwordEntityTypeRegister.getEntityType(), event.pack.entity.world, event.pack.entity);
-        event.pack.slashBladePack.iSlashBladeStateSupplement.decorate(summondSwordEntity);
-        summondSwordEntity.setColor(event.pack.slashBladePack.slashBladeState.getColorCode());
+        ISE.SE_Pack se_pack = event.pack.getSlashBladePack().getIse().getPack(this);
+        SummondSwordEntity summondSwordEntity = new SummondSwordEntity(summondSwordEntityTypeRegister.getEntityType(), event.pack.getEntity().world, event.pack.getEntity());
+        event.pack.getSlashBladePack().getSlashBladeStateSupplement().decorate(summondSwordEntity);
+        summondSwordEntity.setColor(event.pack.getSlashBladePack().getSlashBladeState().getColorCode());
         summondSwordEntity.setDamage((float) attack.of(se_pack.getLevel()));
         summondSwordEntity.setMaxDelay(20);
         summondSwordEntity.lookAt(event.pack.getAttackPos(), false);
-        event.pack.entity.world.addEntity(summondSwordEntity);
-        event.pack.entity.playSound(SoundEvents.ITEM_CHORUS_FRUIT_TELEPORT, 0.2F, 1.45F);
+        event.pack.getEntity().world.addEntity(summondSwordEntity);
+        event.pack.getEntity().playSound(SoundEvents.ITEM_CHORUS_FRUIT_TELEPORT, 0.2F, 1.45F);
     }
 
 

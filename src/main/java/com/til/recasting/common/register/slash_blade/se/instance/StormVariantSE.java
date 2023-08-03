@@ -5,6 +5,7 @@ import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
 import com.til.glowing_fire_glow.common.register.VoluntarilyRegister;
 import com.til.glowing_fire_glow.common.util.ListUtil;
 import com.til.glowing_fire_glow.common.util.MapUtil;
+import com.til.glowing_fire_glow.common.util.RandomUtil;
 import com.til.glowing_fire_glow.common.util.math.NumberPack;
 import com.til.recasting.common.capability.ISE;
 import com.til.recasting.common.data.IRecipeInItemPack;
@@ -42,29 +43,26 @@ public class StormVariantSE extends SE_Register {
 
     @SubscribeEvent
     protected void onEventDoJudgementCut(EventDoJudgementCut event) {
-        if (!event.pack.slashBladePack.ise.hasSE(this)) {
+        if (!event.pack.getSlashBladePack().getIse().hasSE(this)) {
             return;
         }
-        ISE.SE_Pack se_pack = event.pack.slashBladePack.ise.getPack(this);
-        Random random = event.pack.entity.getRNG();
+        ISE.SE_Pack se_pack = event.pack.getSlashBladePack().getIse().getPack(this);
+        Random random = event.pack.getEntity().getRNG();
         int n = (int) number.of(se_pack.getLevel());
         float a = (float) attack.of(se_pack.getLevel());
         for (int i = 0; i < n; i++) {
-            SummondSwordEntity summondSwordEntity = new SummondSwordEntity(summondSwordEntityTypeRegister.getEntityType(), event.pack.entity.world, event.pack.entity);
-            event.pack.slashBladePack.iSlashBladeStateSupplement.decorate(summondSwordEntity);
-            Vector3d pos = event.pos.add(
-                    -4.5 + random.nextDouble() * 9,
-                    12 + random.nextDouble() * 9,
-                    -4.5 + random.nextDouble() * 9);
+            SummondSwordEntity summondSwordEntity = new SummondSwordEntity(summondSwordEntityTypeRegister.getEntityType(), event.pack.getEntity().world, event.pack.getEntity());
+            event.pack.getSlashBladePack().getSlashBladeStateSupplement().decorate(summondSwordEntity);
+            Vector3d pos = event.pos.add(0, 8, 0).add(RandomUtil.nextVector3dInCircles(random, 4.5));
             summondSwordEntity.setPosition(pos.getX(), pos.getY(), pos.getZ());
             summondSwordEntity.lookAt(event.pos, false);
-            summondSwordEntity.setColor(event.pack.slashBladePack.slashBladeState.getColorCode());
+            summondSwordEntity.setColor(event.pack.getSlashBladePack().getSlashBladeState().getColorCode());
             summondSwordEntity.setDamage(a);
             summondSwordEntity.setStartDelay(random.nextInt(10));
             summondSwordEntity.setRoll(random.nextInt(360));
-            event.pack.entity.world.addEntity(summondSwordEntity);
+            event.pack.getEntity().world.addEntity(summondSwordEntity);
         }
-        event.pack.entity.playSound(SoundEvents.ITEM_CHORUS_FRUIT_TELEPORT, 0.2F, 1.45F);
+        event.pack.getEntity().playSound(SoundEvents.ITEM_CHORUS_FRUIT_TELEPORT, 0.2F, 1.45F);
     }
 
     @Override

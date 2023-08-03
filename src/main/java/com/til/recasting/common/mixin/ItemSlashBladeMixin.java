@@ -44,15 +44,15 @@ import java.util.stream.Collectors;
  * @author til
  */
 @Mixin(value = {ItemSlashBlade.class}, remap = false)
-public abstract class ItemSlashBladeMixin {
+public class ItemSlashBladeMixin {
 
-    @Accessor
+    @Accessor()
     public static UUID getATTACK_DAMAGE_AMPLIFIER() {
         throw new UnsupportedOperationException();
     }
 
-    @Accessor
-    public static UUID getPLAYER_REACH_AMPLIFIER(){
+    @Accessor()
+    public static UUID getPLAYER_REACH_AMPLIFIER() {
         throw new UnsupportedOperationException();
     }
 
@@ -159,29 +159,33 @@ public abstract class ItemSlashBladeMixin {
         }
 
         float amount = (damage - half) / (float) half / 2;
-        amount = amount / slashBladePack.iSlashBladeStateSupplement.getDurable();
-        slashBladePack.slashBladeState.setDamage(slashBladePack.slashBladeState.getDamage() + amount);
+        amount = amount / slashBladePack.getSlashBladeStateSupplement().getDurable();
+        slashBladePack.getSlashBladeState().setDamage(slashBladePack.getSlashBladeState().getDamage() + amount);
     }
 
-    @Shadow
-    abstract int getHalfMaxdamage();
+    @Shadow(remap = false)
+    int getHalfMaxdamage() {
+        throw new UnsupportedOperationException();
+    }
 
+    //func_77624_a
     @Inject(method = "addInformation",
             at = @At(
                     value = "INVOKE",
                     target = "Lnet/minecraftforge/common/util/LazyOptional;ifPresent(Lnet/minecraftforge/common/util/NonNullConsumer;)V",
                     opcode = 1
-            ))
-    protected void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn, CallbackInfo callbackInfo) {
+            ),
+    remap = true)
+    private void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn, CallbackInfo callbackInfo) {
         SlashBladePack slashBladePack = new SlashBladePack(stack);
         if (!slashBladePack.isEffective(SlashBladePack.EffectiveType.isSlashBlade)) {
             return;
         }
-        tooltip.add(new TranslationTextComponent("key:%s", slashBladePack.slashBladeState.getTranslationKey()));
+        tooltip.add(new TranslationTextComponent("key:%s", slashBladePack.getSlashBladeState().getTranslationKey()));
         tooltip.add(new StringTextComponent(""));
 
 
-        SA_Register sa_register = GlowingFireGlow.getInstance().getWorldComponent(AllSA_Register.class).getSA_Register(slashBladePack.slashBladeState.getSlashArts());
+        SA_Register sa_register = GlowingFireGlow.getInstance().getWorldComponent(AllSA_Register.class).getSA_Register(slashBladePack.getSlashBladeState().getSlashArts());
         if (sa_register != null) {
             tooltip.add(new TranslationTextComponent("SA:%s",
                     new TranslationTextComponent(StringUtil.formatLang(sa_register.getName()))));
@@ -193,7 +197,7 @@ public abstract class ItemSlashBladeMixin {
         }
 
         boolean hasSE = false;
-        for (Map.Entry<SE_Register, ISE.SE_Pack> se_registerSE_packEntry : slashBladePack.ise.getAllSE().entrySet()) {
+        for (Map.Entry<SE_Register, ISE.SE_Pack> se_registerSE_packEntry : slashBladePack.getIse().getAllSE().entrySet()) {
             if (se_registerSE_packEntry.getValue().isEmpty()) {
                 continue;
             }
@@ -225,14 +229,15 @@ public abstract class ItemSlashBladeMixin {
 
     }
 
-
+    //func_150895_a
     @Inject(method = "fillItemGroup",
             at = @At(
                     value = "INVOKE",
                     target = "Lnet/minecraft/util/NonNullList;addAll(Ljava/util/Collection;)Z",
                     opcode = 1
-            ))
-    public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items, CallbackInfo callbackInfo) {
+            ),
+    remap = true)
+    private void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items, CallbackInfo callbackInfo) {
         List<SlashBladeRegister> slashBladeRegisterList = new ArrayList<>();
         for (SlashBladeRegister slashBladeRegister : GlowingFireGlow.getInstance().getWorldComponent(AllSlashBladeRegister.class).forAll()) {
             if (!slashBladeRegister.displayItem()) {
@@ -242,18 +247,15 @@ public abstract class ItemSlashBladeMixin {
         }
         slashBladeRegisterList = slashBladeRegisterList.stream().sorted(Comparator.comparing(RegisterBasics::getName)).collect(Collectors.toList());
         for (SlashBladeRegister slashBladeRegister : slashBladeRegisterList) {
-            items.add(slashBladeRegister.getSlashBladePack().itemStack);
+            items.add(slashBladeRegister.getSlashBladePack().getItemStack());
         }
 
-        List<SlashBladeRecipeSerializerRegister.SlashBladeRecipeRegister> slashBladeRecipeRegisterList = new ArrayList<>();
-        for (SlashBladeRecipeSerializerRegister.SlashBladeRecipeRegister slashBladeRecipeRegister : GlowingFireGlow.getInstance().getWorldComponent(SlashBladeRecipeSerializerRegister.AllSlashBladeRecipeRegister.class).forAll()) {
-            slashBladeRecipeRegisterList.add(slashBladeRecipeRegister);
-        }
+        List<SlashBladeRecipeSerializerRegister.SlashBladeRecipeRegister> slashBladeRecipeRegisterList = new ArrayList<>(GlowingFireGlow.getInstance().getWorldComponent(SlashBladeRecipeSerializerRegister.AllSlashBladeRecipeRegister.class).forAll());
         slashBladeRecipeRegisterList = slashBladeRecipeRegisterList.stream().sorted(Comparator.comparing(RegisterBasics::getName)).collect(Collectors.toList());
         for (SlashBladeRecipeSerializerRegister.SlashBladeRecipeRegister slashBladeRecipeRegister : slashBladeRecipeRegisterList) {
             for (Map.Entry<String, IRecipeInItemPack> stringIRecipeInItemPackEntry : slashBladeRecipeRegister.getSlashBladeRecipeRecipePack().key.entrySet()) {
                 if (stringIRecipeInItemPackEntry.getValue() instanceof IRecipeInItemPack.OfSlashBlade) {
-                    items.add(((IRecipeInItemPack.OfSlashBlade) stringIRecipeInItemPackEntry.getValue()).getSlashBladePack().itemStack);
+                    items.add(((IRecipeInItemPack.OfSlashBlade) stringIRecipeInItemPackEntry.getValue()).getSlashBladePack().getItemStack());
                 }
             }
             if (slashBladeRecipeRegister.getSlashBladeRecipeRecipePack().result instanceof IResultPack.OfItemStack) {
@@ -262,8 +264,9 @@ public abstract class ItemSlashBladeMixin {
         }
     }
 
-    @Inject(method = "onItemRightClick", at = @At("HEAD"), cancellable = true)
-    public void onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn, CallbackInfoReturnable<ActionResult<ItemStack>> cir) {
+    //func_77659_a
+    @Inject(method = "onItemRightClick", at = @At("HEAD"), cancellable = true, remap = true)
+    private void onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn, CallbackInfoReturnable<ActionResult<ItemStack>> cir) {
         ItemStack itemstack = playerIn.getHeldItem(handIn);
         SlashBladePack slashBladePack = new SlashBladePack(itemstack);
         if (!slashBladePack.isEffective(SlashBladePack.EffectiveType.canUse)) {
@@ -273,7 +276,7 @@ public abstract class ItemSlashBladeMixin {
     }
 
     @Inject(method = "onLeftClickEntity", at = @At("HEAD"), cancellable = true)
-    public void onLeftClickEntity(ItemStack itemstack, PlayerEntity playerIn, Entity entity, CallbackInfoReturnable<Boolean> cir) {
+    private void onLeftClickEntity(ItemStack itemstack, PlayerEntity playerIn, Entity entity, CallbackInfoReturnable<Boolean> cir) {
         SlashBladePack slashBladePack = new SlashBladePack(itemstack);
         if (!slashBladePack.isEffective(SlashBladePack.EffectiveType.canUse)) {
             cir.setReturnValue(false);

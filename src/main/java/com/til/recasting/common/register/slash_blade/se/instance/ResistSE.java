@@ -15,7 +15,6 @@ import com.til.recasting.common.register.slash_blade.se.SE_Register;
 import com.til.recasting.common.register.world.item.SE_DepositItemRegister;
 import mods.flammpfeil.slashblade.init.SBItems;
 import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraftforge.common.Tags;
@@ -37,11 +36,11 @@ public class ResistSE extends SE_Register {
 
     @SubscribeEvent
     protected void onEventSlashBladeDoSlash(EventSlashBladeDoSlash event) {
-        if (!event.pack.slashBladePack.ise.hasSE(this)) {
+        if (!event.pack.getSlashBladePack().getIse().hasSE(this)) {
             return;
         }
-        ISE.SE_Pack se_pack = event.pack.slashBladePack.ise.getPack(this);
-        event.pack.entity.addPotionEffect(new EffectInstance(Effects.ABSORPTION, (int) time.of(se_pack.getLevel()), (int) level.of(se_pack.getLevel())));
+        ISE.SE_Pack se_pack = event.pack.getSlashBladePack().getIse().getPack(this);
+        event.pack.getEntity().addPotionEffect(new EffectInstance(Effects.ABSORPTION, (int) time.of(se_pack.getLevel()), (int) level.of(se_pack.getLevel())));
     }
 
     @Override

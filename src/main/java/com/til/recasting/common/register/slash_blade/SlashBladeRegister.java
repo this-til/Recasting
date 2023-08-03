@@ -8,7 +8,6 @@ import com.til.glowing_fire_glow.common.util.Delayed;
 import com.til.glowing_fire_glow.common.util.StringUtil;
 import com.til.recasting.common.data.SlashBladePack;
 import mods.flammpfeil.slashblade.SlashBlade;
-import mods.flammpfeil.slashblade.client.renderer.model.obj.WavefrontObject;
 import mods.flammpfeil.slashblade.init.SBItems;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -54,15 +53,15 @@ public abstract class SlashBladeRegister extends RegisterBasics {
 
     protected void defaultItemStackConfig(ItemStack itemStack) {
         slashBladePack = new SlashBladePack(itemStack);
-        slashBladePack.slashBladeState.setTexture(texture);
-        slashBladePack.slashBladeState.setModel(model);
-        slashBladePack.slashBladeState.setTranslationKey(StringUtil.formatLang(getName()));
+        slashBladePack.getSlashBladeState().setTexture(texture);
+        slashBladePack.getSlashBladeState().setModel(model);
+        slashBladePack.getSlashBladeState().setTranslationKey(StringUtil.formatLang(getName()));
 
-        slashBladePack.iSlashBladeStateSupplement.setSummondSwordModel(summondSwordModel);
-        slashBladePack.iSlashBladeStateSupplement.setSummondSwordTexture(summondSwordTexture);
-        slashBladePack.iSlashBladeStateSupplement.setSlashEffectTexture(slashEffectTexture);
-        slashBladePack.iSlashBladeStateSupplement.setJudgementCutModel(judgementCutModel);
-        slashBladePack.iSlashBladeStateSupplement.setJudgementCutTexture(judgementCutTexture);
+        slashBladePack.getSlashBladeStateSupplement().setSummondSwordModel(summondSwordModel);
+        slashBladePack.getSlashBladeStateSupplement().setSummondSwordTexture(summondSwordTexture);
+        slashBladePack.getSlashBladeStateSupplement().setSlashEffectTexture(slashEffectTexture);
+        slashBladePack.getSlashBladeStateSupplement().setJudgementCutModel(judgementCutModel);
+        slashBladePack.getSlashBladeStateSupplement().setJudgementCutTexture(judgementCutTexture);
     }
 
     public SlashBladePack getSlashBladePack() {

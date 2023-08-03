@@ -26,26 +26,33 @@ public class SlashBladePack {
     @VoluntarilyAssignment
     protected static ISlashBladeStateSupplement_CapabilityRegister iSlashBladeStateSupplement_capabilityRegister;
 
-    public final ItemStack itemStack;
-    public final ISlashBladeState slashBladeState;
-    public final ISlashBladeStateSupplement iSlashBladeStateSupplement;
-    public final ISE ise;
-
+    protected ItemStack itemStack;
+    protected ISlashBladeState slashBladeState;
+    protected ISlashBladeStateSupplement iSlashBladeStateSupplement;
+    protected ISE ise;
+    protected boolean basicEffective;
 
     public SlashBladePack(ItemStack itemStack) {
         this.itemStack = itemStack;
-        slashBladeState = itemStack.getCapability(ItemSlashBlade.BLADESTATE).orElse(null);
-        iSlashBladeStateSupplement = itemStack.getCapability(iSlashBladeStateSupplement_capabilityRegister.getCapability()).orElse(null);
-        ise = itemStack.getCapability(se_capabilityRegister.getCapability()).orElse(null);
+        try {
+            slashBladeState = itemStack.getCapability(ItemSlashBlade.BLADESTATE).orElse(null);
+            iSlashBladeStateSupplement = itemStack.getCapability(iSlashBladeStateSupplement_capabilityRegister.getCapability()).orElse(null);
+            ise = itemStack.getCapability(se_capabilityRegister.getCapability()).orElse(null);
+            basicEffective = getSlashBladeState() != null && getIse() != null && getSlashBladeStateSupplement() != null;
+        } catch (RuntimeException runtimeException) {
+            basicEffective = false;
+        }
+
+
     }
 
     public boolean isEffective(EffectiveType effectiveType) {
-        boolean isSlashBlade = slashBladeState != null && ise != null && iSlashBladeStateSupplement != null;
+        boolean isSlashBlade = basicEffective;
         switch (effectiveType) {
             case isSlashBlade:
                 return isSlashBlade;
             case canUse:
-                return isSlashBlade && !slashBladeState.isBroken();
+                return isSlashBlade && !getSlashBladeState().isBroken();
             default:
                 return false;
         }
@@ -59,17 +66,17 @@ public class SlashBladePack {
         if (!slashBladePack.isEffective(EffectiveType.isSlashBlade)) {
             return false;
         }
-        if (!slashBladePack.slashBladeState.getTranslationKey().equals(slashBladeState.getTranslationKey())) {
+        if (!slashBladePack.getSlashBladeState().getTranslationKey().equals(getSlashBladeState().getTranslationKey())) {
             return false;
         }
-        if (slashBladePack.slashBladeState.getKillCount() < slashBladeState.getKillCount()) {
+        if (slashBladePack.getSlashBladeState().getKillCount() < getSlashBladeState().getKillCount()) {
             return false;
         }
-        if (slashBladePack.slashBladeState.getRefine() < slashBladeState.getRefine()) {
+        if (slashBladePack.getSlashBladeState().getRefine() < getSlashBladeState().getRefine()) {
             return false;
         }
-        Map<Enchantment, Integer> mainEnchantmentMap = EnchantmentHelper.getEnchantments(itemStack);
-        Map<Enchantment, Integer> enchantmentMap = EnchantmentHelper.getEnchantments(itemStack);
+        Map<Enchantment, Integer> mainEnchantmentMap = EnchantmentHelper.getEnchantments(getItemStack());
+        Map<Enchantment, Integer> enchantmentMap = EnchantmentHelper.getEnchantments(getItemStack());
         for (Map.Entry<Enchantment, Integer> enchantmentIntegerEntry : mainEnchantmentMap.entrySet()) {
             if (!enchantmentMap.containsKey(enchantmentIntegerEntry.getKey())) {
                 return false;
@@ -78,15 +85,15 @@ public class SlashBladePack {
                 return false;
             }
         }
-        Map<SE_Register, ISE.SE_Pack> mainSeMap = ise.getAllSE();
+        Map<SE_Register, ISE.SE_Pack> mainSeMap = getIse().getAllSE();
         for (Map.Entry<SE_Register, ISE.SE_Pack> se_registerSE_packEntry : mainSeMap.entrySet()) {
             if (se_registerSE_packEntry.getValue().isEmpty()) {
                 continue;
             }
-            if (!slashBladePack.ise.hasSE(se_registerSE_packEntry.getKey())) {
+            if (!slashBladePack.getIse().hasSE(se_registerSE_packEntry.getKey())) {
                 return false;
             }
-            if (slashBladePack.ise.getPack(se_registerSE_packEntry.getKey()).getLevel() < Math.min(se_registerSE_packEntry.getValue().getLevel(), se_registerSE_packEntry.getKey().getMaxLevel())) {
+            if (slashBladePack.getIse().getPack(se_registerSE_packEntry.getKey()).getLevel() < Math.min(se_registerSE_packEntry.getValue().getLevel(), se_registerSE_packEntry.getKey().getMaxLevel())) {
                 return false;
             }
         }
@@ -100,21 +107,21 @@ public class SlashBladePack {
      * @return 合成的结果
      */
     public SlashBladePack getRecipeResult(SlashBladePack slashBladePack) {
-        ItemStack outItemStack = itemStack.copy();
+        ItemStack outItemStack = getItemStack().copy();
         SlashBladePack outSlashBladePack = new SlashBladePack(outItemStack);
-        outSlashBladePack.slashBladeState.setKillCount(slashBladePack.slashBladeState.getKillCount());
-        outSlashBladePack.slashBladeState.setRefine(slashBladePack.slashBladeState.getRefine() / 2);
+        outSlashBladePack.getSlashBladeState().setKillCount(slashBladePack.getSlashBladeState().getKillCount());
+        outSlashBladePack.getSlashBladeState().setRefine(slashBladePack.getSlashBladeState().getRefine() / 2);
 
-        for (Map.Entry<SE_Register, ISE.SE_Pack> entry : slashBladePack.ise.getAllSE().entrySet()) {
+        for (Map.Entry<SE_Register, ISE.SE_Pack> entry : slashBladePack.getIse().getAllSE().entrySet()) {
             if (entry.getValue().isEmpty()) {
                 continue;
             }
-            ISE.SE_Pack outPack = outSlashBladePack.ise.getPack(entry.getKey());
+            ISE.SE_Pack outPack = outSlashBladePack.getIse().getPack(entry.getKey());
             outPack.setLevel(Math.max(outPack.getLevel(), entry.getValue().getLevel() - 1));
         }
 
         Map<Enchantment, Integer> outEnchantmentMap = EnchantmentHelper.getEnchantments(outItemStack);
-        Map<Enchantment, Integer> enchantmentMap = EnchantmentHelper.getEnchantments(slashBladePack.itemStack);
+        Map<Enchantment, Integer> enchantmentMap = EnchantmentHelper.getEnchantments(slashBladePack.getItemStack());
         for (Map.Entry<Enchantment, Integer> entry : enchantmentMap.entrySet()) {
             outEnchantmentMap.put(entry.getKey(), Math.max(outEnchantmentMap.get(entry.getKey()), entry.getValue() - 1));
         }
@@ -123,7 +130,23 @@ public class SlashBladePack {
     }
 
     public void setSA(SA_Register sa_register) {
-        slashBladeState.setSlashArtsKey(sa_register.getSlashArts().getName());
+        getSlashBladeState().setSlashArtsKey(sa_register.getSlashArts().getName());
+    }
+
+    public ItemStack getItemStack() {
+        return itemStack;
+    }
+
+    public ISlashBladeState getSlashBladeState() {
+        return slashBladeState;
+    }
+
+    public ISlashBladeStateSupplement getSlashBladeStateSupplement() {
+        return iSlashBladeStateSupplement;
+    }
+
+    public ISE getIse() {
+        return ise;
     }
 
     public enum EffectiveType {
