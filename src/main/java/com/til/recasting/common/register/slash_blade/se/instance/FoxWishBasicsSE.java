@@ -62,10 +62,16 @@ public abstract class FoxWishBasicsSE extends SE_Register {
         color = new Color(45, 45, 45, 255).getRGB();
     }
 
+    /***
+     * 黑狐祝灵
+     */
     @VoluntarilyRegister
     public static class BlackFoxWishSE extends FoxWishBasicsSE {
     }
 
+    /***
+     * 白狐祝灵
+     */
     @VoluntarilyRegister
     public static class WhiteFoxWishSE extends FoxWishBasicsSE {
 

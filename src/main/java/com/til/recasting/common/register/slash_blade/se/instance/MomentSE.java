@@ -75,8 +75,8 @@ public class MomentSE extends SE_Register {
             return new SpecialRecipeSerializerRegister.SpecialRecipePack(
                     ListUtil.of(
                             "  B",
-                            " V ",
-                            "A  "
+                            " A ",
+                            "V  "
                     ),
                     MapUtil.of(
                             "A", new IRecipeInItemPack.OfTag(Tags.Items.GEMS_EMERALD.getName()),

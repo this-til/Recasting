@@ -19,6 +19,9 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import java.awt.*;
 
 
+/***
+ * 神狐祝灵
+ */
 @VoluntarilyRegister
 public class GodWishSE extends SE_Register {
 

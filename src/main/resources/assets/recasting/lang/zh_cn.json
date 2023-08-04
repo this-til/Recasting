@@ -38,6 +38,8 @@
   "recasting.cool_mint_slash_blade_sa": "乱舞",
   "recasting.cool_mint_slash_blade_sa.introduce": "在前方挥刀进行多次剑气攻击",
 
+  "recasting.dragon_scale_slash_blade_register": "龙鳞",
+
   "recasting.fluorescence_slash_blade_register" : "荧光",
   "recasting.fluorescence_1_slash_blade_register" : "荧光",
   "recasting.fluorescence_1_sa": "荧光反应",
@@ -79,6 +81,10 @@
   "recasting.sword_rain_sa": "剑雨",
   "recasting.sword_rain_sa.introduce": "召唤大量幻影剑进行攻击",
 
+  "recasting.vertex_sword_rain_sa": "剑雨[顶点]",
+  "recasting.vertex_sword_rain_sa.introduce": "召唤大量幻影剑进行攻击",
+
+
   "recasting.cooperate_with_se": "同协",
   "recasting.cooperate_with_se.introduce": "挥刀的时候有概率再次进行挥刀",
   "recasting.impact_se": "冲击",
@@ -103,6 +109,12 @@
   "recasting.cross_chop_se.introduce" : "挥刀的时候追加一道剑气",
   "recasting.sever_break_se": "断却",
   "recasting.sever_break_se.introduce": "触发次元斩之后造成一次大伤害和大范围的劈砍",
+  "recasting.god_wish_se": "神狐祝福",
+  "recasting.god_wish_se.introduce": "挥刀时会附带黑白两道剑气进行协同攻击",
+  "recasting.white_fox_wish_se": "白狐祝灵",
+  "recasting.white_fox_wish_se.introduce": "挥刀时会召唤幻影剑进行协同攻击",
+  "recasting.black_fox_wish_se":"黑狐祝灵",
+  "recasting.black_fox_wish_se.introduce":"挥刀时会召唤幻影剑进行协同攻击",
 
   "item.recasting.item.se_deposit_item_register": "SE结晶",
   "item.recasting.item.sa_deposit_item_register": "SA结晶",
