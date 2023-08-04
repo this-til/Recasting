@@ -10,6 +10,8 @@ import mods.flammpfeil.slashblade.capability.concentrationrank.ConcentrationRank
 import mods.flammpfeil.slashblade.capability.concentrationrank.IConcentrationRank;
 import mods.flammpfeil.slashblade.capability.inputstate.IInputState;
 import mods.flammpfeil.slashblade.capability.inputstate.InputStateCapabilityProvider;
+import mods.flammpfeil.slashblade.capability.mobeffect.CapabilityMobEffect;
+import mods.flammpfeil.slashblade.capability.mobeffect.IMobEffectState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.math.vector.Vector3d;
@@ -32,6 +34,7 @@ public class UseSlashBladeEntityPack {
     protected IConcentrationRank concentrationRank;
     protected ITimeRun timeRun;
     protected IInputState iInputState;
+    protected IMobEffectState iMobEffectState;
 
     protected SlashBladePack slashBladePack;
 
@@ -43,8 +46,9 @@ public class UseSlashBladeEntityPack {
             concentrationRank = entity.getCapability(ConcentrationRankCapabilityProvider.RANK_POINT).orElse(null);
             iInputState = entity.getCapability(InputStateCapabilityProvider.INPUT_STATE).orElse(null);
             timeRun = entity.getCapability(timeRunCapabilityRegister.getCapability()).orElse(null);
+            iMobEffectState = entity.getCapability(CapabilityMobEffect.MOB_EFFECT).orElse(null);
             slashBladePack = new SlashBladePack(entity.getHeldItemMainhand());
-            basicEffective = getConcentrationRank() != null && getInputState() != null && getTimeRun() != null;
+            basicEffective = getConcentrationRank() != null && getInputState() != null && getTimeRun() != null && getMobEffectState() != null;
         } catch (RuntimeException runtimeException) {
             basicEffective = false;
         }
@@ -91,5 +95,9 @@ public class UseSlashBladeEntityPack {
 
     public SlashBladePack getSlashBladePack() {
         return slashBladePack;
+    }
+
+    public IMobEffectState getMobEffectState() {
+        return iMobEffectState;
     }
 }

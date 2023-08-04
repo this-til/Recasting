@@ -9,22 +9,28 @@ import org.spongepowered.asm.mixin.Overwrite;
 @Mixin(value = Untouchable.class, remap = false)
 public class UntouchableMixin {
 
-    /**
+/*
+    */
+/**
      * @author
      * @reason
-     */
+     *//*
+
     @Overwrite
     public void onLivingTicks(LivingEvent.LivingUpdateEvent event) {
 
     }
 
 
-    /**
+    */
+/**
      * @author
      * @reason
-     */
+     *//*
+
     @Overwrite
     public void onLivingDeath(LivingDeathEvent event) {
     }
+*/
 
 }

@@ -12,6 +12,7 @@
     "JudgementCutMixin",
     "LockOnManagerMixin",
     "MoveInputHandlerMixin",
+    "SlayerStyleArtsMixin",
     "SummonedSwordArtsMixin",
     "UntouchableMixin"
   ],

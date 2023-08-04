@@ -30,9 +30,7 @@ public abstract class UmbrellaSlashBladeRegister extends SlashBladeRegister {
         slashBladePack.getSlashBladeState().setBaseAttackModifier(7);
     }
 
-    /***
-     * 剑形态
-     */
+
     @VoluntarilyRegister
     public static class UmbrellaSlash_1_BladeRegister extends UmbrellaSlashBladeRegister {
         @Override
@@ -41,9 +39,6 @@ public abstract class UmbrellaSlashBladeRegister extends SlashBladeRegister {
         }
     }
 
-    /***
-     * 伞形态
-     */
     @VoluntarilyRegister
     public static class UmbrellaSlash_2_BladeRegister extends UmbrellaSlashBladeRegister {
         @Override
