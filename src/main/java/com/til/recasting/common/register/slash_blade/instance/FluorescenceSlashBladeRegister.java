@@ -29,6 +29,7 @@ import mods.flammpfeil.slashblade.init.SBItems;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -192,6 +193,7 @@ public abstract class FluorescenceSlashBladeRegister extends SlashBladeRegister 
                 attack = 0.75f;
                 time = 100;
             }
+
         }
     }
 
@@ -278,6 +280,53 @@ public abstract class FluorescenceSlashBladeRegister extends SlashBladeRegister 
                 judgementAttack = 0.75f;
                 attack = 0.15f;
                 number = 12;
+            }
+        }
+
+        @VoluntarilyRegister
+        public static class Fluorescence_2_Recipe_SA extends SlashBladeRecipeSerializerRegister.SlashBladeRecipeRegister {
+
+            @VoluntarilyAssignment
+            protected Fluorescence_2_SlashBladeRegister fluorescence_2_slashBladeRegister;
+
+            @VoluntarilyAssignment
+            protected Fluorescence_1_SlashBladeRegister fluorescence_1_slashBladeRegister;
+
+            @VoluntarilyAssignment
+            protected BaGuaSlashBladeRegister baGuaSlashBladeRegister;
+
+            @Override
+            protected SlashBladeRecipeSerializerRegister.SlashBladeRecipeRecipePack defaultConfigSlashBladeRecipeRecipePack() {
+                SlashBladePack baGuaSlashBlade = baGuaSlashBladeRegister.getSlashBladePack();
+                baGuaSlashBlade.getSlashBladeState().setKillCount(450);
+                baGuaSlashBlade.getSlashBladeState().setRefine(45);
+
+                SlashBladePack fluorescence_1 = fluorescence_1_slashBladeRegister.getSlashBladePack();
+                fluorescence_1.getSlashBladeState().setKillCount(850);
+                fluorescence_1.getSlashBladeState().setRefine(85);
+                EnchantmentHelper.setEnchantments(
+                        MapUtil.of(
+                                Enchantments.UNBREAKING, 4,
+                                Enchantments.MENDING, 1),
+                        fluorescence_1.getItemStack()
+                );
+
+
+                return new SlashBladeRecipeSerializerRegister.SlashBladeRecipeRecipePack(
+                        ListUtil.of(
+                                " AC",
+                                "AVA",
+                                "BA "
+                        ),
+                        MapUtil.of(
+                                "A", new IRecipeInItemPack.OfIngredient(Ingredient.fromItems(SBItems.proudsoul_tiny)),
+                                "B", new IRecipeInItemPack.OfSlashBlade(baGuaSlashBlade.getItemStack()),
+                                "C", new IRecipeInItemPack.OfEntity(EntityType.ZOMBIE),
+                                "V", new IRecipeInItemPack.OfSlashBlade(fluorescence_1.getItemStack())
+                                ),
+                        "V",
+                        new IResultPack.OfSlashBladeRegister(fluorescence_2_slashBladeRegister)
+                );
             }
         }
     }

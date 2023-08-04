@@ -58,6 +58,9 @@ public class DragonScaleSlashBladeRegister extends SlashBladeRegister {
         protected SummondSwordEntityTypeRegister summondSwordEntityTypeRegister;
 
 
+        @VoluntarilyAssignment
+        protected DefaultTargetSelectorRegister defaultTargetSelectorRegister;
+
         @Override
         public void trigger(UseSlashBladeEntityPack slashBladeEntityPack) {
             World worldIn = slashBladeEntityPack.getEntity().world;
@@ -70,7 +73,8 @@ public class DragonScaleSlashBladeRegister extends SlashBladeRegister {
             Vector3d attackPos = targetEntity == null ? rayTraceResult.getHitVec() : RayTraceUtil.getPosition(targetEntity);
 
             Vector3d pos = slashBladeEntityPack.getEntity().getEyePosition(1.0f)
-                    .add(VectorHelper.getVectorForRotation(0.0f, slashBladeEntityPack.getEntity().getYaw(0) + 90).scale(slashBladeEntityPack.getEntity().getRNG().nextBoolean() ? 1 : -1));
+                    .add(VectorHelper.getVectorForRotation(0.0f, slashBladeEntityPack.getEntity().getYaw(0) + 90)
+                            .scale(slashBladeEntityPack.getEntity().getRNG().nextBoolean() ? 1 : -1));
 
             for (int i = 0; i < number; i++) {
                 SummondSwordEntity summondSwordEntity = new SummondSwordEntity(summondSwordEntityTypeRegister.getEntityType(), worldIn, slashBladeEntityPack.getEntity());
@@ -94,7 +98,6 @@ public class DragonScaleSlashBladeRegister extends SlashBladeRegister {
             targetSelectorRegister = defaultTargetSelectorRegister;
         }
 
-        @VoluntarilyAssignment
-        protected DefaultTargetSelectorRegister defaultTargetSelectorRegister;
     }
 }
+
