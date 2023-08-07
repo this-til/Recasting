@@ -48,7 +48,11 @@
   "recasting.fluorescence_2_sa": "荧光反应[剑]",
   "recasting.fluorescence_2_sa.introduce": "在目标位置进行次元斩和数枚幻影剑进行攻击，对攻击到的实体施加发光效果",
   "recasting.fluorescence_3_slash_blade_register" : "荧光[砍刀]",
+  "recasting.fluorescence_3_sa": "荧光反应[砍刀]",
+  "recasting.fluorescence_3_sa.introduce": "在挥出一道滞留剑气可以造成多段伤害，对攻击到的实体施加发光效果",
   "recasting.fluorescence_4_slash_blade_register" : "荧光[刀]",
+  "recasting.fluorescence_4_sa": "荧光反应[刀]",
+  "recasting.fluorescence_4_sa.introduce": "挥出多段剑气，对攻击到的实体施加发光效果",
   "recasting.fluorescence_5_slash_blade_register" : "荧光[战斧]",
   "recasting.fluorescence_6_slash_blade_register" : "荧光[闪电]",
   "recasting.fluorescence_7_slash_blade_register" : "荧光[锤子]",
@@ -84,6 +88,11 @@
   "recasting.vertex_sword_rain_sa": "剑雨[顶点]",
   "recasting.vertex_sword_rain_sa.introduce": "召唤大量幻影剑进行攻击",
 
+  "recasting.drive_sa" : "幻影刃",
+  "recasting.drive_sa.introduce" : "向前方发射幻影刃进行攻击",
+
+  "recasting.ending_yan_sakura_sa" : "终焉樱",
+  "recasting.ending_yan_sakura_sa.introduce" : "向前方发射两道幻影刃进行攻击",
 
   "recasting.cooperate_with_se": "同协",
   "recasting.cooperate_with_se.introduce": "挥刀的时候有概率再次进行挥刀",

@@ -13,19 +13,25 @@ import com.til.recasting.common.data.SlashBladePack;
 import com.til.recasting.common.data.UseSlashBladeEntityPack;
 import com.til.recasting.common.data.IRecipeInItemPack;
 import com.til.recasting.common.data.IResultPack;
+import com.til.recasting.common.entity.DriveEntity;
 import com.til.recasting.common.entity.SummondSwordEntity;
 import com.til.recasting.common.event.EventDoAttack;
+import com.til.recasting.common.register.back_type.SlashEffectEntityBackTypeRegister;
 import com.til.recasting.common.register.entity_predicate.DefaultEntityPredicateRegister;
+import com.til.recasting.common.register.entity_type.DriveEntityTypeRegister;
 import com.til.recasting.common.register.entity_type.SummondSwordEntityTypeRegister;
 import com.til.recasting.common.register.recipe.SlashBladeRecipeSerializerRegister;
 import com.til.recasting.common.register.slash_blade.SlashBladeRegister;
 import com.til.recasting.common.register.slash_blade.sa.SA_Register;
 import com.til.recasting.common.register.slash_blade.se.SE_Register;
 import com.til.recasting.common.register.target_selector.DefaultTargetSelectorRegister;
+import com.til.recasting.common.register.util.AttackManager;
+import com.til.recasting.common.register.util.BackRunPackUtil;
 import com.til.recasting.common.register.util.JudgementCutManage;
 import com.til.recasting.common.register.util.RayTraceUtil;
 import mods.flammpfeil.slashblade.SlashBlade;
 import mods.flammpfeil.slashblade.init.SBItems;
+import mods.flammpfeil.slashblade.util.KnockBacks;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
@@ -323,7 +329,7 @@ public abstract class FluorescenceSlashBladeRegister extends SlashBladeRegister 
                                 "B", new IRecipeInItemPack.OfSlashBlade(baGuaSlashBlade.getItemStack()),
                                 "C", new IRecipeInItemPack.OfEntity(EntityType.ZOMBIE),
                                 "V", new IRecipeInItemPack.OfSlashBlade(fluorescence_1.getItemStack())
-                                ),
+                        ),
                         "V",
                         new IResultPack.OfSlashBladeRegister(fluorescence_2_slashBladeRegister)
                 );
@@ -331,33 +337,144 @@ public abstract class FluorescenceSlashBladeRegister extends SlashBladeRegister 
         }
     }
 
+    /***
+     * 砍刀
+     */
     @VoluntarilyRegister
     public static class Fluorescence_3_SlashBladeRegister extends FluorescenceSlashBladeRegister {
+
+        @VoluntarilyAssignment
+        protected Fluorescence_3_SA fluorescence_3_sa;
 
         @Override
         protected void defaultItemStackConfig(ItemStack itemStack) {
             super.defaultItemStackConfig(itemStack);
             slashBladePack.getSlashBladeState().setBaseAttackModifier(4f);
+            slashBladePack.setSA(fluorescence_3_sa);
         }
 
         @Override
         public int getState() {
             return 3;
         }
+
+        @VoluntarilyRegister
+        public static class Fluorescence_3_SA extends SA_Register {
+
+            @VoluntarilyAssignment
+            protected SlashEffectEntityBackTypeRegister.SlashEffectAttackBackTypeRegister slashEffectAttackBackTypeRegister;
+
+            @ConfigField
+            protected float attack;
+
+            @ConfigField
+            protected float basicsRange;
+
+            @ConfigField
+            protected int life;
+
+            @ConfigField
+            protected int time;
+
+            @Override
+            public void trigger(UseSlashBladeEntityPack slashBladeEntityPack) {
+                AttackManager.doSlash(
+                        slashBladeEntityPack.getEntity(),
+                        135,
+                        slashBladeEntityPack.getSlashBladePack().getSlashBladeState().getColorCode(),
+                        Vector3d.ZERO,
+                        false,
+                        true,
+                        attack,
+                        basicsRange,
+                        slashEffectEntity -> {
+                            slashEffectEntity.setMaxLifeTime(life);
+                            slashEffectEntity.setMultipleAttack(true);
+                            slashEffectEntity.setEffectInstanceList(ListUtil.of(new EffectInstance(Effects.GLOWING, time)));
+                            BackRunPackUtil.addKnockBacks(slashEffectEntity, KnockBacks.cancel);
+                        }
+                );
+            }
+
+            @Override
+            public void defaultConfig() {
+                super.defaultConfig();
+                attack = 0.1f;
+                basicsRange = 1.5f;
+                life = 20;
+                time = 100;
+            }
+        }
     }
 
     @VoluntarilyRegister
     public static class Fluorescence_4_SlashBladeRegister extends FluorescenceSlashBladeRegister {
 
+        @VoluntarilyAssignment
+        protected Fluorescence_4_SA fluorescence_4_sa;
+
         @Override
         protected void defaultItemStackConfig(ItemStack itemStack) {
             super.defaultItemStackConfig(itemStack);
             slashBladePack.getSlashBladeState().setBaseAttackModifier(4f);
+            slashBladePack.setSA(fluorescence_4_sa);
         }
 
         @Override
         public int getState() {
             return 4;
+        }
+
+
+        @VoluntarilyRegister
+        public static class Fluorescence_4_SA extends SA_Register {
+
+            @VoluntarilyAssignment
+            protected DriveEntityTypeRegister driveEntityTypeRegister;
+
+            @ConfigField
+            protected float attack;
+
+            @ConfigField
+            protected float attackNumber;
+
+            @ConfigField
+            protected int life;
+
+            @ConfigField
+            protected float range;
+
+            @ConfigField
+            protected int time;
+
+            @Override
+            public void trigger(UseSlashBladeEntityPack slashBladeEntityPack) {
+                for (int i = 0; i < attackNumber; i++) {
+                    DriveEntity driveEntity = new DriveEntity(
+                            driveEntityTypeRegister.getEntityType(),
+                            slashBladeEntityPack.getEntity().world,
+                            slashBladeEntityPack.getEntity()
+                    );
+                    driveEntity.setColor(slashBladeEntityPack.getSlashBladePack().getSlashBladeState().getColorCode());
+                    driveEntity.setSize((slashBladeEntityPack.getEntity().getRNG().nextFloat() + range)
+                                        * slashBladeEntityPack.getSlashBladePack().getSlashBladeStateSupplement().getAttackDistance());
+                    driveEntity.setDamage(attack);
+                    driveEntity.setMaxLifeTime(life);
+                    driveEntity.setRoll(slashBladeEntityPack.getEntity().getRNG().nextInt(360));
+                    driveEntity.setEffectInstanceList(ListUtil.of(new EffectInstance(Effects.GLOWING, time)));
+                    slashBladeEntityPack.getEntity().world.addEntity(driveEntity);
+                }
+            }
+
+            @Override
+            public void defaultConfig() {
+                super.defaultConfig();
+                attack = 0.3f;
+                attackNumber = 4;
+                life = 40;
+                range = 1;
+                time = 100;
+            }
         }
     }
 

@@ -25,7 +25,7 @@ public class CloudWheelSA extends SA_Register {
     protected LightningEntityTypeRegister lightningEntityTypeRegister;
 
     @VoluntarilyAssignment
-    protected SummondSwordBackTypeRegister.AttackBackTypeRegister attackBackTypeRegister;
+    protected SummondSwordBackTypeRegister.SummondSwordAttackBackTypeRegister attackBackTypeRegister;
 
     @ConfigField
     protected float attack;

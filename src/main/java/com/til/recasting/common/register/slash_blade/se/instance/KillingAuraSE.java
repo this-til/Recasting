@@ -42,11 +42,9 @@ public class KillingAuraSE extends SE_Register {
             return;
         }
         ISE.SE_Pack se_pack = event.pack.getSlashBladePack().getIse().getPack(this);
-        if (event.pack.getEntity().world.getGameTime() - se_pack.getOldTime() < cool.of(se_pack.getLevel())) {
+        if (!se_pack.tryTime(event.pack.getEntity().world.getGameTime() , (long) cool.of(se_pack.getLevel()))) {
             return;
         }
-        se_pack.setOldTime(event.pack.getEntity().world.getGameTime());
-
         Vector3d attackPos = event.target.getPositionVec();
         Random random = event.pack.getEntity().getRNG();
         double x = random.nextDouble() * 2 - 1;

@@ -22,7 +22,7 @@ public class HeavenTwelveHitSA extends SA_Register {
     protected LightningEntityTypeRegister lightningEntityTypeRegister;
 
     @VoluntarilyAssignment
-    protected SummondSwordBackTypeRegister.AttackBackTypeRegister attackBackTypeRegister;
+    protected SummondSwordBackTypeRegister.SummondSwordAttackBackTypeRegister attackBackTypeRegister;
 
     @ConfigField
     protected int lightningNumber;

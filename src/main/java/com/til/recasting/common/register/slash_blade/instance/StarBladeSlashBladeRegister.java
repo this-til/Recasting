@@ -44,8 +44,8 @@ public abstract class StarBladeSlashBladeRegister extends SlashBladeRegister {
         model = new ResourceLocation(getName().getNamespace(), String.join("/", SlashBlade.modid, ResourceLocationUtil.ofPath(StarBladeSlashBladeRegister.class), "state" + getState(), "model.obj"));
         texture = new ResourceLocation(getName().getNamespace(), String.join("/", SlashBlade.modid, ResourceLocationUtil.ofPath(StarBladeSlashBladeRegister.class), "state" + getState(), "texture.png"));
 
-        summondSwordModel = new ResourceLocation(getName().getNamespace(), String.join("/", "summond_sword", "star_blade", "model.obj"));
-        judgementCutModel = new ResourceLocation(getName().getNamespace(), String.join("/", "judgement_cut", "star_blade", "model.obj"));
+        summondSwordModel = new ResourceLocation(getName().getNamespace(), String.join("/", "summond_sword", ResourceLocationUtil.ofPath(StarBladeSlashBladeRegister.class), "model.obj"));
+        judgementCutModel = new ResourceLocation(getName().getNamespace(), String.join("/", "judgement_cut", ResourceLocationUtil.ofPath(StarBladeSlashBladeRegister.class), "model.obj"));
     }
 
     @Override
@@ -65,7 +65,7 @@ public abstract class StarBladeSlashBladeRegister extends SlashBladeRegister {
         protected DefaultEntityPredicateRegister defaultEntityPredicateRegister;
 
         @VoluntarilyAssignment
-        protected SummondSwordBackTypeRegister.AttackBackTypeRegister attackBackTypeRegister;
+        protected SummondSwordBackTypeRegister.SummondSwordAttackBackTypeRegister attackBackTypeRegister;
 
         @ConfigField
         protected int attackNumber;

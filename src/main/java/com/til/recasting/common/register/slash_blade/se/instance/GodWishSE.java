@@ -44,10 +44,9 @@ public class GodWishSE extends SE_Register {
             return;
         }
         ISE.SE_Pack se_pack = event.pack.getSlashBladePack().getIse().getPack(this);
-        if (event.pack.getEntity().world.getGameTime() - se_pack.getOldTime() < cool.of(se_pack.getLevel())) {
+        if (!se_pack.tryTime(event.pack.getEntity().world.getGameTime() , (long) cool.of(se_pack.getLevel()))) {
             return;
         }
-        se_pack.setOldTime(event.pack.getEntity().world.getGameTime());
         Vector3d pos = event.pack.getEntity().getPositionVec()
                 .add(0.0D, (double) event.pack.getEntity().getEyeHeight() * 0.75D, 0.0D)
                 .add(event.pack.getEntity().getLookVec().scale(0.3f));

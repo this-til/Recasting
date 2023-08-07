@@ -4,9 +4,12 @@ import com.google.common.collect.Lists;
 import com.til.glowing_fire_glow.common.register.StaticVoluntarilyAssignment;
 import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
 import com.til.recasting.common.register.back_type.SlashEffectEntityBackTypeRegister;
+import com.til.recasting.common.register.overall_config.SlashEffectEntityOverallConfigRegister;
 import com.til.recasting.common.register.util.AttackManager;
+import com.til.recasting.common.register.util.RayTraceUtil;
 import mods.flammpfeil.slashblade.SlashBlade;
 import mods.flammpfeil.slashblade.event.FallHandler;
+import mods.flammpfeil.slashblade.util.VectorHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -36,6 +39,9 @@ public class SlashEffectEntity extends StandardizationAttackEntity {
     @VoluntarilyAssignment
     protected static SlashEffectEntityBackTypeRegister.SlashEffectAttackBackTypeRegister attackBackTypeRegister;
 
+    @VoluntarilyAssignment
+    protected static SlashEffectEntityOverallConfigRegister slashEffectEntityOverallConfigRegister;
+
     static private final ResourceLocation DEFAULT_MODEL_NAME = new ResourceLocation(SlashBlade.modid, "model/util/slash.obj");
     static private final ResourceLocation DEFAULT_TEXTURE_NAME = new ResourceLocation(SlashBlade.modid, "model/util/slash.png");
 
@@ -58,7 +64,8 @@ public class SlashEffectEntity extends StandardizationAttackEntity {
         setMaxLifeTime(10);
         if (shooting != null) {
             setShooter(shooting);
-            setRawPosition(shooting.getPosX(), shooting.getPosY(), shooting.getPosZ());
+            Vector3d pos = RayTraceUtil.getPosition(shooting);
+            setRawPosition(pos.getX(), pos.getY(), pos.getZ());
             rotationYaw = shooting.rotationYaw;
             rotationPitch = 0;
         }
@@ -85,7 +92,7 @@ public class SlashEffectEntity extends StandardizationAttackEntity {
         double d2 = distance.z;
         double d3 = MathHelper.sqrt(d0 * d0 + d2 * d2);
 
-        this.rotationPitch = MathHelper.wrapDegrees((float) ((MathHelper.atan2(d1, d3) * (double) (180F / (float) Math.PI))));
+        this.rotationPitch = MathHelper.wrapDegrees((float) (-(MathHelper.atan2(d1, d3) * (double) (180F / (float) Math.PI))));
         this.rotationYaw = MathHelper.wrapDegrees((float) (MathHelper.atan2(d2, d0) * (double) (180F / (float) Math.PI)) - 90.0F);
 
         //this.rotationPitch = MathHelper.wrapDegrees((float) ((MathHelper.atan2(d1, d3)) * (double) (180F / (float) Math.PI)));
@@ -139,7 +146,7 @@ public class SlashEffectEntity extends StandardizationAttackEntity {
 
         }
 
-        if (getShooter() != null && !getShooter().isWet() && ticksExisted < (getMaxLifeTime() * 0.75)) {
+        if (useBlockParticle() && !getShooter().isWet() && ticksExisted < (getMaxLifeTime() * 0.75)) {
             Vector3d start = this.getPositionVec();
             Vector4f normal = new Vector4f(1, 0, 0, 1);
 
@@ -160,9 +167,20 @@ public class SlashEffectEntity extends StandardizationAttackEntity {
         }
 
         if (!this.world.isRemote) {
-            if (this.ticksExisted % 2 == 0) {
+            if (this.ticksExisted % attackInterval() == 0) {
                 boolean forceHit = true;
-                List<Entity> hits = AttackManager.areaAttack(getShooter(), this, entity -> backRunPack.runBack(attackBackTypeRegister, a -> a.attack(this, entity)), getSize() * 4, getDamage(), forceHit, false, true, alreadyHits);
+                List<Entity> hits = AttackManager.areaAttack(
+                        getShooter(),
+                        this,
+                        entity -> {
+                            backRunPack.runBack(attackBackTypeRegister, a -> a.attack(this, entity));
+                            affectEntity(entity, 1);
+                        },
+                        getSize() * 4, getDamage(),
+                        forceHit,
+                        false,
+                        true,
+                        alreadyHits);
                 if (!isMultipleAttack()) {
                     alreadyHits.addAll(hits);
                 }
@@ -170,6 +188,14 @@ public class SlashEffectEntity extends StandardizationAttackEntity {
         }
     }
 
+
+    protected boolean useBlockParticle() {
+        return slashEffectEntityOverallConfigRegister.isUseBlockParticle();
+    }
+
+    protected int attackInterval() {
+        return 2;
+    }
 
     public float getRotationOffset() {
         return this.getDataManager().get(ROTATION_OFFSET);

@@ -46,19 +46,25 @@ public class SlashEffectEntityRender<T extends SlashEffectEntity> extends Entity
         try (MSAutoCloser msac = MSAutoCloser.pushMatrix(matrixStackIn)) {
 
             matrixStackIn.rotate(Vector3f.YP.rotationDegrees(-MathHelper.lerp(partialTicks, entity.prevRotationYaw, entity.rotationYaw) - 90.0F));
-            matrixStackIn.rotate(Vector3f.ZP.rotationDegrees(MathHelper.lerp(partialTicks, entity.prevRotationPitch, entity.rotationPitch)));
+            matrixStackIn.rotate(Vector3f.ZP.rotationDegrees(-MathHelper.lerp(partialTicks, entity.prevRotationPitch, entity.rotationPitch)));
             matrixStackIn.rotate(Vector3f.XP.rotationDegrees(entity.getRoll()));
 
+            //matrixStackIn.rotate(Vector3f.YP.rotationDegrees(MathHelper.lerp(partialTicks, entity.prevRotationYaw, entity.rotationYaw)));
+            //matrixStackIn.rotate(Vector3f.XP.rotationDegrees(MathHelper.lerp(partialTicks, entity.prevRotationPitch, entity.rotationPitch)));
+            //matrixStackIn.rotate(Vector3f.ZP.rotationDegrees(entity.getRoll()));
 
             WavefrontObject model = BladeModelManager.getInstance().getModel(entity.getModel());
 
             int lifetime = entity.getMaxLifeTime();
 
-            float progress = Math.min(lifetime, (entity.ticksExisted + partialTicks)) / lifetime;
+            int ticksExisted = renderTime(entity);
+            partialTicks = ofPartialTicks(partialTicks);
+
+            float progress = Math.min(lifetime, (ticksExisted + partialTicks)) / lifetime;
 
             double deathTime = lifetime;
             //double baseAlpha = Math.sin(Math.PI * 0.5 * (Math.min(deathTime, Math.max(0, (lifetime - (entity.ticksExisted) - partialTicks))) / deathTime));
-            double baseAlpha = (Math.min(deathTime, Math.max(0, (lifetime - (entity.ticksExisted) - partialTicks))) / deathTime);
+            double baseAlpha = (Math.min(deathTime, Math.max(0, (lifetime - (ticksExisted) - partialTicks))) / deathTime);
             baseAlpha = -Math.pow(baseAlpha - 1, 4.0) + 1.0;
 
             //baseAlpha = Math.sin(-Math.PI + Math.PI * 2 * progress) * 0.5f + 0.5f;
@@ -122,5 +128,13 @@ public class SlashEffectEntityRender<T extends SlashEffectEntity> extends Entity
                 BladeRenderState.renderOverridedLuminous(ItemStack.EMPTY, model, "base", rl, matrixStackIn, bufferIn, packedLightIn);
             }
         }
+    }
+
+    protected int renderTime(T t) {
+        return t.ticksExisted;
+    }
+
+    protected float ofPartialTicks(float partialTicks) {
+        return partialTicks;
     }
 }

@@ -36,35 +36,24 @@ public class SummondSwordEntityRender<T extends SummondSwordEntity> extends Enti
     public void render(T entity, float entityYaw, float partialTicks, MatrixStack matrixStack, IRenderTypeBuffer bufferIn, int packedLightIn) {
 
         try (MSAutoCloser msac = MSAutoCloser.pushMatrix(matrixStack)) {
-
-
-
-          /*  matrixStack.rotate(new Quaternion(
-                    MathHelper.lerp(partialTicks, entity.prevRotationPitch, entity.rotationPitch),
-                    MathHelper.lerp(partialTicks, entity.prevRotationYaw, entity.rotationYaw),
-                    entity.getRoll(),
-                    true
-            ));*/
-            //GlStateManager.rotatef(lerpDegrees(partialTicks, entity.prevRotationYaw, entity.rotationYaw), 0.0F, 1.0F, 0.0F); //yaw
-            //GlStateManager.rotatef(-lerpDegrees(partialTicks, entity.prevRotationPitch, entity.rotationPitch), 1.0F, 0.0F, 0.0F);
-            //GlStateManager.rotatef(entity.getRoll(), 0, 0, 1);
-            // matrixStack.translate(
-            //                    MathHelper.lerp(partialTicks, entity.prevRotationPitch, entity.rotationPitch),
-            //                    MathHelper.lerp(partialTicks, entity.prevRotationYaw, entity.rotationYaw),
-            //                    entity.getRoll());
-
             //matrixStack.rotate(Vector3f.YP.rotationDegrees(MathHelper.lerp(partialTicks, entity.prevRotationYaw, entity.rotationYaw) - 90.0F));
             //matrixStack.rotate(Vector3f.ZP.rotationDegrees(MathHelper.lerp(partialTicks, entity.prevRotationPitch, entity.rotationPitch)));
             //matrixStack.rotate(Vector3f.XP.rotationDegrees(entity.getRoll()));
 
-            matrixStack.rotate(Vector3f.YP.rotationDegrees(MathHelper.lerp(partialTicks, entity.prevRotationYaw, entity.rotationYaw) - 90.0F));
-            matrixStack.rotate(Vector3f.ZP.rotationDegrees(MathHelper.lerp(partialTicks, entity.prevRotationPitch, entity.rotationPitch)));
-            matrixStack.rotate(Vector3f.XP.rotationDegrees(entity.getRoll()));
+
+            //matrixStack.rotate(Vector3f.YP.rotationDegrees(MathHelper.lerp(partialTicks, entity.prevRotationYaw, entity.rotationYaw)));
+            //matrixStack.rotate(Vector3f.ZP.rotationDegrees(-MathHelper.lerp(partialTicks, entity.prevRotationPitch, entity.rotationPitch)));
+            //matrixStack.rotate(Vector3f.XP.rotationDegrees(entity.getRoll()));
+            //matrixStack.rotate(Vector3f.YP.rotationDegrees(90.0F));
+
+
+            matrixStack.rotate(Vector3f.YP.rotationDegrees(-MathHelper.lerp(partialTicks, entity.prevRotationYaw, entity.rotationYaw)));
+            matrixStack.rotate(Vector3f.XP.rotationDegrees(MathHelper.lerp(partialTicks, entity.prevRotationPitch, entity.rotationPitch)));
+            matrixStack.rotate(Vector3f.ZP.rotationDegrees(entity.getRoll()));
 
 
             float scale = entity.getSize() * 0.0075f;
             matrixStack.scale(scale, scale, scale);
-            matrixStack.rotate(Vector3f.YP.rotationDegrees(90.0F));
 
             WavefrontObject model = BladeModelManager.getInstance().getModel(entity.getModel());
             BladeRenderState.setCol(entity.getColor());

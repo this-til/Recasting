@@ -65,12 +65,12 @@ public interface ISE {
             this.level = MathUtil.clamp(level, se_register.getMaxLevel(), 0);
         }
 
-        public long getOldTime() {
-            return oldTime;
-        }
-
-        public void setOldTime(long oldTime) {
-            this.oldTime = oldTime;
+        public boolean tryTime(long time, long minInterval) {
+            if (time - oldTime > minInterval) {
+                oldTime = time;
+                return true;
+            }
+            return false;
         }
 
         public CompoundNBT getCustomData() {

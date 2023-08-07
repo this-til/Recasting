@@ -36,10 +36,9 @@ public abstract class FoxWishBasicsSE extends SE_Register {
             return;
         }
         ISE.SE_Pack se_pack = event.pack.getSlashBladePack().getIse().getPack(this);
-        if (event.pack.getEntity().world.getGameTime() - se_pack.getOldTime() < cool.of(se_pack.getLevel())) {
+        if (!se_pack.tryTime(event.pack.getEntity().world.getGameTime() , (long) cool.of(se_pack.getLevel()))) {
             return;
         }
-        se_pack.setOldTime(event.pack.getEntity().world.getGameTime());
         int n = (int) attackNumber.of(se_pack.getLevel());
         for (int i = 0; i < n; i++) {
             SummondSwordEntity summondSwordEntity = new SummondSwordEntity(summondSwordEntityTypeRegister.getEntityType(), event.pack.getEntity().world, event.pack.getEntity());

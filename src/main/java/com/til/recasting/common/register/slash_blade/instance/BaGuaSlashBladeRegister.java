@@ -9,6 +9,7 @@ import com.til.recasting.common.data.IRecipeInItemPack;
 import com.til.recasting.common.data.IResultPack;
 import com.til.recasting.common.register.recipe.SlashBladeRecipeSerializerRegister;
 import com.til.recasting.common.register.slash_blade.SlashBladeRegister;
+import com.til.recasting.common.register.slash_blade.sa.instance.DriveSA;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.EntityType;
@@ -18,12 +19,17 @@ import java.awt.*;
 
 @VoluntarilyRegister
 public class BaGuaSlashBladeRegister extends SlashBladeRegister {
+
+    @VoluntarilyAssignment
+    protected DriveSA driveSA;
+
     @Override
     protected void defaultItemStackConfig(ItemStack itemStack) {
         super.defaultItemStackConfig(itemStack);
         slashBladePack.getSlashBladeState().setBaseAttackModifier(4f);
-        slashBladePack.getSlashBladeState().setEffectColor(new Color(255,255,255));
+        slashBladePack.getSlashBladeState().setEffectColor(new Color(255, 255, 255));
         slashBladePack.getSlashBladeStateSupplement().setDurable(2);
+        slashBladePack.setSA(driveSA);
     }
 
     @VoluntarilyRegister

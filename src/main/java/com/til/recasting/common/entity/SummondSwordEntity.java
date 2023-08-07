@@ -16,16 +16,10 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileHelper;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.IPacket;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.ParticleTypes;
-import net.minecraft.potion.Effect;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
-import net.minecraft.potion.PotionUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
@@ -48,17 +42,17 @@ public class SummondSwordEntity extends StandardizationAttackEntity {
     public static DefaultEntityPredicateRegister defaultEntityPredicateRegister;
 
     @VoluntarilyAssignment
-    public static SummondSwordBackTypeRegister.TransmitBackTypeRegister transmitBackTypeRegister;
+    public static SummondSwordBackTypeRegister.SummondSwordTransmitBackTypeRegister transmitBackTypeRegister;
 
 
     @VoluntarilyAssignment
-    public static SummondSwordBackTypeRegister.AttackBackTypeRegister attackBackTypeRegister;
+    public static SummondSwordBackTypeRegister.SummondSwordAttackBackTypeRegister attackBackTypeRegister;
 
     @VoluntarilyAssignment
-    public static SummondSwordBackTypeRegister.AttackBlockTypeRegister attackBlockTypeRegister;
+    public static SummondSwordBackTypeRegister.SummondSwordAttackBlockTypeRegister attackBlockTypeRegister;
 
     @VoluntarilyAssignment
-    public static SummondSwordBackTypeRegister.AttackEndBackTypeRegister attackEndBackTypeRegister;
+    public static SummondSwordBackTypeRegister.SummondSwordAttackEndBackTypeRegister attackEndBackTypeRegister;
 
 
     public static final ResourceLocation DEFAULT_MODEL_NAME = new ResourceLocation(SlashBlade.modid, "model/util/ss.obj");
@@ -99,8 +93,8 @@ public class SummondSwordEntity extends StandardizationAttackEntity {
     @OnlyIn(Dist.CLIENT)
     protected boolean recordAttackPos;
 
-    protected float attackYaw;
-    protected float attackPitch;
+    //protected float attackYaw;
+    //protected float attackPitch;
 
     protected boolean isTransmit;
 
@@ -133,11 +127,12 @@ public class SummondSwordEntity extends StandardizationAttackEntity {
             y *= dist;
             z *= dist;
             setRawPosition(shooting.getPosX() + x, shooting.getPosY() + y, shooting.getPosZ() + z);
-            attackYaw = shooting.rotationYaw;
-            attackPitch = shooting.rotationPitch;
+            //attackYaw = shooting.rotationYaw;
+            //attackPitch = shooting.rotationPitch;
+            rotationYaw = shooting.rotationYaw;
+            rotationPitch = shooting.rotationPitch;
             updateMotion(1);
             lookAt(getMotion(), true, true);
-            setRotation(rotationYaw, rotationPitch);
         }
 
     }
@@ -167,11 +162,15 @@ public class SummondSwordEntity extends StandardizationAttackEntity {
         double d2 = distance.z;
         double d3 = MathHelper.sqrt(d0 * d0 + d2 * d2);
 
-        this.attackPitch = MathHelper.wrapDegrees((float) (-(MathHelper.atan2(d1, d3) * (double) (180F / (float) Math.PI))));
-        this.attackYaw = MathHelper.wrapDegrees((float) (MathHelper.atan2(d2, d0) * (double) (180F / (float) Math.PI)) - 90.0F);
+        //this.attackPitch = MathHelper.wrapDegrees((float) (-(MathHelper.atan2(d1, d3) * (double) (180F / (float) Math.PI))));
+        //this.attackYaw = MathHelper.wrapDegrees((float) (MathHelper.atan2(d2, d0) * (double) (180F / (float) Math.PI)) - 90.0F);
 
-        this.rotationPitch = MathHelper.wrapDegrees((float) ((MathHelper.atan2(d1, d3)) * (double) (180F / (float) Math.PI)));
-        this.rotationYaw = MathHelper.wrapDegrees((float) (MathHelper.atan2(d0, d2) * (double) (180F / (float) Math.PI)));
+        //this.rotationPitch = MathHelper.wrapDegrees((float) ((MathHelper.atan2(d1, d3)) * (double) (180F / (float) Math.PI)));
+        //this.rotationYaw = MathHelper.wrapDegrees((float) (MathHelper.atan2(d0, d2) * (double) (180F / (float) Math.PI)));
+
+        this.rotationPitch = MathHelper.wrapDegrees((float) (-(MathHelper.atan2(d1, d3) * (double) (180F / (float) Math.PI))));
+        this.rotationYaw = MathHelper.wrapDegrees((float) (MathHelper.atan2(d2, d0) * (double) (180F / (float) Math.PI)) - 90.0F);
+
         if (prevSynchronous) {
             this.prevRotationPitch = this.rotationPitch;
             this.prevRotationYaw = this.rotationYaw;
@@ -181,8 +180,10 @@ public class SummondSwordEntity extends StandardizationAttackEntity {
 
 
     public void updateMotion(float seep) {
-        float fYawDtoR = (attackYaw / 180F) * (float) Math.PI;
-        float fPitDtoR = (attackPitch / 180F) * (float) Math.PI;
+        //float fYawDtoR = (attackYaw / 180F) * (float) Math.PI;
+        //float fPitDtoR = (attackPitch / 180F) * (float) Math.PI;
+        float fYawDtoR = (rotationYaw / 180F) * (float) Math.PI;
+        float fPitDtoR = (rotationPitch / 180F) * (float) Math.PI;
         float motionX = -MathHelper.sin(fYawDtoR) * MathHelper.cos(fPitDtoR) * seep;
         float motionY = -MathHelper.sin(fPitDtoR) * seep;
         float motionZ = MathHelper.cos(fYawDtoR) * MathHelper.cos(fPitDtoR) * seep;
@@ -402,6 +403,7 @@ public class SummondSwordEntity extends StandardizationAttackEntity {
         double mx = motionVec.x;
         double my = motionVec.y;
         double mz = motionVec.z;
+        this.setPosition(this.getPosX() + mx, this.getPosY() + my, this.getPosZ() + mz);
 
         //TODO 补充关于暴击的效果
 
@@ -411,7 +413,6 @@ public class SummondSwordEntity extends StandardizationAttackEntity {
                 }
             }*/
 
-        this.setPosition(this.getPosX() + mx, this.getPosY() + my, this.getPosZ() + mz);
 
 /*            float f4 = MathHelper.sqrt(horizontalMag(motionVec));
             this.rotationYaw = (float) (MathHelper.atan2(mx, mz) * (double) (180F / (float) Math.PI));

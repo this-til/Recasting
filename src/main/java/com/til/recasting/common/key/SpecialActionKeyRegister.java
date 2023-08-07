@@ -11,7 +11,6 @@ import com.til.recasting.common.register.entity_type.SummondSwordEntityTypeRegis
 import com.til.recasting.common.register.overall_config.SlayerStyleArtsOverallConfigRegister;
 import com.til.recasting.common.register.util.RayTraceUtil;
 import mods.flammpfeil.slashblade.ability.Untouchable;
-import mods.flammpfeil.slashblade.capability.mobeffect.CapabilityMobEffect;
 import mods.flammpfeil.slashblade.item.ItemSlashBlade;
 import mods.flammpfeil.slashblade.util.InputCommand;
 import net.minecraft.entity.CreatureEntity;
@@ -47,7 +46,7 @@ public class SpecialActionKeyRegister extends KeyRegister {
     protected SummondSwordEntityTypeRegister summondSwordEntityTypeRegister;
 
     @VoluntarilyAssignment
-    protected SummondSwordBackTypeRegister.AttackBackTypeRegister attackBackTypeRegister;
+    protected SummondSwordBackTypeRegister.SummondSwordAttackBackTypeRegister attackBackTypeRegister;
 
     protected final static EnumSet<InputCommand> FOWERD_SPRINT_SNEAK = EnumSet.of(InputCommand.FORWARD, InputCommand.SNEAK);
     protected final static EnumSet<InputCommand> MOVE = EnumSet.of(InputCommand.FORWARD, InputCommand.BACK, InputCommand.LEFT, InputCommand.RIGHT);
@@ -84,11 +83,12 @@ public class SpecialActionKeyRegister extends KeyRegister {
                 if (count <= 0) {
                     return;
                 }
+                //dodge(useSlashBladeEntityPack, input);
                 if (serverPlayerEntity.getEntity().isOnGround()) {
                     dodge(useSlashBladeEntityPack, input);
-                } else {
+                } /*else {
                     sprint(useSlashBladeEntityPack, input);
-                }
+                }*/
             }
         });
     }
@@ -102,6 +102,7 @@ public class SpecialActionKeyRegister extends KeyRegister {
         Vector3d motion = getAbsoluteMotion(input, styleArtsOverallConfigRegister.getSprintPower(), useSlashBladeEntityPack.getEntity().rotationYaw);
         Vector3d move = useSlashBladeEntityPack.getEntity().getMotion().add(motion);
         useSlashBladeEntityPack.getEntity().setMotion(move);
+        Entity entity = useSlashBladeEntityPack.getEntity();
     }
 
     protected void dodge(UseSlashBladeEntityPack useSlashBladeEntityPack, Vector3d input) {
