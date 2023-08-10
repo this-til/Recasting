@@ -70,7 +70,7 @@ public class AttackManager {
         playerIn.world.addEntity(jc);
     }
 
-    public static List<Entity> areaAttack(LivingEntity playerIn, Entity slashEffectEntity, Consumer<LivingEntity> beforeHit, float range, float ratio, boolean forceHit, boolean resetHit, boolean mute, List<Entity> exclude) {
+    public static List<Entity> areaAttack(LivingEntity playerIn, Entity slashEffectEntity, Consumer<LivingEntity> beforeHit, float range, float ratio, boolean forceHit, boolean resetHit, boolean mute, @Nullable List<Entity> exclude) {
         UseSlashBladeEntityPack useSlashBladeEntityPack = new UseSlashBladeEntityPack(playerIn);
         if (useSlashBladeEntityPack.isEffective(SlashBladePack.EffectiveType.canUse)) {
             EventSlashBladeAreaAttack eventSlashBladeAreaAttack = new EventSlashBladeAreaAttack(useSlashBladeEntityPack, slashEffectEntity, beforeHit, range, ratio, forceHit, resetHit, mute, exclude);

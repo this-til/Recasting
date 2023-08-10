@@ -10,7 +10,7 @@ public interface IItemSA {
     void setSA(SA_Register sa_register);
 
     /***
-     * 尝试更好
+     * 尝试更新
      */
     default void tryReplace(SlashBladePack slashBladePack) {
         slashBladePack.getSlashBladeState().setSlashArtsKey(getSA().getSlashArts().getName());

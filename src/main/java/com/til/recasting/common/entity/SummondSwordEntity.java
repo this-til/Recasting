@@ -2,10 +2,12 @@ package com.til.recasting.common.entity;
 
 import com.til.glowing_fire_glow.common.register.StaticVoluntarilyAssignment;
 import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
+import com.til.recasting.Recasting;
 import com.til.recasting.common.register.back_type.SummondSwordBackTypeRegister;
 import com.til.recasting.common.register.entity_predicate.DefaultEntityPredicateRegister;
 import com.til.recasting.common.register.util.AttackManager;
 import com.til.recasting.common.register.util.HitAssessment;
+import com.til.recasting.common.register.util.StringFinal;
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import mods.flammpfeil.slashblade.SlashBlade;
 import mods.flammpfeil.slashblade.ability.StunManager;
@@ -56,7 +58,7 @@ public class SummondSwordEntity extends StandardizationAttackEntity {
 
 
     public static final ResourceLocation DEFAULT_MODEL_NAME = new ResourceLocation(SlashBlade.modid, "model/util/ss.obj");
-    public static final ResourceLocation DEFAULT_TEXTURE_NAME = new ResourceLocation(SlashBlade.modid, "model/util/ss.png");
+    public static final ResourceLocation DEFAULT_TEXTURE_NAME = new ResourceLocation(Recasting.MOD_ID, String.join("/", StringFinal.SUMMOND_SWORD, StringFinal.TEXTURE));
 
     protected static final DataParameter<Integer> HIT_ENTITY_ID = EntityDataManager.createKey(SummondSwordEntity.class, DataSerializers.VARINT);
     protected static final DataParameter<Integer> MAX_PIERCE = EntityDataManager.createKey(SummondSwordEntity.class, DataSerializers.VARINT);

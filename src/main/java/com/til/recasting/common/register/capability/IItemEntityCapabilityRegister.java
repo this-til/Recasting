@@ -8,5 +8,5 @@ import com.til.recasting.common.capability.IItemEntity;
  * @author til
  */
 @VoluntarilyRegister
-public class IItemEntity_CapabilityRegister extends OriginalCapabilityRegister<IItemEntity> {
+public class IItemEntityCapabilityRegister extends OriginalCapabilityRegister<IItemEntity> {
 }

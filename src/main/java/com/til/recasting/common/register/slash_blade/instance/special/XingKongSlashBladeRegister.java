@@ -12,6 +12,7 @@ import com.til.recasting.common.register.entity_type.SummondSwordEntityTypeRegis
 import com.til.recasting.common.register.slash_blade.SlashBladeRegister;
 import com.til.recasting.common.register.slash_blade.sa.SA_Register;
 import com.til.recasting.common.register.util.RayTraceUtil;
+import com.til.recasting.common.register.util.StringFinal;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -32,8 +33,8 @@ public class XingKongSlashBladeRegister extends SlashBladeRegister {
     @Override
     protected void init() {
         super.init();
-        summondSwordModel = new ResourceLocation(getName().getNamespace(), String.join("/", "summond_sword", getName().getPath(), "model.obj"));
-        saModel = new ResourceLocation(getName().getNamespace(), String.join("/", "special", getName().getPath(), "model.obj"));
+        summondSwordModel = new ResourceLocation(getName().getNamespace(), String.join("/", StringFinal.SUMMOND_SWORD, getName().getPath(), "model.obj"));
+        saModel = new ResourceLocation(getName().getNamespace(), String.join("/", StringFinal.SPECIAL, getName().getPath(), "model.obj"));
     }
 
     @Override
@@ -76,10 +77,10 @@ public class XingKongSlashBladeRegister extends SlashBladeRegister {
 
         @Override
         public void trigger(UseSlashBladeEntityPack slashBladeEntityPack) {
-            List<Entity> attackEntityList = slashBladeEntityPack.getEntity().world.getEntitiesInAABBexcluding(
+            AtomicReference<List<Entity>> attackEntityList = new AtomicReference<>(slashBladeEntityPack.getEntity().world.getEntitiesInAABBexcluding(
                     slashBladeEntityPack.getEntity(),
                     new Pos(slashBladeEntityPack.getEntity()).axisAlignedBB(attackRange),
-                    entity -> defaultEntityPredicateRegister.canTarget(slashBladeEntityPack.getEntity(), entity));
+                    entity -> defaultEntityPredicateRegister.canTarget(slashBladeEntityPack.getEntity(), entity)));
             AtomicReference<Vector3d> pos = new AtomicReference<>();
             SummondSwordEntity summondSwordEntity = new SummondSwordEntity(
                     summondSwordEntityTypeRegister.getEntityType(),
@@ -93,10 +94,16 @@ public class XingKongSlashBladeRegister extends SlashBladeRegister {
                         return;
                     }
                     Vector3d attackPos = null;
-                    while (!attackEntityList.isEmpty()) {
-                        Entity attackEntity = attackEntityList.get(slashBladeEntityPack.getEntity().getRNG().nextInt(attackEntityList.size()));
+                    if (ticksExisted % 20 == 0) {
+                        attackEntityList.set(slashBladeEntityPack.getEntity().world.getEntitiesInAABBexcluding(
+                                slashBladeEntityPack.getEntity(),
+                                new Pos(slashBladeEntityPack.getEntity()).axisAlignedBB(attackRange),
+                                entity -> defaultEntityPredicateRegister.canTarget(slashBladeEntityPack.getEntity(), entity)));
+                    }
+                    while (!attackEntityList.get().isEmpty()) {
+                        Entity attackEntity = attackEntityList.get().get(slashBladeEntityPack.getEntity().getRNG().nextInt(attackEntityList.get().size()));
                         if (!attackEntity.isAlive()) {
-                            attackEntityList.remove(attackEntity);
+                            attackEntityList.get().remove(attackEntity);
                             continue;
                         }
                         attackPos = RayTraceUtil.getPosition(attackEntity);

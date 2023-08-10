@@ -24,6 +24,7 @@ import com.til.recasting.common.register.slash_blade.se.instance.StormSE;
 import com.til.recasting.common.register.slash_blade.se.instance.StormVariantSE;
 import com.til.recasting.common.register.util.JudgementCutManage;
 import com.til.recasting.common.register.util.RayTraceUtil;
+import com.til.recasting.common.register.util.StringFinal;
 import mods.flammpfeil.slashblade.SlashBlade;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
@@ -41,11 +42,11 @@ public abstract class StarBladeSlashBladeRegister extends SlashBladeRegister {
     @Override
     protected void init() {
         super.init();
-        model = new ResourceLocation(getName().getNamespace(), String.join("/", SlashBlade.modid, ResourceLocationUtil.ofPath(StarBladeSlashBladeRegister.class), "state" + getState(), "model.obj"));
-        texture = new ResourceLocation(getName().getNamespace(), String.join("/", SlashBlade.modid, ResourceLocationUtil.ofPath(StarBladeSlashBladeRegister.class), "state" + getState(), "texture.png"));
+        model = new ResourceLocation(getName().getNamespace(), String.join("/", SlashBlade.modid, ResourceLocationUtil.ofPath(StarBladeSlashBladeRegister.class), StringFinal.STATE + getState(), StringFinal.MODEL));
+        texture = new ResourceLocation(getName().getNamespace(), String.join("/", SlashBlade.modid, ResourceLocationUtil.ofPath(StarBladeSlashBladeRegister.class), StringFinal.STATE + getState(), StringFinal.TEXTURE));
 
-        summondSwordModel = new ResourceLocation(getName().getNamespace(), String.join("/", "summond_sword", ResourceLocationUtil.ofPath(StarBladeSlashBladeRegister.class), "model.obj"));
-        judgementCutModel = new ResourceLocation(getName().getNamespace(), String.join("/", "judgement_cut", ResourceLocationUtil.ofPath(StarBladeSlashBladeRegister.class), "model.obj"));
+        summondSwordModel = new ResourceLocation(getName().getNamespace(), String.join("/", StringFinal.SUMMOND_SWORD, ResourceLocationUtil.ofPath(StarBladeSlashBladeRegister.class), StringFinal.MODEL));
+        judgementCutModel = new ResourceLocation(getName().getNamespace(), String.join("/", StringFinal.JUDGEMENT_CUT, ResourceLocationUtil.ofPath(StarBladeSlashBladeRegister.class), StringFinal.MODEL));
     }
 
     @Override

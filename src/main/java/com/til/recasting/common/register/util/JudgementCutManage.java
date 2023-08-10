@@ -33,7 +33,6 @@ public class JudgementCutManage {
         JudgementCutEntity jc = new JudgementCutEntity(GlowingFireGlow.getInstance().getReflexManage().getVoluntarilyRegisterOfClass(JudgementCutEntityTypeRegister.class).getEntityType(), worldIn, user);
         useSlashBladeEntityPack.getSlashBladePack().getSlashBladeStateSupplement().decorate(jc);
         jc.setPosition(attackPos.x, attackPos.y, attackPos.z);
-        jc.setShooter(user);
         jc.setColor(useSlashBladeEntityPack.getSlashBladePack().getSlashBladeState().getColorCode());
         jc.setDamage(hit);
         jc.setMaxLifeTime(life);

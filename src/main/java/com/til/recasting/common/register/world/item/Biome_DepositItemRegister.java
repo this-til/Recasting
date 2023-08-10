@@ -12,7 +12,7 @@ import com.til.recasting.common.capability.CapabilityEvent;
 import com.til.recasting.common.capability.IItemBiome;
 import com.til.recasting.common.data.IRecipeInItemPack;
 import com.til.recasting.common.data.IResultPack;
-import com.til.recasting.common.register.capability.IItemBiome_CapabilityRegister;
+import com.til.recasting.common.register.capability.IItemBiomeCapabilityRegister;
 import com.til.recasting.common.register.recipe.SpecialRecipeSerializerRegister;
 import mods.flammpfeil.slashblade.SlashBlade;
 import mods.flammpfeil.slashblade.init.SBItems;
@@ -22,13 +22,11 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.tags.Tag;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
-import net.minecraftforge.common.Tags;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nonnull;
@@ -41,7 +39,7 @@ import java.util.List;
 public class Biome_DepositItemRegister extends ItemRegister {
 
     @VoluntarilyAssignment
-    protected static IItemBiome_CapabilityRegister iItemBiome_capabilityRegister;
+    protected static IItemBiomeCapabilityRegister iItemBiome_capabilityRegister;
 
     @Override
     protected Item initItem() {

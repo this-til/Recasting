@@ -3,11 +3,16 @@ package com.til.recasting.common.capability;
 import com.til.glowing_fire_glow.common.capability.CapabilityProvider;
 import com.til.glowing_fire_glow.common.main.IWorldComponent;
 import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
+import com.til.glowing_fire_glow.common.register.capability.capabilitys.SynchronousManageCapabilityRegister;
+import com.til.glowing_fire_glow.common.register.capability.synchronous.SynchronousCapabilityRegister;
 import com.til.recasting.Recasting;
-import com.til.recasting.common.register.capability.ISlashBladeStateSupplement_CapabilityRegister;
+import com.til.recasting.common.register.capability.ISlashBladeStateSupplementCapabilityRegister;
 import com.til.recasting.common.register.capability.SE_CapabilityRegister;
+import com.til.recasting.common.register.capability.StarBlinkSE_LayerCapabilityRegister;
 import com.til.recasting.common.register.slash_blade.se.AllSE_Register;
 import mods.flammpfeil.slashblade.item.ItemSlashBlade;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
@@ -24,10 +29,16 @@ public class CapabilityEvent implements IWorldComponent {
     protected SE_CapabilityRegister se_capabilityRegister;
 
     @VoluntarilyAssignment
-    protected ISlashBladeStateSupplement_CapabilityRegister slashBladeStateSupplement_capabilityRegister;
+    protected ISlashBladeStateSupplementCapabilityRegister slashBladeStateSupplement_capabilityRegister;
 
     @VoluntarilyAssignment
     protected AllSE_Register se_register;
+
+    @VoluntarilyAssignment
+    protected StarBlinkSE_LayerCapabilityRegister starBlinkSELayerCapabilityRegister;
+
+    @VoluntarilyAssignment
+    protected SynchronousManageCapabilityRegister synchronousManageCapabilityRegister;
 
 
     @SubscribeEvent
@@ -55,6 +66,17 @@ public class CapabilityEvent implements IWorldComponent {
 
         CapabilityProvider capabilityProvider = new CapabilityProvider();
         ((ICustomCapability) itemStack.getItem()).customCapability(itemStack, capabilityProvider);
+        event.addCapability(CAPABILITY, capabilityProvider);
+    }
+
+    @SubscribeEvent
+    protected void onAttachCapabilitiesEvent_entity(AttachCapabilitiesEvent<Entity> event) {
+        if (!(event.getObject() instanceof LivingEntity)) {
+            return;
+        }
+        CapabilityProvider capabilityProvider = new CapabilityProvider();
+        capabilityProvider.addCapability(starBlinkSELayerCapabilityRegister.getCapability(),
+                new StarBlinkSE_LayerCapabilityRegister.StarBlinkSE_Layer(synchronousManageCapabilityRegister.supplierCapability(event.getObject())));
         event.addCapability(CAPABILITY, capabilityProvider);
     }
 

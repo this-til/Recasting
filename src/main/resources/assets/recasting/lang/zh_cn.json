@@ -58,8 +58,20 @@
   "recasting.fluorescence_7_slash_blade_register" : "荧光[锤子]",
   "recasting.fluorescence_8_slash_blade_register" : "荧光[镰刀]",
 
-
-
+  "recasting.til_slash_blade_register" : "til的刀",
+  "recasting.stellar_rotation": "星旋",
+  "recasting.stellar_rotation.introduce": "在前方召唤星旋将大范围内的生物聚集起来并且造成持续伤害，同时限制其中生物活动",
+  "recasting.star_blink_se" : "星落",
+  "recasting.star_blink_se.introduce" : "每攻击四次造成一次伤害",
+  "recasting.til_slash_lambda_blade_register" : "^til的刀",
+  "recasting.star_blink_lambda_se" : "^星落",
+  "recasting.star_blink_lambda_se.introduce" : "每次攻击而外为[星落]叠加一层",
+  "recasting.htod_slash_blade_register" : "HTOD的刀",
+  "recasting.htod_slash_blade_sa": "陨星",
+  "recasting.htod_slash_blade_sa.introduce": "\"小行星撞地球\"",
+  "recasting.xing_kong_slash_blade_register": "星空的刀",
+  "recasting.xing_kong_slash_blade_sa": "星空龙吟",
+  "recasting.xing_kong_slash_blade_sa.introduce": "召唤一个水龙头，持续发射幻影剑进行攻击",
 
   "recasting.default_sa": "次元斩",
   "recasting.default_sa.introduce": "在目标位置进行次元斩攻击",

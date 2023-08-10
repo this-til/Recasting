@@ -8,7 +8,7 @@ import com.til.glowing_fire_glow.common.register.world.item.ItemRegister;
 import com.til.glowing_fire_glow.common.util.SetUtil;
 import com.til.recasting.common.capability.CapabilityEvent;
 import com.til.recasting.common.capability.IItemEntity;
-import com.til.recasting.common.register.capability.IItemEntity_CapabilityRegister;
+import com.til.recasting.common.register.capability.IItemEntityCapabilityRegister;
 import mods.flammpfeil.slashblade.SlashBlade;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityClassification;
@@ -33,7 +33,7 @@ import java.util.Set;
 public class Entity_DepositItemRegister extends ItemRegister {
 
     @VoluntarilyAssignment
-    protected static IItemEntity_CapabilityRegister iItemEntity_capabilityRegister;
+    protected static IItemEntityCapabilityRegister iItemEntity_capabilityRegister;
 
     @Override
     protected Item initItem() {

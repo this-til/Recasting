@@ -4,7 +4,7 @@ import com.til.glowing_fire_glow.common.register.StaticVoluntarilyAssignment;
 import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
 import com.til.recasting.common.capability.ISE;
 import com.til.recasting.common.capability.ISlashBladeStateSupplement;
-import com.til.recasting.common.register.capability.ISlashBladeStateSupplement_CapabilityRegister;
+import com.til.recasting.common.register.capability.ISlashBladeStateSupplementCapabilityRegister;
 import com.til.recasting.common.register.capability.SE_CapabilityRegister;
 import com.til.recasting.common.register.slash_blade.sa.SA_Register;
 import com.til.recasting.common.register.slash_blade.se.SE_Register;
@@ -24,7 +24,7 @@ public class SlashBladePack {
     protected static SE_CapabilityRegister se_capabilityRegister;
 
     @VoluntarilyAssignment
-    protected static ISlashBladeStateSupplement_CapabilityRegister iSlashBladeStateSupplement_capabilityRegister;
+    protected static ISlashBladeStateSupplementCapabilityRegister iSlashBladeStateSupplement_capabilityRegister;
 
     protected ItemStack itemStack;
     protected ISlashBladeState slashBladeState;

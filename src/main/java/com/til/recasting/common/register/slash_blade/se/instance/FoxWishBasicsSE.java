@@ -58,7 +58,7 @@ public abstract class FoxWishBasicsSE extends SE_Register {
         cool = new NumberPack(10, -1);
         attack = new NumberPack(0, 0.05);
         attackNumber = new NumberPack(2, 0.5);
-        color = new Color(45, 45, 45, 255).getRGB();
+        color = new Color(0, 0, 0, 255).getRGB();
     }
 
     /***

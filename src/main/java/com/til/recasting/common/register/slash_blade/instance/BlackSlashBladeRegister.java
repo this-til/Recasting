@@ -9,6 +9,7 @@ import com.til.recasting.common.data.IRecipeInItemPack;
 import com.til.recasting.common.data.IResultPack;
 import com.til.recasting.common.register.recipe.SlashBladeRecipeSerializerRegister;
 import com.til.recasting.common.register.slash_blade.SlashBladeRegister;
+import com.til.recasting.common.register.util.StringFinal;
 import mods.flammpfeil.slashblade.SlashBlade;
 import mods.flammpfeil.slashblade.init.SBItems;
 import net.minecraft.item.ItemStack;
@@ -24,8 +25,8 @@ public class BlackSlashBladeRegister extends SlashBladeRegister {
     @Override
     protected void init() {
         super.init();
-        model = new ResourceLocation(getName().getNamespace(), String.join("/", SlashBlade.modid, ResourceLocationUtil.ofPath(BlackSlashBladeRegister.class), "model.obj"));
-        texture = new ResourceLocation(getName().getNamespace(), String.join("/", SlashBlade.modid, ResourceLocationUtil.ofPath(BlackSlashBladeRegister.class), "texture.png"));
+        model = new ResourceLocation(getName().getNamespace(), String.join("/", SlashBlade.modid, ResourceLocationUtil.ofPath(BlackSlashBladeRegister.class), StringFinal.MODEL));
+        texture = new ResourceLocation(getName().getNamespace(), String.join("/", SlashBlade.modid, ResourceLocationUtil.ofPath(BlackSlashBladeRegister.class), StringFinal.TEXTURE));
 
     }
 
@@ -33,7 +34,7 @@ public class BlackSlashBladeRegister extends SlashBladeRegister {
     protected void defaultItemStackConfig(ItemStack itemStack) {
         super.defaultItemStackConfig(itemStack);
         slashBladePack.getSlashBladeState().setBaseAttackModifier(4f);
-        slashBladePack.getSlashBladeState().setEffectColor(new Color(12, 12, 12, 75));
+        slashBladePack.getSlashBladeState().setEffectColor(new Color(0, 0, 0, 255));
         slashBladePack.getSlashBladeStateSupplement().setDurable(4);
     }
 

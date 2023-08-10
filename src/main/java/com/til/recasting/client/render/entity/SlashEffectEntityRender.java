@@ -1,6 +1,10 @@
 package com.til.recasting.client.render.entity;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+import com.til.glowing_fire_glow.common.register.StaticVoluntarilyAssignment;
+import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
+import com.til.recasting.client.register.entity_render.LightningEntityRenderType;
+import com.til.recasting.client.register.render_type.LuminousRenderTypeRegister;
 import com.til.recasting.common.entity.SlashEffectEntity;
 import mods.flammpfeil.slashblade.client.renderer.model.BladeModelManager;
 import mods.flammpfeil.slashblade.client.renderer.model.obj.Face;
@@ -26,7 +30,12 @@ import java.awt.*;
  * @author til
  */
 @OnlyIn(Dist.CLIENT)
+@StaticVoluntarilyAssignment
 public class SlashEffectEntityRender<T extends SlashEffectEntity> extends EntityRenderer<T> {
+
+
+    @VoluntarilyAssignment
+    protected static LuminousRenderTypeRegister luminousRenderTypeRegister;
 
     private static final LazyValue<ItemStack> enchantedItem = new LazyValue<ItemStack>(() -> new ItemStack(SBItems.proudsoul));
 
@@ -117,6 +126,7 @@ public class SlashEffectEntityRender<T extends SlashEffectEntity> extends Entity
                 Face.setUvOperator(1, 1, 0, -0.5f + progress * -0.2f);
                 BladeRenderState.setCol(0x404040 | alpha);
                 BladeRenderState.renderOverridedLuminous(ItemStack.EMPTY, model, "base", rl, matrixStackIn, bufferIn, packedLightIn);
+                //BladeRenderState.renderOverrided(ItemStack.EMPTY, model, "base", rl,matrixStackIn, bufferIn, packedLightIn, luminousRenderTypeRegister::getRenderType, true);
             }
 
             //color add base
@@ -126,6 +136,7 @@ public class SlashEffectEntityRender<T extends SlashEffectEntity> extends Entity
                 Face.setUvOperator(1, 1, 0, -0.35f + progress * -0.15f);
                 BladeRenderState.setCol((color.getRGB() & 0xFFFFFF) | alpha);
                 BladeRenderState.renderOverridedLuminous(ItemStack.EMPTY, model, "base", rl, matrixStackIn, bufferIn, packedLightIn);
+                //BladeRenderState.renderOverrided(ItemStack.EMPTY, model, "base", rl,matrixStackIn, bufferIn, packedLightIn, luminousRenderTypeRegister::getRenderType, true);
             }
         }
     }

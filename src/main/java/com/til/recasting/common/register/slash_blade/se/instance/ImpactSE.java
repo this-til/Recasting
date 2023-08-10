@@ -1,8 +1,10 @@
 package com.til.recasting.common.register.slash_blade.se.instance;
 
+import com.til.glowing_fire_glow.common.capability.time_run.TimerCell;
 import com.til.glowing_fire_glow.common.config.ConfigField;
 import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
 import com.til.glowing_fire_glow.common.register.VoluntarilyRegister;
+import com.til.glowing_fire_glow.common.register.capability.capabilitys.TimeRunCapabilityRegister;
 import com.til.glowing_fire_glow.common.util.ListUtil;
 import com.til.glowing_fire_glow.common.util.MapUtil;
 import com.til.glowing_fire_glow.common.util.math.NumberPack;
@@ -38,6 +40,9 @@ public class ImpactSE extends SE_Register {
     @VoluntarilyAssignment
     protected SummondSwordEntityTypeRegister summondSwordEntityTypeRegister;
 
+    @VoluntarilyAssignment
+    protected TimeRunCapabilityRegister timeRunCapabilityRegister;
+
     @SubscribeEvent
     protected void onEventSlashBladeDoSlash(EventDoAttack event) {
         if (!event.pack.getSlashBladePack().getIse().hasSE(this)) {
@@ -47,17 +52,24 @@ public class ImpactSE extends SE_Register {
         if (event.pack.getEntity().getRNG().nextDouble() >= probability.of(se_pack.getLevel())) {
             return;
         }
-        SummondSwordEntity summondSwordEntity = new SummondSwordEntity(summondSwordEntityTypeRegister.getEntityType(), event.pack.getEntity().world, event.pack.getEntity());
-        event.pack.getSlashBladePack().getSlashBladeStateSupplement().decorate(summondSwordEntity);
-        Vector3d pos = RayTraceUtil.getPosition(event.target);
-        summondSwordEntity.lookAt(pos, false);
-        summondSwordEntity.setPosition(pos.getX(), pos.getY(), pos.getZ());
-        summondSwordEntity.setColor(event.pack.getSlashBladePack().getSlashBladeState().getColorCode());
-        summondSwordEntity.setDamage((float) attack.of(se_pack.getLevel()));
-        summondSwordEntity.setMaxDelay(100);
-        summondSwordEntity.doForceHitEntity(event.target);
-        event.pack.getEntity().world.addEntity(summondSwordEntity);
-        event.target.playSound(SoundEvents.ITEM_CHORUS_FRUIT_TELEPORT, 0.2F, 1.45F);
+
+        event.pack.getTimeRun().addTimerCell(new TimerCell(
+                () -> {
+                    if (!event.target.isAlive()) {
+                        return;
+                    }
+                    SummondSwordEntity summondSwordEntity = new SummondSwordEntity(summondSwordEntityTypeRegister.getEntityType(), event.pack.getEntity().world, event.pack.getEntity());
+                    event.pack.getSlashBladePack().getSlashBladeStateSupplement().decorate(summondSwordEntity);
+                    Vector3d pos = RayTraceUtil.getPosition(event.target);
+                    summondSwordEntity.lookAt(pos, false);
+                    summondSwordEntity.setPosition(pos.getX(), pos.getY(), pos.getZ());
+                    summondSwordEntity.setColor(event.pack.getSlashBladePack().getSlashBladeState().getColorCode());
+                    summondSwordEntity.setDamage((float) attack.of(se_pack.getLevel()));
+                    summondSwordEntity.setMaxDelay(100);
+                    summondSwordEntity.doForceHitEntity(event.target);
+                    event.pack.getEntity().world.addEntity(summondSwordEntity);
+                }, 0, 0
+        ));
     }
 
 

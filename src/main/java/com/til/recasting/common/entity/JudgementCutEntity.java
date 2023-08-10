@@ -3,43 +3,26 @@ package com.til.recasting.common.entity;
 import com.til.glowing_fire_glow.common.register.StaticVoluntarilyAssignment;
 import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
 import com.til.recasting.common.register.back_type.JudgementCutBackTypeRegister;
-import com.til.recasting.common.register.entity_type.SlashEffectEntityTypeRegister;
 import com.til.recasting.common.register.util.AttackManager;
 import com.til.recasting.common.register.util.HitAssessment;
 import mods.flammpfeil.slashblade.SlashBlade;
-import mods.flammpfeil.slashblade.entity.EntityJudgementCut;
-import mods.flammpfeil.slashblade.util.EnumSetConverter;
 import mods.flammpfeil.slashblade.util.KnockBacks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.projectile.ProjectileHelper;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.IPacket;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.ParticleTypes;
-import net.minecraft.potion.Effect;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
-import net.minecraft.potion.PotionUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.EntityRayTraceResult;
-import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.network.FMLPlayMessages;
-import net.minecraftforge.fml.network.NetworkHooks;
-import org.lwjgl.system.CallbackI;
 
-import javax.annotation.Nullable;
 import java.util.ArrayList;
-import java.util.EnumSet;
 import java.util.List;
 
 @StaticVoluntarilyAssignment
@@ -55,6 +38,8 @@ public class JudgementCutEntity extends StandardizationAttackEntity {
     @VoluntarilyAssignment
     protected static JudgementCutBackTypeRegister.JudgementCutDeathBackTypeRegister judgementCutDeathBackTypeRegister;
 
+
+    protected static final DataParameter<Integer> ATTACK_INTERVAL = EntityDataManager.createKey(JudgementCutEntity.class, DataSerializers.VARINT);
 
     protected int seed;
     protected List<Entity> excludeEntity = new ArrayList<>();
@@ -80,6 +65,12 @@ public class JudgementCutEntity extends StandardizationAttackEntity {
                 KnockBacks.cancel.action.accept((LivingEntity) hitEntity);
             }
         });
+    }
+
+    @Override
+    protected void registerData() {
+        super.registerData();
+        this.dataManager.register(ATTACK_INTERVAL, 2);
     }
 
     @Override
@@ -125,12 +116,12 @@ public class JudgementCutEntity extends StandardizationAttackEntity {
             getBackRunPack().runBack(judgementCutTickBackTypeRegister, a -> a.tick(this));
 
             //cyclehit
-            if (this.ticksExisted % 2 == 0) {
+            if (this.ticksExisted % getAttackInterval() == 0) {
                 AttackManager.areaAttack(
                         getShooter(),
                         this,
                         entity -> getBackRunPack().runBack(judgementCutAttackBackTypeRegister, a -> a.attack(this, entity)),
-                        4.0f,
+                        getSize(),
                         getDamage(),
                         false,
                         true,
@@ -183,6 +174,15 @@ public class JudgementCutEntity extends StandardizationAttackEntity {
             }
         });
         getBackRunPack().runBack(judgementCutDeathBackTypeRegister, a -> a.death(this));
+    }
+
+
+    public int getAttackInterval() {
+        return this.dataManager.get(ATTACK_INTERVAL);
+    }
+
+    public void setAttackInterval(int attackInterval) {
+        this.dataManager.set(ATTACK_INTERVAL, attackInterval);
     }
 
     public static final ResourceLocation RESOURCE_LOCATION = new ResourceLocation(SlashBlade.modid, "model/util/slashdim.obj");

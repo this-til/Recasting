@@ -8,8 +8,8 @@ import com.til.glowing_fire_glow.common.util.gson.AcceptTypeJson;
 import com.til.glowing_fire_glow.common.util.gson.type_adapter.factory.ForgeRegistryItemTypeAdapterFactory;
 import com.til.recasting.common.capability.IItemSA;
 import com.til.recasting.common.capability.IItemSE;
-import com.til.recasting.common.register.capability.IItemBiome_CapabilityRegister;
-import com.til.recasting.common.register.capability.IItemEntity_CapabilityRegister;
+import com.til.recasting.common.register.capability.IItemBiomeCapabilityRegister;
+import com.til.recasting.common.register.capability.IItemEntityCapabilityRegister;
 import com.til.recasting.common.register.capability.ItemSA_CapabilityRegister;
 import com.til.recasting.common.register.capability.ItemSE_CapabilityRegister;
 import com.til.recasting.common.register.slash_blade.SlashBladeRegister;
@@ -175,7 +175,7 @@ public interface IRecipeInItemPack extends Predicate<ItemStack> {
         protected static Entity_DepositItemRegister entity_depositItemRegister;
 
         @VoluntarilyAssignment
-        protected static IItemEntity_CapabilityRegister entity_capabilityRegister;
+        protected static IItemEntityCapabilityRegister entity_capabilityRegister;
 
         @JsonAdapter(ForgeRegistryItemTypeAdapterFactory.class)
         protected EntityType<?> entityType;
@@ -204,7 +204,7 @@ public interface IRecipeInItemPack extends Predicate<ItemStack> {
         protected static Biome_DepositItemRegister biome_depositItemRegister;
 
         @VoluntarilyAssignment
-        protected static IItemBiome_CapabilityRegister iItemBiome_capabilityRegister;
+        protected static IItemBiomeCapabilityRegister iItemBiome_capabilityRegister;
 
         protected Biome biome;
 

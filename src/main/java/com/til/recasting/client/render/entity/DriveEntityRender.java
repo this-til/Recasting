@@ -1,6 +1,9 @@
 package com.til.recasting.client.render.entity;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+import com.til.glowing_fire_glow.common.register.StaticVoluntarilyAssignment;
+import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
+import com.til.recasting.client.register.render_type.LuminousRenderTypeRegister;
 import com.til.recasting.common.entity.DriveEntity;
 import mods.flammpfeil.slashblade.client.renderer.model.BladeModelManager;
 import mods.flammpfeil.slashblade.client.renderer.model.obj.WavefrontObject;
@@ -18,7 +21,13 @@ import javax.annotation.Nullable;
 import java.awt.*;
 
 @OnlyIn(Dist.CLIENT)
+@StaticVoluntarilyAssignment
 public class DriveEntityRender<E extends DriveEntity> extends SlashEffectEntityRender<E> {
+
+
+    @VoluntarilyAssignment
+    protected static LuminousRenderTypeRegister luminousRenderTypeRegister;
+
     public DriveEntityRender(EntityRendererManager renderManagerIn) {
         super(renderManagerIn);
     }
@@ -36,7 +45,7 @@ public class DriveEntityRender<E extends DriveEntity> extends SlashEffectEntityR
 
                 WavefrontObject model = BladeModelManager.getInstance().getModel(entity.getModel());
                 BladeRenderState.setCol(entity.getColor());
-                BladeRenderState.renderOverridedLuminous(ItemStack.EMPTY, model, "model", getEntityTexture(entity), matrixStack, bufferIn, packedLightIn);
+                BladeRenderState.renderOverrided(ItemStack.EMPTY, model, "ss", getEntityTexture(entity), matrixStack, bufferIn, BladeRenderState.MAX_LIGHT, luminousRenderTypeRegister::getRenderType, true);
             }
             return;
         }

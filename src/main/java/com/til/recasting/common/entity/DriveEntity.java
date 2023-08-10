@@ -64,15 +64,20 @@ public class DriveEntity extends SlashEffectEntity {
         Vector3d motionVec = this.getMotion();
         Vector3d positionVec = this.getPositionVec();
         Vector3d movedVec = positionVec.add(motionVec);
-        RayTraceResult raytraceresult = this.world.rayTraceBlocks(new RayTraceContext(positionVec, movedVec, RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, this));
-        if (raytraceresult.getType() != RayTraceResult.Type.MISS && !isPenetrate() && ticksExisted > 10) {
-            this.setDead();
-            return;
+        RayTraceResult rayTraceResult = this.world.rayTraceBlocks(new RayTraceContext(positionVec, movedVec, RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, this));
+        if (rayTraceResult.getType() != RayTraceResult.Type.MISS) {
+            hitBlock(rayTraceResult);
         }
         double mx = motionVec.x;
         double my = motionVec.y;
         double mz = motionVec.z;
         this.setPosition(this.getPosX() + mx, this.getPosY() + my, this.getPosZ() + mz);
+    }
+
+    protected void hitBlock(RayTraceResult rayTraceResult) {
+        if (!isPenetrate() && ticksExisted > 10) {
+            this.setDead();
+        }
     }
 
     @Override

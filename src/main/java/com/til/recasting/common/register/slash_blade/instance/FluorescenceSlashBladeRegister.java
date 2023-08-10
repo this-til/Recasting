@@ -25,10 +25,7 @@ import com.til.recasting.common.register.slash_blade.SlashBladeRegister;
 import com.til.recasting.common.register.slash_blade.sa.SA_Register;
 import com.til.recasting.common.register.slash_blade.se.SE_Register;
 import com.til.recasting.common.register.target_selector.DefaultTargetSelectorRegister;
-import com.til.recasting.common.register.util.AttackManager;
-import com.til.recasting.common.register.util.BackRunPackUtil;
-import com.til.recasting.common.register.util.JudgementCutManage;
-import com.til.recasting.common.register.util.RayTraceUtil;
+import com.til.recasting.common.register.util.*;
 import mods.flammpfeil.slashblade.SlashBlade;
 import mods.flammpfeil.slashblade.init.SBItems;
 import mods.flammpfeil.slashblade.util.KnockBacks;
@@ -59,8 +56,8 @@ public abstract class FluorescenceSlashBladeRegister extends SlashBladeRegister 
     @Override
     protected void init() {
         super.init();
-        model = new ResourceLocation(getName().getNamespace(), String.join("/", SlashBlade.modid, ResourceLocationUtil.ofPath(FluorescenceSlashBladeRegister.class), "state" + getState(), "model.obj"));
-        texture = new ResourceLocation(getName().getNamespace(), String.join("/", SlashBlade.modid, ResourceLocationUtil.ofPath(FluorescenceSlashBladeRegister.class), "state" + getState(), "texture.png"));
+        model = new ResourceLocation(getName().getNamespace(), String.join("/", SlashBlade.modid, ResourceLocationUtil.ofPath(FluorescenceSlashBladeRegister.class), StringFinal.STATE + getState(), "model.obj"));
+        texture = new ResourceLocation(getName().getNamespace(), String.join("/", SlashBlade.modid, ResourceLocationUtil.ofPath(FluorescenceSlashBladeRegister.class), StringFinal.STATE + getState(), "texture.png"));
 
     }
 
