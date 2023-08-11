@@ -56,6 +56,9 @@ public abstract class SA_Register extends RegisterBasics {
                         if (!useSlashBladeEntityPack.isEffective(SlashBladePack.EffectiveType.canUse)) {
                             return;
                         }
+                        if (useSlashBladeEntityPack.getEntity().world.isRemote) {
+                            return;
+                        }
                         sa_register.trigger(useSlashBladeEntityPack);
                     }).build())
                     .addTickAction(FallHandler::fallResist)

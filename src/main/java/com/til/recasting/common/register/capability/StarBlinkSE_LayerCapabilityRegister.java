@@ -35,6 +35,10 @@ public class StarBlinkSE_LayerCapabilityRegister extends OriginalCapabilityRegis
         @SaveField
         protected int layer;
 
+        @SynchronousField
+        @SaveField
+        protected int color;
+
         protected long oldTime;
 
         public StarBlinkSE_Layer(Supplier<ISynchronousManage> synchronousManageSupplier) {
@@ -60,6 +64,18 @@ public class StarBlinkSE_LayerCapabilityRegister extends OriginalCapabilityRegis
             }
             layer = 0;
             synchronousManageSupplier.get().addSynchronousCapability(starBlinkSELayerSynchronousCapabilityRegister);
+        }
+
+        public void setColor(int color) {
+            if (this.color == color) {
+                return;
+            }
+            this.color = color;
+            synchronousManageSupplier.get().addSynchronousCapability(starBlinkSELayerSynchronousCapabilityRegister);
+        }
+
+        public int getColor() {
+            return color;
         }
 
         public int getLayer() {

@@ -89,6 +89,10 @@ public class PlanetEntity extends DriveEntity {
         return true;
     }
 
+    @Override
+    public boolean isInRangeToRender3d(double x, double y, double z) {
+        return true;
+    }
 
     @Override
     public void tick() {
@@ -96,11 +100,11 @@ public class PlanetEntity extends DriveEntity {
         Vector3d move = getMotion();
         move = move.scale(0.5);
         if (world.isRemote) {
-            int n = 255;
+            /*int n = 255;
             for (int i = 0; i < n; i++) {
                 Vector3d pos = getPositionVec().add(RandomUtil.nextVector3dInCircles(getShooter().getRNG(), getSize() * 4 - 2));
                 world.addParticle(ParticleTypes.ENCHANTED_HIT, pos.getX(), pos.getY(), pos.getZ(), -move.getX(), -move.getY(), -move.getZ());
-            }
+            }*/
         }
     }
 

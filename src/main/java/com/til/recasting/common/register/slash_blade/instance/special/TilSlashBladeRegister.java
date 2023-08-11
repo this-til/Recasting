@@ -3,28 +3,32 @@ package com.til.recasting.common.register.slash_blade.instance.special;
 import com.til.glowing_fire_glow.common.config.ConfigField;
 import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
 import com.til.glowing_fire_glow.common.register.VoluntarilyRegister;
+import com.til.glowing_fire_glow.common.util.ListUtil;
+import com.til.glowing_fire_glow.common.util.MapUtil;
 import com.til.glowing_fire_glow.common.util.Pos;
+import com.til.recasting.common.data.IRecipeInItemPack;
+import com.til.recasting.common.data.IResultPack;
+import com.til.recasting.common.data.SlashBladePack;
 import com.til.recasting.common.data.UseSlashBladeEntityPack;
-import com.til.recasting.common.entity.JudgementCutEntity;
 import com.til.recasting.common.entity.StellarRotationEntity;
 import com.til.recasting.common.event.EventDoAttack;
 import com.til.recasting.common.register.back_type.JudgementCutBackTypeRegister;
 import com.til.recasting.common.register.capability.StarBlinkSE_LayerCapabilityRegister;
 import com.til.recasting.common.register.entity_predicate.DefaultEntityPredicateRegister;
 import com.til.recasting.common.register.entity_type.StellarRotationEntityTypeRegister;
+import com.til.recasting.common.register.recipe.SlashBladeRecipeSerializerRegister;
 import com.til.recasting.common.register.slash_blade.SlashBladeRegister;
+import com.til.recasting.common.register.slash_blade.instance.VoidSwordSlashBladeRegister;
 import com.til.recasting.common.register.slash_blade.sa.SA_Register;
 import com.til.recasting.common.register.slash_blade.se.SE_Register;
+import com.til.recasting.common.register.slash_blade.se.instance.DivinitySE;
 import com.til.recasting.common.register.util.AttackManager;
 import mods.flammpfeil.slashblade.SlashBlade;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
@@ -168,6 +172,7 @@ public class TilSlashBladeRegister extends SlashBladeRegister {
             }
             event.target.getCapability(starBlinkSELayerCapabilityRegister.getCapability())
                     .ifPresent(starBlinkSELayer -> {
+                        starBlinkSELayer.setColor(event.pack.getSlashBladePack().getSlashBladeState().getColorCode());
                         if (!starBlinkSELayer.tryAdd(event.pack.getEntity().world.getGameTime())) {
                             return;
                         }
@@ -199,6 +204,41 @@ public class TilSlashBladeRegister extends SlashBladeRegister {
             return maxLayer;
         }
 
+    }
+
+    @VoluntarilyRegister
+    public static class TilSlashBladeRecipeRegister extends SlashBladeRecipeSerializerRegister.SlashBladeRecipeRegister {
+        @VoluntarilyAssignment
+        protected VoidSwordSlashBladeRegister.VoidSword_3_SlashBladeRegister voidSword_3_slashBladeRegister;
+
+
+        @VoluntarilyAssignment
+        protected TilSlashBladeRegister tilSlashBladeRegister;
+
+        @VoluntarilyAssignment
+        protected DivinitySE.DivinityLambdaSE divinityLambdaSE;
+
+        @Override
+        protected SlashBladeRecipeSerializerRegister.SlashBladeRecipeRecipePack defaultConfigSlashBladeRecipeRecipePack() {
+
+            SlashBladePack voidSword_3_slashBlade = voidSword_3_slashBladeRegister.getSlashBladePack();
+            voidSword_3_slashBlade.getSlashBladeState().setKillCount(10000);
+            voidSword_3_slashBlade.getSlashBladeState().setRefine(3000);
+
+            return new SlashBladeRecipeSerializerRegister.SlashBladeRecipeRecipePack(
+                    ListUtil.of(
+                            "AVA",
+                            " A ",
+                            " A "
+                    ),
+                    MapUtil.of(
+                            "A", new IRecipeInItemPack.OfItemSE(divinityLambdaSE, 7.5f),
+                            "V", new IRecipeInItemPack.OfSlashBlade(voidSword_3_slashBlade.getItemStack())
+                    ),
+                    "V",
+                    new IResultPack.OfSlashBladeRegister(tilSlashBladeRegister)
+            );
+        }
     }
 
     @VoluntarilyRegister
@@ -242,5 +282,43 @@ public class TilSlashBladeRegister extends SlashBladeRegister {
                         .ifPresent(starBlinkSELayer -> starBlinkSELayer.tryAdd(event.pack.getEntity().world.getGameTime()));
             }
         }
+
+
+        @VoluntarilyRegister
+        public static class TilLambdaSlashBladeRecipeRegister extends SlashBladeRecipeSerializerRegister.SlashBladeRecipeRegister {
+            @VoluntarilyAssignment
+            protected TilSlashLambdaBladeRegister tilSlashBladeRegister;
+
+
+            @VoluntarilyAssignment
+            protected TilSlashBladeRegister.TilSlashLambdaBladeRegister tilSlashLambdaBladeRegister;
+
+            @VoluntarilyAssignment
+            protected DivinitySE.DivinityLambdaSE divinityLambdaSE;
+
+            @Override
+            protected SlashBladeRecipeSerializerRegister.SlashBladeRecipeRecipePack defaultConfigSlashBladeRecipeRecipePack() {
+
+                SlashBladePack voidSword_3_slashBlade = tilSlashBladeRegister.getSlashBladePack();
+                voidSword_3_slashBlade.getSlashBladeState().setKillCount(20000);
+                voidSword_3_slashBlade.getSlashBladeState().setRefine(3000);
+
+                return new SlashBladeRecipeSerializerRegister.SlashBladeRecipeRecipePack(
+                        ListUtil.of(
+                                "AVA",
+                                " A ",
+                                " A "
+                        ),
+                        MapUtil.of(
+                                "A", new IRecipeInItemPack.OfItemSE(divinityLambdaSE, 7.5f),
+                                "V", new IRecipeInItemPack.OfSlashBlade(voidSword_3_slashBlade.getItemStack())
+                        ),
+                        "V",
+                        new IResultPack.OfSlashBladeRegister(tilSlashLambdaBladeRegister)
+                );
+            }
+        }
+
+
     }
 }

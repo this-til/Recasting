@@ -21,7 +21,6 @@ public class DriveEntity extends SlashEffectEntity {
 
     protected static final DataParameter<Boolean> PARAMETER = EntityDataManager.createKey(DriveEntity.class, DataSerializers.BOOLEAN);
 
-    protected static final DataParameter<Boolean> SIMPLE_RENDER = EntityDataManager.createKey(DriveEntity.class, DataSerializers.BOOLEAN);
 
     public DriveEntity(EntityType<? extends SlashEffectEntity> entityTypeIn, World worldIn, LivingEntity shooting) {
         super(entityTypeIn, worldIn, shooting);
@@ -39,7 +38,6 @@ public class DriveEntity extends SlashEffectEntity {
         super.registerData();
         this.dataManager.register(SEEP, 4f);
         this.dataManager.register(PARAMETER, false);
-        this.dataManager.register(SIMPLE_RENDER, false);
     }
 
     @Override
@@ -131,12 +129,4 @@ public class DriveEntity extends SlashEffectEntity {
         this.dataManager.set(PARAMETER, false);
     }
 
-
-    public boolean isSimpleRender() {
-        return this.dataManager.get(SIMPLE_RENDER);
-    }
-
-    public void isSimpleRender(boolean simpleRender) {
-        this.dataManager.register(SIMPLE_RENDER, simpleRender);
-    }
 }

@@ -41,6 +41,7 @@ public class JudgementCutEntity extends StandardizationAttackEntity {
 
     protected static final DataParameter<Integer> ATTACK_INTERVAL = EntityDataManager.createKey(JudgementCutEntity.class, DataSerializers.VARINT);
 
+
     protected int seed;
     protected List<Entity> excludeEntity = new ArrayList<>();
 

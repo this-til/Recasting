@@ -4,6 +4,7 @@ import com.til.glowing_fire_glow.common.capability.time_run.ITimeRun;
 import com.til.glowing_fire_glow.common.register.StaticVoluntarilyAssignment;
 import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
 import com.til.glowing_fire_glow.common.register.capability.capabilitys.TimeRunCapabilityRegister;
+import com.til.recasting.common.register.overall_config.AttackOverallConfigRegister;
 import com.til.recasting.common.register.target_selector.DefaultTargetSelectorRegister;
 import com.til.recasting.common.register.util.RayTraceUtil;
 import mods.flammpfeil.slashblade.capability.concentrationrank.ConcentrationRankCapabilityProvider;
@@ -28,6 +29,8 @@ public class UseSlashBladeEntityPack {
     @VoluntarilyAssignment
     protected static DefaultTargetSelectorRegister defaultTargetSelectorRegister;
 
+    @VoluntarilyAssignment
+    protected static AttackOverallConfigRegister attackOverallConfigRegister;
 
     protected LivingEntity entity;
 
@@ -66,7 +69,7 @@ public class UseSlashBladeEntityPack {
      * 获取伤害比例
      */
     public double getDamageRatio(double basics) {
-        return basics * (1 + getRank().level / 7f) * (1 + getSlashBladePack().getSlashBladeState().getRefine() * 0.01);
+        return basics * (1 + getRank().level / (7f / attackOverallConfigRegister.getRankMaxAttackBonus())) * (1 + getSlashBladePack().getSlashBladeState().getRefine() * attackOverallConfigRegister.getRefineAttackBonus());
     }
 
     public Vector3d getAttackPos() {

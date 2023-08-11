@@ -3,14 +3,22 @@ package com.til.recasting.common.register.slash_blade.instance.special;
 import com.til.glowing_fire_glow.common.config.ConfigField;
 import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
 import com.til.glowing_fire_glow.common.register.VoluntarilyRegister;
+import com.til.glowing_fire_glow.common.util.ListUtil;
+import com.til.glowing_fire_glow.common.util.MapUtil;
 import com.til.glowing_fire_glow.common.util.Pos;
 import com.til.glowing_fire_glow.common.util.RandomUtil;
+import com.til.recasting.common.data.IRecipeInItemPack;
+import com.til.recasting.common.data.IResultPack;
+import com.til.recasting.common.data.SlashBladePack;
 import com.til.recasting.common.data.UseSlashBladeEntityPack;
 import com.til.recasting.common.entity.SummondSwordEntity;
 import com.til.recasting.common.register.entity_predicate.DefaultEntityPredicateRegister;
 import com.til.recasting.common.register.entity_type.SummondSwordEntityTypeRegister;
+import com.til.recasting.common.register.recipe.SlashBladeRecipeSerializerRegister;
 import com.til.recasting.common.register.slash_blade.SlashBladeRegister;
+import com.til.recasting.common.register.slash_blade.instance.DragonSlashBladeRegister;
 import com.til.recasting.common.register.slash_blade.sa.SA_Register;
+import com.til.recasting.common.register.slash_blade.se.instance.DivinitySE;
 import com.til.recasting.common.register.util.RayTraceUtil;
 import com.til.recasting.common.register.util.StringFinal;
 import net.minecraft.entity.Entity;
@@ -154,10 +162,44 @@ public class XingKongSlashBladeRegister extends SlashBladeRegister {
         public void defaultConfig() {
             super.defaultConfig();
             attack = 0.12f;
-            attackNumber = 1;
-            life = 80;
+            attackNumber = 4;
+            life = 100;
             attackRange = 128;
             generateRange = 12;
+        }
+    }
+
+    @VoluntarilyRegister
+    public static class XingKongSlashBladeRecipeRegister extends SlashBladeRecipeSerializerRegister.SlashBladeRecipeRegister {
+        @VoluntarilyAssignment
+        protected XingKongSlashBladeRegister xingKongSlashBladeRegister;
+
+        @VoluntarilyAssignment
+        protected DragonSlashBladeRegister.DragonLambdaSlashBladeRegister dragonLambdaSlashBladeRegister;
+
+        @VoluntarilyAssignment
+        protected DivinitySE.DivinityLambdaSE divinityLambdaSE;
+
+
+        @Override
+        protected SlashBladeRecipeSerializerRegister.SlashBladeRecipeRecipePack defaultConfigSlashBladeRecipeRecipePack() {
+            SlashBladePack dragonLambda = dragonLambdaSlashBladeRegister.getSlashBladePack();
+            dragonLambda.getSlashBladeState().setKillCount(20000);
+            dragonLambda.getSlashBladeState().setRefine(1000);
+
+            return new SlashBladeRecipeSerializerRegister.SlashBladeRecipeRecipePack(
+                    ListUtil.of(
+                            "A A",
+                            " V ",
+                            "A A"
+                    ),
+                    MapUtil.of(
+                            "A", new IRecipeInItemPack.OfItemSE(divinityLambdaSE, 7.5f),
+                            "V", new IRecipeInItemPack.OfSlashBlade(dragonLambda.getItemStack())
+                    ),
+                    "V",
+                    new IResultPack.OfSlashBladeRegister(xingKongSlashBladeRegister)
+            );
         }
     }
 

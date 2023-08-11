@@ -60,7 +60,7 @@ public class SE_DepositItemRegister extends ItemRegister {
     @Override
     public void defaultConfig() {
         super.defaultConfig();
-        successRate = 0.05f;
+        successRate = 0.25f;
     }
 
     public ItemStack mackItemStack(SE_Register se_register) {

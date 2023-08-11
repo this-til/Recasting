@@ -80,7 +80,7 @@ public abstract class SoulItemRegister extends ItemRegister {
                 return new SpecialRecipeSerializerRegister.SpecialRecipePack(
                         ListUtil.of(
                                 "ABA",
-                                "BVB",
+                                "AVA",
                                 "ABA"
                         ),
                         MapUtil.of(

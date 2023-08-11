@@ -55,6 +55,7 @@ public class CloudWheelSA extends SA_Register {
         }
 
         SummondSwordEntity summondSwordEntity = new SummondSwordEntity(summondSwordEntityTypeRegister.getEntityType(), slashBladeEntityPack.getEntity().world, slashBladeEntityPack.getEntity());
+        slashBladeEntityPack.getSlashBladePack().getSlashBladeStateSupplement().decorate(summondSwordEntity);
         summondSwordEntity.setColor(new Color(255, 255, 0).getRGB());
         summondSwordEntity.setPosition(attackPos.getX(), attackPos.getY() + 7, attackPos.getZ());
         summondSwordEntity.setSize(1.25f);
@@ -81,4 +82,44 @@ public class CloudWheelSA extends SA_Register {
         lightningAttack = 1.35f;
     }
 
+    @VoluntarilyRegister
+    public static class CloudWheelStormSA extends CloudWheelSA {
+
+        @ConfigField
+        protected int lightningNumber;
+
+        @Override
+        public void trigger(UseSlashBladeEntityPack slashBladeEntityPack) {
+            super.trigger(slashBladeEntityPack);
+            Vector3d attackPos = slashBladeEntityPack.getAttackPos();
+
+            for (int i = 0; i < lightningNumber; i++) {
+                SummondSwordEntity summondSwordEntity = new SummondSwordEntity(summondSwordEntityTypeRegister.getEntityType(), slashBladeEntityPack.getEntity().world, slashBladeEntityPack.getEntity());
+                slashBladeEntityPack.getSlashBladePack().getSlashBladeStateSupplement().decorate(summondSwordEntity);
+                summondSwordEntity.setColor(new Color(255, 255, 0).getRGB());
+                summondSwordEntity.setSize(1.25f);
+                summondSwordEntity.setDamage(attack);
+                summondSwordEntity.setStartDelay(i * 2);
+                summondSwordEntity.lookAt(attackPos, false);
+                summondSwordEntity.getBackRunPack().addRunBack(attackBackTypeRegister,
+                        (summondSwordEntity1, hitEntity) -> {
+                            LightningEntity lightningEntity = new LightningEntity(lightningEntityTypeRegister.getEntityType(), slashBladeEntityPack.getEntity().world, slashBladeEntityPack.getEntity());
+                            lightningEntity.setPosition(hitEntity.getPosX(), hitEntity.getPosY(), hitEntity.getPosZ());
+                            lightningEntity.setColor(slashBladeEntityPack.getSlashBladePack().getSlashBladeState().getColorCode());
+                            lightningEntity.setDamage(lightningAttack);
+                            slashBladeEntityPack.getEntity().world.addEntity(lightningEntity);
+                        });
+                slashBladeEntityPack.getEntity().world.addEntity(summondSwordEntity);
+            }
+
+        }
+
+        @Override
+        public void defaultConfig() {
+            super.defaultConfig();
+            attack = 0.15f;
+            attackNumber = 10;
+            lightningNumber = 7;
+        }
+    }
 }

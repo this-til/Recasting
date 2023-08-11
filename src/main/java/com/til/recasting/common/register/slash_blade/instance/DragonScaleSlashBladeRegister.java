@@ -3,17 +3,26 @@ package com.til.recasting.common.register.slash_blade.instance;
 import com.til.glowing_fire_glow.common.config.ConfigField;
 import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
 import com.til.glowing_fire_glow.common.register.VoluntarilyRegister;
+import com.til.glowing_fire_glow.common.util.ListUtil;
+import com.til.glowing_fire_glow.common.util.MapUtil;
+import com.til.recasting.common.data.IRecipeInItemPack;
+import com.til.recasting.common.data.IResultPack;
+import com.til.recasting.common.data.SlashBladePack;
 import com.til.recasting.common.data.UseSlashBladeEntityPack;
 import com.til.recasting.common.entity.SummondSwordEntity;
 import com.til.recasting.common.register.entity_type.SummondSwordEntityTypeRegister;
+import com.til.recasting.common.register.recipe.SlashBladeRecipeSerializerRegister;
 import com.til.recasting.common.register.slash_blade.SlashBladeRegister;
 import com.til.recasting.common.register.slash_blade.sa.SA_Register;
 import com.til.recasting.common.register.target_selector.DefaultTargetSelectorRegister;
 import com.til.recasting.common.register.target_selector.TargetSelectorRegister;
 import com.til.recasting.common.register.util.RayTraceUtil;
+import com.til.recasting.common.register.world.item.SoulItemRegister;
 import mods.flammpfeil.slashblade.util.VectorHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
@@ -99,5 +108,41 @@ public class DragonScaleSlashBladeRegister extends SlashBladeRegister {
         }
 
     }
+
+    @VoluntarilyRegister
+    public static class DragonSlashBladeRecipeRegister extends SlashBladeRecipeSerializerRegister.SlashBladeRecipeRegister {
+
+        @VoluntarilyAssignment
+        protected DragonScaleSlashBladeRegister dragonScaleSlashBladeRegister;
+
+        @VoluntarilyAssignment
+        protected CoolMintSlashBladeRegister coolMintSlashBladeRegister;
+
+        @VoluntarilyAssignment
+        protected SoulItemRegister.SoulCubeChangeItemRegister soulCubeChangeItemRegister;
+
+        @Override
+        protected SlashBladeRecipeSerializerRegister.SlashBladeRecipeRecipePack defaultConfigSlashBladeRecipeRecipePack() {
+
+            SlashBladePack coolMintSlashBlade = coolMintSlashBladeRegister.getSlashBladePack();
+            coolMintSlashBlade.getSlashBladeState().setKillCount(3000);
+            coolMintSlashBlade.getSlashBladeState().setRefine(150);
+
+            return new SlashBladeRecipeSerializerRegister.SlashBladeRecipeRecipePack(
+                    ListUtil.of(
+                            "ABA",
+                            "AVA",
+                            "ABA"
+                    ),
+                    MapUtil.of(
+                            "A", new IRecipeInItemPack.OfIngredient(Ingredient.fromItems(Items.DRAGON_BREATH)),
+                            "B", new IRecipeInItemPack.OfIngredient(Ingredient.fromItems(soulCubeChangeItemRegister.getItem())),
+                            "V", new IRecipeInItemPack.OfSlashBlade(coolMintSlashBlade.getItemStack())),
+                    "V",
+                    new IResultPack.OfSlashBladeRegister(dragonScaleSlashBladeRegister)
+            );
+        }
+    }
+
 }
 

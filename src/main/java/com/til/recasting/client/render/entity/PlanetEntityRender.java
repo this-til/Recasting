@@ -48,7 +48,7 @@ public class PlanetEntityRender<E extends PlanetEntity> extends EntityRenderer<E
             time = time / 20;
             matrixStack.rotate(Vector3f.YP.rotationDegrees(-MathHelper.lerp(partialTicks, entity.prevRotationYaw, entity.rotationYaw)));
             matrixStack.rotate(Vector3f.XP.rotationDegrees(MathHelper.lerp(partialTicks, entity.prevRotationPitch, entity.rotationPitch)));
-            matrixStack.rotate(Vector3f.ZP.rotationDegrees((float) (entity.getRoll() + Math.sin(time))));
+            matrixStack.rotate(Vector3f.ZP.rotationDegrees(entity.getRoll() + time));
 
             float scale = entity.getSize() * 4 * 0.0075f;
            /* if (entity.isPreparationExplosion()) {

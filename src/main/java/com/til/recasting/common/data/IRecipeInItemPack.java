@@ -23,6 +23,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.util.RegistryKey;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome;
 

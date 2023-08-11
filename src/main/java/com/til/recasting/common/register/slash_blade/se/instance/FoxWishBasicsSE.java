@@ -42,6 +42,7 @@ public abstract class FoxWishBasicsSE extends SE_Register {
         int n = (int) attackNumber.of(se_pack.getLevel());
         for (int i = 0; i < n; i++) {
             SummondSwordEntity summondSwordEntity = new SummondSwordEntity(summondSwordEntityTypeRegister.getEntityType(), event.pack.getEntity().world, event.pack.getEntity());
+            event.pack.getSlashBladePack().getSlashBladeStateSupplement().decorate(summondSwordEntity);
             summondSwordEntity.setSize(0.6f);
             summondSwordEntity.setColor(color);
             summondSwordEntity.setDamage((float) attack.of(se_pack.getLevel()));

@@ -40,6 +40,12 @@
 
   "recasting.dragon_scale_slash_blade_register": "龙鳞",
 
+
+  "recasting.ba_gua_big_slash_blade_register": "八卦巨剑",
+  "recasting.ba_gua_big_slash_blade_sa": "扑挂",
+  "recasting.ba_gua_big_slash_blade_sa.introduce": "召唤法阵对法阵内的敌人造成伤害并且附加混沌效果(会增加受到的伤害)",
+
+
   "recasting.fluorescence_slash_blade_register" : "荧光",
   "recasting.fluorescence_1_slash_blade_register" : "荧光",
   "recasting.fluorescence_1_sa": "荧光反应",
@@ -136,6 +142,8 @@
   "recasting.white_fox_wish_se.introduce": "挥刀时会召唤幻影剑进行协同攻击",
   "recasting.black_fox_wish_se":"黑狐祝灵",
   "recasting.black_fox_wish_se.introduce":"挥刀时会召唤幻影剑进行协同攻击",
+  "recasting.divinity_se":"神性",
+  "recasting.divinity_se.introduce":"仅用做合成",
 
   "item.recasting.item.se_deposit_item_register": "SE结晶",
   "item.recasting.item.sa_deposit_item_register": "SA结晶",

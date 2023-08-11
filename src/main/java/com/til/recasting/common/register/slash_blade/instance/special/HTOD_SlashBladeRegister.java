@@ -109,8 +109,8 @@ public class HTOD_SlashBladeRegister extends SlashBladeRegister {
         @Override
         public void defaultConfig() {
             super.defaultConfig();
-            attack = 1.5f;
-            explosionAttack = 8.5f;
+            attack = 1.35f;
+            explosionAttack = 9f;
             size = 12;
         }
     }

@@ -4,6 +4,7 @@ import com.til.glowing_fire_glow.common.main.IWorldComponent;
 import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
 import com.til.recasting.common.capability.IItemSE;
 import com.til.recasting.common.register.capability.ItemSE_CapabilityRegister;
+import com.til.recasting.common.register.overall_config.AnvilOverallConfigRegister;
 import com.til.recasting.common.register.world.item.SE_DepositItemRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.AnvilUpdateEvent;
@@ -18,6 +19,9 @@ public class AnvilRepairManage implements IWorldComponent {
 
     @VoluntarilyAssignment
     protected SE_DepositItemRegister se_depositItemRegister;
+
+    @VoluntarilyAssignment
+    protected AnvilOverallConfigRegister anvilOverallConfigRegister;
 
     @SubscribeEvent
     protected void onAnvilUpdateEvent(AnvilUpdateEvent event) {
@@ -36,7 +40,7 @@ public class AnvilRepairManage implements IWorldComponent {
         }
         float newSuccessRate = leftItemSE.getBasicsSuccessRate() * leftItemStack.getCount() + rightItemSE.getBasicsSuccessRate() * rightItemStack.getCount();
         event.setOutput(se_depositItemRegister.mackItemStack(leftItemSE.getSE(), newSuccessRate));
-        event.setCost(1 + (int) newSuccessRate * 10);
+        event.setCost((int) (1 + newSuccessRate * 100 * anvilOverallConfigRegister.getSeCost()));
         event.setMaterialCost(rightItemStack.getCount());
     }
 }

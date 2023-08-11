@@ -212,7 +212,18 @@ public abstract class VoidSwordSlashBladeRegister extends SlashBladeRegister {
                 voidSword_1_slashBlade.getSlashBladeState().setKillCount(10000);
                 voidSword_1_slashBlade.getSlashBladeState().setRefine(1350);
 
-                return new SlashBladeRecipeSerializerRegister.SlashBladeRecipeRecipePack(ListUtil.of("ACA", "BVB", "ACA"), MapUtil.of("A", new IRecipeInItemPack.OfIngredient(Ingredient.fromItems(soulCubeItemRegister.getItem())), "B", new IRecipeInItemPack.OfSlashBlade(blueCloudSlashBlade.getItemStack()), "C", new IRecipeInItemPack.OfItemSA(multipleDimensionalChoppingSA), "V", new IRecipeInItemPack.OfSlashBlade(voidSword_1_slashBlade.getItemStack())), "V", new IResultPack.OfSlashBladeRegister(voidSword_2_slashBladeRegister));
+                return new SlashBladeRecipeSerializerRegister.SlashBladeRecipeRecipePack(
+                        ListUtil.of(
+                                "ACA",
+                                "BVB",
+                                "ACA"
+                        ),
+                        MapUtil.of(
+                                "A", new IRecipeInItemPack.OfIngredient(Ingredient.fromItems(soulCubeItemRegister.getItem())),
+                                "B", new IRecipeInItemPack.OfSlashBlade(blueCloudSlashBlade.getItemStack()),
+                                "C", new IRecipeInItemPack.OfItemSA(multipleDimensionalChoppingSA),
+                                "V", new IRecipeInItemPack.OfSlashBlade(voidSword_1_slashBlade.getItemStack())),
+                        "V", new IResultPack.OfSlashBladeRegister(voidSword_2_slashBladeRegister));
             }
         }
 

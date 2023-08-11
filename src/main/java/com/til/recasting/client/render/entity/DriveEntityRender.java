@@ -34,7 +34,7 @@ public class DriveEntityRender<E extends DriveEntity> extends SlashEffectEntityR
 
     @Override
     public void render(E entity, float entityYaw, float partialTicks, MatrixStack matrixStack, IRenderTypeBuffer bufferIn, int packedLightIn) {
-        if (entity.isSimpleRender()) {
+        /*if (entity.isSimpleRender()) {
             try (MSAutoCloser msac = MSAutoCloser.pushMatrix(matrixStack)) {
                 matrixStack.rotate(Vector3f.YP.rotationDegrees(-MathHelper.lerp(partialTicks, entity.prevRotationYaw, entity.rotationYaw)));
                 matrixStack.rotate(Vector3f.XP.rotationDegrees(MathHelper.lerp(partialTicks, entity.prevRotationPitch, entity.rotationPitch)));
@@ -45,10 +45,10 @@ public class DriveEntityRender<E extends DriveEntity> extends SlashEffectEntityR
 
                 WavefrontObject model = BladeModelManager.getInstance().getModel(entity.getModel());
                 BladeRenderState.setCol(entity.getColor());
-                BladeRenderState.renderOverrided(ItemStack.EMPTY, model, "ss", getEntityTexture(entity), matrixStack, bufferIn, BladeRenderState.MAX_LIGHT, luminousRenderTypeRegister::getRenderType, true);
+                BladeRenderState.renderOverrided(ItemStack.EMPTY, model, "model", getEntityTexture(entity), matrixStack, bufferIn, BladeRenderState.MAX_LIGHT, luminousRenderTypeRegister::getRenderType, true);
             }
             return;
-        }
+        }*/
         super.render(entity, entityYaw, partialTicks, matrixStack, bufferIn, packedLightIn);
     }
 

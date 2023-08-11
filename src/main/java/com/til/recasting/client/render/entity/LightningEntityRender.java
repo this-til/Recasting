@@ -39,9 +39,9 @@ public class LightningEntityRender extends EntityRenderer<LightningEntity> {
         }
 
         Color color = new Color(entityIn.getColor(), false);
-        float r = color.getRed()/ 255f;
-        float g = color.getGreen()/ 255f;
-        float b = color.getBlue()/ 255f;
+        int r = color.getRed();
+        int g = color.getGreen();
+        int b = color.getBlue();
 
         float scale = entityIn.getSize();
         matrixStackIn.scale(scale, scale, scale);
@@ -92,17 +92,17 @@ public class LightningEntityRender extends EntityRenderer<LightningEntity> {
                     }
 
 
-                    func_229116_a_(matrix4f, ivertexbuilder, f2, f3, j1, f4, f5, r, g, b, 0.3F, f10, f11, false, false, true, false);
-                    func_229116_a_(matrix4f, ivertexbuilder, f2, f3, j1, f4, f5, r, g, b, 0.3F, f10, f11, true, false, true, true);
-                    func_229116_a_(matrix4f, ivertexbuilder, f2, f3, j1, f4, f5, r, g, b, 0.3F, f10, f11, true, true, false, true);
-                    func_229116_a_(matrix4f, ivertexbuilder, f2, f3, j1, f4, f5, r, g, b, 0.3F, f10, f11, false, true, false, false);
+                    func_229116_a_(matrix4f, ivertexbuilder, f2, f3, j1, f4, f5, r, g, b, 76, f10, f11, false, false, true, false);
+                    func_229116_a_(matrix4f, ivertexbuilder, f2, f3, j1, f4, f5, r, g, b, 76, f10, f11, true, false, true, true);
+                    func_229116_a_(matrix4f, ivertexbuilder, f2, f3, j1, f4, f5, r, g, b, 76, f10, f11, true, true, false, true);
+                    func_229116_a_(matrix4f, ivertexbuilder, f2, f3, j1, f4, f5, r, g, b, 76, f10, f11, false, true, false, false);
                 }
             }
         }
 
     }
 
-    private static void func_229116_a_(Matrix4f matrix4f, IVertexBuilder iVertexBuilder, float p_229116_2_, float p_229116_3_, int p_229116_4_, float p_229116_5_, float p_229116_6_, float r, float b, float g, float a, float p_229116_10_, float p_229116_11_, boolean p_229116_12_, boolean p_229116_13_, boolean p_229116_14_, boolean p_229116_15_) {
+    private static void func_229116_a_(Matrix4f matrix4f, IVertexBuilder iVertexBuilder, float p_229116_2_, float p_229116_3_, int p_229116_4_, float p_229116_5_, float p_229116_6_, int r, int b, int g, int a, float p_229116_10_, float p_229116_11_, boolean p_229116_12_, boolean p_229116_13_, boolean p_229116_14_, boolean p_229116_15_) {
         iVertexBuilder.pos(matrix4f, p_229116_2_ + (p_229116_12_ ? p_229116_11_ : -p_229116_11_), (float) (p_229116_4_ * 16), p_229116_3_ + (p_229116_13_ ? p_229116_11_ : -p_229116_11_)).color(r, g, b, a).endVertex();
         iVertexBuilder.pos(matrix4f, p_229116_5_ + (p_229116_12_ ? p_229116_10_ : -p_229116_10_), (float) ((p_229116_4_ + 1) * 16), p_229116_6_ + (p_229116_13_ ? p_229116_10_ : -p_229116_10_)).color(r, g, b, a).endVertex();
         iVertexBuilder.pos(matrix4f, p_229116_5_ + (p_229116_14_ ? p_229116_10_ : -p_229116_10_), (float) ((p_229116_4_ + 1) * 16), p_229116_6_ + (p_229116_15_ ? p_229116_10_ : -p_229116_10_)).color(r, g, b, a).endVertex();

@@ -1,11 +1,14 @@
 package com.til.recasting.common.capability;
 
 import com.til.glowing_fire_glow.common.capability.CapabilityProvider;
+import com.til.glowing_fire_glow.common.capability.synchronous.ISynchronousManage;
 import com.til.glowing_fire_glow.common.main.IWorldComponent;
 import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
 import com.til.glowing_fire_glow.common.register.capability.capabilitys.SynchronousManageCapabilityRegister;
 import com.til.glowing_fire_glow.common.register.capability.synchronous.SynchronousCapabilityRegister;
 import com.til.recasting.Recasting;
+import com.til.recasting.client.capability.render.ChaosLayerCapabilityRenderRegister;
+import com.til.recasting.common.register.capability.ChaosLayerCapabilityRegister;
 import com.til.recasting.common.register.capability.ISlashBladeStateSupplementCapabilityRegister;
 import com.til.recasting.common.register.capability.SE_CapabilityRegister;
 import com.til.recasting.common.register.capability.StarBlinkSE_LayerCapabilityRegister;
@@ -17,6 +20,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+
+import java.util.function.Supplier;
 
 public class CapabilityEvent implements IWorldComponent {
 
@@ -36,6 +41,9 @@ public class CapabilityEvent implements IWorldComponent {
 
     @VoluntarilyAssignment
     protected StarBlinkSE_LayerCapabilityRegister starBlinkSELayerCapabilityRegister;
+
+    @VoluntarilyAssignment
+    protected ChaosLayerCapabilityRegister chaosLayerCapabilityRegister;
 
     @VoluntarilyAssignment
     protected SynchronousManageCapabilityRegister synchronousManageCapabilityRegister;
@@ -75,8 +83,9 @@ public class CapabilityEvent implements IWorldComponent {
             return;
         }
         CapabilityProvider capabilityProvider = new CapabilityProvider();
-        capabilityProvider.addCapability(starBlinkSELayerCapabilityRegister.getCapability(),
-                new StarBlinkSE_LayerCapabilityRegister.StarBlinkSE_Layer(synchronousManageCapabilityRegister.supplierCapability(event.getObject())));
+        Supplier<ISynchronousManage> synchronousManageSupplier = synchronousManageCapabilityRegister.supplierCapability(event.getObject());
+        capabilityProvider.addCapability(starBlinkSELayerCapabilityRegister.getCapability(), new StarBlinkSE_LayerCapabilityRegister.StarBlinkSE_Layer(synchronousManageSupplier));
+        capabilityProvider.addCapability(chaosLayerCapabilityRegister.getCapability(), new ChaosLayerCapabilityRegister.ChaosLayer(synchronousManageSupplier));
         event.addCapability(CAPABILITY, capabilityProvider);
     }
 
