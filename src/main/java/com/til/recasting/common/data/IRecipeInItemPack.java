@@ -6,24 +6,19 @@ import com.til.glowing_fire_glow.common.register.StaticVoluntarilyAssignment;
 import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
 import com.til.glowing_fire_glow.common.util.gson.AcceptTypeJson;
 import com.til.glowing_fire_glow.common.util.gson.type_adapter.factory.ForgeRegistryItemTypeAdapterFactory;
+import com.til.recasting.common.capability.IItemEnchantment;
 import com.til.recasting.common.capability.IItemSA;
 import com.til.recasting.common.capability.IItemSE;
-import com.til.recasting.common.register.capability.IItemBiomeCapabilityRegister;
-import com.til.recasting.common.register.capability.IItemEntityCapabilityRegister;
-import com.til.recasting.common.register.capability.ItemSA_CapabilityRegister;
-import com.til.recasting.common.register.capability.ItemSE_CapabilityRegister;
+import com.til.recasting.common.register.capability.*;
 import com.til.recasting.common.register.slash_blade.SlashBladeRegister;
 import com.til.recasting.common.register.slash_blade.sa.SA_Register;
 import com.til.recasting.common.register.slash_blade.se.SE_Register;
-import com.til.recasting.common.register.world.item.Biome_DepositItemRegister;
-import com.til.recasting.common.register.world.item.Entity_DepositItemRegister;
-import com.til.recasting.common.register.world.item.SA_DepositItemRegister;
-import com.til.recasting.common.register.world.item.SE_DepositItemRegister;
+import com.til.recasting.common.register.world.item.*;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.util.RegistryKey;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome;
 
@@ -143,6 +138,41 @@ public interface IRecipeInItemPack extends Predicate<ItemStack> {
     }
 
     @StaticVoluntarilyAssignment
+    class OfItemEnchantment implements IRecipeInItemPack {
+
+        @VoluntarilyAssignment
+        protected static EnchantmentDepositItemRegister enchantment_depositItemRegister;
+
+        @VoluntarilyAssignment
+        protected static ItemEnchantmentCapabilityRegister itemEnchantmentCapabilityRegister;
+
+        protected Enchantment enchantment;
+
+        protected float successRate;
+
+        @Override
+        public Ingredient toIngredient() {
+            return Ingredient.fromStacks(enchantment_depositItemRegister.mackItemStack(enchantment, successRate));
+        }
+
+        @Override
+        public boolean test(ItemStack itemStack) {
+            Optional<IItemEnchantment> itemSEOptional = itemStack.getCapability(itemEnchantmentCapabilityRegister.getCapability()).resolve();
+            if (!itemSEOptional.isPresent()) {
+                return false;
+            }
+            Enchantment enchantment = itemSEOptional.get().getEnchantment();
+            if (!enchantment.equals(this.enchantment)) {
+                return false;
+            }
+            if (itemSEOptional.get().getBasicsSuccessRate() - successRate > 0.01) {
+                return false;
+            }
+            return true;
+        }
+    }
+
+    @StaticVoluntarilyAssignment
     class OfItemSA implements IRecipeInItemPack {
 
         @VoluntarilyAssignment
@@ -202,7 +232,7 @@ public interface IRecipeInItemPack extends Predicate<ItemStack> {
 
 
         @VoluntarilyAssignment
-        protected static Biome_DepositItemRegister biome_depositItemRegister;
+        protected static BiomeDepositItemRegister biome_depositItemRegister;
 
         @VoluntarilyAssignment
         protected static IItemBiomeCapabilityRegister iItemBiome_capabilityRegister;

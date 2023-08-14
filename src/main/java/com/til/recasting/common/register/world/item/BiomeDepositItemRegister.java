@@ -36,7 +36,7 @@ import java.util.List;
 
 @VoluntarilyRegister
 @StaticVoluntarilyAssignment
-public class Biome_DepositItemRegister extends ItemRegister {
+public class BiomeDepositItemRegister extends ItemRegister {
 
     @VoluntarilyAssignment
     protected static IItemBiomeCapabilityRegister iItemBiome_capabilityRegister;
@@ -56,7 +56,7 @@ public class Biome_DepositItemRegister extends ItemRegister {
     public static class Biome_DepositItem extends Item implements CapabilityEvent.ICustomCapability {
 
         @VoluntarilyAssignment
-        protected static Biome_DepositItemRegister biome_depositItemRegister;
+        protected static BiomeDepositItemRegister biome_depositItemRegister;
 
         public Biome_DepositItem(Properties properties) {
             super(properties);
@@ -104,7 +104,7 @@ public class Biome_DepositItemRegister extends ItemRegister {
     public static class Biome_DepositItemSpecialRecipeRegister extends SpecialRecipeSerializerRegister.SpecialRecipeRegister {
 
         @VoluntarilyAssignment
-        protected Biome_DepositItemRegister biome_depositItemRegister;
+        protected BiomeDepositItemRegister biome_depositItemRegister;
 
         @VoluntarilyAssignment
         protected SoulItemRegister.SoulCubeItemRegister soulCubeItemRegister;

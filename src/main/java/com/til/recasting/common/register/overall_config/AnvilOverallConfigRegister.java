@@ -8,13 +8,20 @@ public class AnvilOverallConfigRegister extends OverallConfigRegister {
 
     protected float seCost;
 
+    protected float enchantmentCost;
+
     @Override
     public void defaultConfig() {
         super.defaultConfig();
         seCost = 0.1f;
+        enchantmentCost = 1;
     }
 
     public float getSeCost() {
         return seCost;
+    }
+
+    public float getEnchantmentCost() {
+        return enchantmentCost;
     }
 }
