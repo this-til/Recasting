@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.entity.item.ItemFrameEntity;
 import net.minecraft.inventory.container.PlayerContainer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -66,7 +67,7 @@ public class StrengthenBladeStandEntityRender<E extends StrengthenBladeStandEnti
             matrixStackIn.rotate(Vector3f.YP.rotationDegrees(180.0F - entity.rotationYaw));
 
             try (MSAutoCloser msacB = MSAutoCloser.pushMatrix(matrixStackIn)) {
-                matrixStackIn.rotate(Vector3f.ZP.rotationDegrees(entity.getRotation()));
+                matrixStackIn.rotate(Vector3f.ZP.rotationDegrees(entity.getRotation() * (360f / 8f)));
 
 
                 matrixStackIn.scale(2, 2, 2);
@@ -120,6 +121,12 @@ public class StrengthenBladeStandEntityRender<E extends StrengthenBladeStandEnti
             this.itemRenderer.renderItem(itemstack, ItemCameraTransforms.TransformType.FIXED, false, matrixStackIn, bufferIn, packedLightIn, OverlayTexture.NO_OVERLAY, ibakedmodel);
         }
     }
+
+    @Override
+    public Vector3d getRenderOffset(E entityIn, float partialTicks) {
+        return new Vector3d((float) entityIn.getHorizontalFacing().getXOffset() * 0.3F, -0.25D, (float) entityIn.getHorizontalFacing().getZOffset() * 0.3F);
+    }
+
 
     @Override
     protected boolean canRenderName(E entity) {

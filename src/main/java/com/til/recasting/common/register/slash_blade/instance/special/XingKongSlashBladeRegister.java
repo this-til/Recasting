@@ -22,12 +22,15 @@ import com.til.recasting.common.register.slash_blade.se.instance.DivinitySE;
 import com.til.recasting.common.register.util.RayTraceUtil;
 import com.til.recasting.common.register.util.StringFinal;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Vector3d;
 
 import java.awt.*;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
 @VoluntarilyRegister
@@ -58,6 +61,8 @@ public class XingKongSlashBladeRegister extends SlashBladeRegister {
     @VoluntarilyRegister
     public static class XingKongSlashBladeSA extends SA_Register {
 
+        protected static final Map<Entity, Entity> ONLY_ONE_MAP = new HashMap<>();
+
         @VoluntarilyAssignment
         protected SummondSwordEntityTypeRegister summondSwordEntityTypeRegister;
 
@@ -85,6 +90,12 @@ public class XingKongSlashBladeRegister extends SlashBladeRegister {
 
         @Override
         public void trigger(UseSlashBladeEntityPack slashBladeEntityPack) {
+            if (ONLY_ONE_MAP.containsKey(slashBladeEntityPack.getEntity())) {
+                Entity entity = ONLY_ONE_MAP.get(slashBladeEntityPack.getEntity());
+                if (entity.isAlive()) {
+                    entity.remove();
+                }
+            }
             AtomicReference<List<Entity>> attackEntityList = new AtomicReference<>(slashBladeEntityPack.getEntity().world.getEntitiesInAABBexcluding(
                     slashBladeEntityPack.getEntity(),
                     new Pos(slashBladeEntityPack.getEntity()).axisAlignedBB(attackRange),
@@ -155,7 +166,7 @@ public class XingKongSlashBladeRegister extends SlashBladeRegister {
             summondSwordEntity.setStartDelay(life);
             summondSwordEntity.setSeep(0);
             slashBladeEntityPack.getEntity().world.addEntity(summondSwordEntity);
-
+            ONLY_ONE_MAP.put(summondSwordEntity.getEntity(), summondSwordEntity);
         }
 
         @Override

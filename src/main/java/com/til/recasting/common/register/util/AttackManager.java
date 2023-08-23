@@ -94,7 +94,7 @@ public class AttackManager {
             if (entity instanceof LivingEntity) {
                 beforeHit.accept((LivingEntity) entity);
             }
-            doAttack(playerIn, entity, modifiedRatio, forceHit, resetHit);
+            doAttack(playerIn, entity, modifiedRatio, forceHit, resetHit, true);
         }
         if (!mute) {
             playerIn.world.playSound(null, playerIn.getPosX(), playerIn.getPosY(), playerIn.getPosZ(), SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, SoundCategory.PLAYERS, 0.5F, 0.4F / (playerIn.getRNG().nextFloat() * 0.4F + 0.8F));
@@ -103,22 +103,27 @@ public class AttackManager {
     }
 
 
-    public static void doAttack(LivingEntity attacker, Entity target, float modifiedRatio, boolean forceHit, boolean resetHit) {
+    public static void doAttack(LivingEntity attacker, Entity target, float modifiedRatio, boolean forceHit, boolean resetHit, boolean postEvent) {
+        if (modifiedRatio == 0) {
+            return;
+        }
         UseSlashBladeEntityPack useSlashBladeEntityPack = new UseSlashBladeEntityPack(attacker);
         if (!useSlashBladeEntityPack.isEffective(SlashBladePack.EffectiveType.canUse)) {
             return;
         }
-        EventDoAttack eventDoAttack = new EventDoAttack(useSlashBladeEntityPack, target, modifiedRatio, forceHit, resetHit);
-        MinecraftForge.EVENT_BUS.post(eventDoAttack);
-        modifiedRatio = eventDoAttack.modifiedRatio;
-        forceHit = eventDoAttack.forceHit;
-        resetHit = eventDoAttack.resetHit;
+        if (postEvent) {
+            EventDoAttack eventDoAttack = new EventDoAttack(useSlashBladeEntityPack, target, modifiedRatio, forceHit, resetHit);
+            MinecraftForge.EVENT_BUS.post(eventDoAttack);
+            modifiedRatio = eventDoAttack.modifiedRatio;
+            forceHit = eventDoAttack.forceHit;
+            resetHit = eventDoAttack.resetHit;
+        }
 
         if (forceHit) {
             target.hurtResistantTime = 0;
         }
 
-        AttributeModifier am = new AttributeModifier("RankDamageBonus", useSlashBladeEntityPack.getDamageRatio(modifiedRatio), AttributeModifier.Operation.MULTIPLY_BASE);
+        AttributeModifier am = new AttributeModifier("RankDamageBonus", useSlashBladeEntityPack.getDamageRatio(modifiedRatio) - 1, AttributeModifier.Operation.MULTIPLY_TOTAL);
         try {
             useSlashBladeEntityPack.getSlashBladePack().getSlashBladeState().setOnClick(true);
             attacker.getAttribute(Attributes.ATTACK_DAMAGE).applyNonPersistentModifier(am);
@@ -128,6 +133,11 @@ public class AttackManager {
                 DamageSource damageSource = DamageSource.causeMobDamage(attacker);
                 target.attackEntityFrom(damageSource, (float) attacker.getAttribute(Attributes.ATTACK_DAMAGE).getValue());
             }
+
+            //DamageSource damageSource = DamageSource.causeMobDamage(attacker);
+            //target.attackEntityFrom(damageSource, (float) attacker.getAttribute(Attributes.ATTACK_DAMAGE).getValue());
+            //attacker.world.playSound((PlayerEntity) null, attacker.getPosX(), attacker.getPosY(), attacker.getPosZ(), SoundEvents.ENTITY_PLAYER_ATTACK_NODAMAGE, attacker.getSoundCategory(), 1.0F, 1.0F);
+
         } finally {
             attacker.getAttribute(Attributes.ATTACK_DAMAGE).removeModifier(am);
             useSlashBladeEntityPack.getSlashBladePack().getSlashBladeState().setOnClick(false);

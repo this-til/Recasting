@@ -7,6 +7,7 @@ public class StringFinal {
     public static final String SPECIAL = "special";
 
     public static final String MODEL = "model.obj";
+    public static final String MODEL_LAMBDA = "model_lambda.obj";
     public static final String DEFAULT_MODEL = "default.obj";
 
     public static final String TEXTURE = "texture.png";

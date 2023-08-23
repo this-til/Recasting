@@ -82,4 +82,37 @@ public abstract class SlashBladeRegister extends RegisterBasics {
             return itemStack1;
         });
     }
+
+    public ResourceLocation getModel() {
+        return model;
+    }
+
+    public ResourceLocation getTexture() {
+        return texture;
+    }
+
+    @Nullable
+    public ResourceLocation getSummondSwordModel() {
+        return summondSwordModel;
+    }
+
+    @Nullable
+    public ResourceLocation getSummondSwordTexture() {
+        return summondSwordTexture;
+    }
+
+    @Nullable
+    public ResourceLocation getJudgementCutModel() {
+        return judgementCutModel;
+    }
+
+    @Nullable
+    public ResourceLocation getJudgementCutTexture() {
+        return judgementCutTexture;
+    }
+
+    @Nullable
+    public ResourceLocation getSlashEffectTexture() {
+        return slashEffectTexture;
+    }
 }

@@ -1,11 +1,15 @@
 package com.til.recasting.common.register.world.item;
 
+import com.til.glowing_fire_glow.common.capability.CapabilityProvider;
 import com.til.glowing_fire_glow.common.register.StaticVoluntarilyAssignment;
 import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
 import com.til.glowing_fire_glow.common.register.VoluntarilyRegister;
 import com.til.glowing_fire_glow.common.register.world.item.ItemRegister;
 import com.til.glowing_fire_glow.common.util.StringUtil;
 import com.til.recasting.Recasting;
+import com.til.recasting.common.capability.CapabilityEvent;
+import com.til.recasting.common.capability.IItemEnchantment;
+import com.til.recasting.common.capability.IItemSA;
 import com.til.recasting.common.register.capability.ItemEnchantmentCapabilityRegister;
 import com.til.recasting.common.register.slash_blade.se.SE_Register;
 import com.til.recasting.common.register.util.StringFinal;
@@ -52,7 +56,7 @@ public class EnchantmentDepositItemRegister extends ItemRegister {
     }
 
     @StaticVoluntarilyAssignment
-    public static class EnchantmentItem extends Item {
+    public static class EnchantmentItem extends Item implements CapabilityEvent.ICustomCapability {
 
         @VoluntarilyAssignment
         protected static ItemEnchantmentCapabilityRegister itemEnchantmentCapabilityRegister;
@@ -66,19 +70,25 @@ public class EnchantmentDepositItemRegister extends ItemRegister {
         }
 
         @Override
+        public boolean hasEffect(ItemStack stack) {
+            return true;
+        }
+
+        @Override
         public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
             super.addInformation(stack, worldIn, tooltip, flagIn);
 
             stack.getCapability(itemEnchantmentCapabilityRegister.getCapability()).ifPresent(pack -> {
-                        tooltip.add(new TranslationTextComponent("Enchantment:%s    maxLevel:%s",
-                                new TranslationTextComponent(StringUtil.formatLang(pack.getEnchantment().getName())),
-                                pack.getBasicsSuccessRate()));
+                        tooltip.add(new TranslationTextComponent("Enchantment:%s",
+                                new TranslationTextComponent(StringUtil.formatLang(pack.getEnchantment().getName()))));
                         NumberFormat fmt = NumberFormat.getPercentInstance();
                         fmt.setMaximumFractionDigits(2);
                         tooltip.add(new TranslationTextComponent("%s:%s",
                                 new TranslationTextComponent(StringUtil.formatLang(Recasting.MOD_ID, "basics_success_rate")),
                                 new StringTextComponent(fmt.format(pack.getBasicsSuccessRate()))));
                         //tooltip.add(new TranslationTextComponent(pack.isProtect() ? StringUtil.formatLang(Recasting.MOD_ID, "protect.true") : StringUtil.formatLang(Recasting.MOD_ID, "protect.false")));
+                        tooltip.add(new TranslationTextComponent("recasting.introduce.se_up"));
+
                     }
             );
 
@@ -92,6 +102,11 @@ public class EnchantmentDepositItemRegister extends ItemRegister {
             for (Enchantment value : ForgeRegistries.ENCHANTMENTS.getValues()) {
                 items.add(enchantment_depositItemRegister.mackItemStack(value));
             }
+        }
+
+        @Override
+        public void customCapability(ItemStack itemStack, CapabilityProvider capabilityProvider) {
+            capabilityProvider.addCapability(itemEnchantmentCapabilityRegister.getCapability(), new IItemEnchantment.ItemEnchantment());
         }
     }
 }

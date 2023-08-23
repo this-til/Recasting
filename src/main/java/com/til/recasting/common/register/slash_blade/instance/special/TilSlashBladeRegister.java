@@ -182,7 +182,8 @@ public class TilSlashBladeRegister extends SlashBladeRegister {
                                 event.target,
                                 attack,
                                 true,
-                                true
+                                true,
+                                false
                         );
                         event.target.setMotion(Vector3d.ZERO);
                     });
@@ -193,7 +194,7 @@ public class TilSlashBladeRegister extends SlashBladeRegister {
         public void defaultConfig() {
             super.defaultConfig();
             cool = 0;
-            attack = 1.75f;
+            attack = 1.95f;
         }
 
         public int getCool() {

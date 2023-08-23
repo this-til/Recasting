@@ -121,7 +121,7 @@ public class PlanetEntity extends DriveEntity {
         this.world.playSound(null, getPosX(), getPosY(), getPosZ(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 4.0F, 2 * (1.0F + (this.world.rand.nextFloat() - this.world.rand.nextFloat()) * 0.2F) * 0.7F);
         List<Entity> founds = world.getEntitiesInAABBexcluding(this, new Pos(this).axisAlignedBB(getSize() * 4), entity -> defaultEntityPredicateRegister.canTarget(getShooter(), entity));
         for (Entity found : founds) {
-            AttackManager.doAttack(getShooter(), found, getExplosionDamage(), false, false);
+            AttackManager.doAttack(getShooter(), found, getExplosionDamage(), false, false , true);
             /*float f2 = getSize() * 4 * 2.0F;
             double d12 = MathHelper.sqrt(found.getDistanceSq(getPositionVec())) / f2;
             if (d12 <= 1.0D) {

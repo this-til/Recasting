@@ -16,6 +16,9 @@ import net.minecraft.util.math.vector.Vector3d;
 import java.awt.*;
 import java.util.Random;
 
+/***
+ * 云轮
+ */
 @VoluntarilyRegister
 public class CloudWheelSA extends SA_Register {
     @VoluntarilyAssignment
@@ -82,6 +85,9 @@ public class CloudWheelSA extends SA_Register {
         lightningAttack = 1.35f;
     }
 
+    /***
+     * 云轮风暴
+     */
     @VoluntarilyRegister
     public static class CloudWheelStormSA extends CloudWheelSA {
 

@@ -17,7 +17,6 @@ import com.til.recasting.common.register.recipe.SlashBladeRecipeSerializerRegist
 import com.til.recasting.common.register.slash_blade.SlashBladeRegister;
 import com.til.recasting.common.register.slash_blade.sa.SA_Register;
 import com.til.recasting.common.register.slash_blade.sa.instance.DefaultSA;
-import com.til.recasting.common.register.slash_blade.sa.instance.MultipleDimensionalChoppingSA;
 import com.til.recasting.common.register.util.JudgementCutManage;
 import com.til.recasting.common.register.world.item.SoulItemRegister;
 import mods.flammpfeil.slashblade.SlashBlade;
@@ -200,7 +199,7 @@ public abstract class VoidSwordSlashBladeRegister extends SlashBladeRegister {
             protected BlueCloudSlashBladeRegister blueCloudSlashBladeRegister;
 
             @VoluntarilyAssignment
-            protected MultipleDimensionalChoppingSA multipleDimensionalChoppingSA;
+            protected UmbrellaSlashBladeRegister.UmbrellaSlash_1_BladeRegister.MultipleDimensionalChoppingSA multipleDimensionalChoppingSA;
 
             @Override
             protected SlashBladeRecipeSerializerRegister.SlashBladeRecipeRecipePack defaultConfigSlashBladeRecipeRecipePack() {

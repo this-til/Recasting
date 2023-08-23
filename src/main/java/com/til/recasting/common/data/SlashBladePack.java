@@ -6,13 +6,16 @@ import com.til.recasting.common.capability.ISE;
 import com.til.recasting.common.capability.ISlashBladeStateSupplement;
 import com.til.recasting.common.register.capability.ISlashBladeStateSupplementCapabilityRegister;
 import com.til.recasting.common.register.capability.SE_CapabilityRegister;
+import com.til.recasting.common.register.slash_blade.sa.AllSA_Register;
 import com.til.recasting.common.register.slash_blade.sa.SA_Register;
 import com.til.recasting.common.register.slash_blade.se.SE_Register;
 import mods.flammpfeil.slashblade.capability.slashblade.ISlashBladeState;
 import mods.flammpfeil.slashblade.item.ItemSlashBlade;
+import mods.flammpfeil.slashblade.specialattack.SlashArts;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 
 import java.util.Map;
 
@@ -25,6 +28,9 @@ public class SlashBladePack {
 
     @VoluntarilyAssignment
     protected static ISlashBladeStateSupplementCapabilityRegister iSlashBladeStateSupplement_capabilityRegister;
+
+    @VoluntarilyAssignment
+    protected static AllSA_Register allSARegister;
 
     protected ItemStack itemStack;
     protected ISlashBladeState slashBladeState;
@@ -131,6 +137,11 @@ public class SlashBladePack {
 
     public void setSA(SA_Register sa_register) {
         getSlashBladeState().setSlashArtsKey(sa_register.getSlashArts().getName());
+    }
+
+    public SA_Register getSA() {
+        SlashArts sa = getSlashBladeState().getSlashArts();
+        return allSARegister.getSA_Register(sa);
     }
 
     public ItemStack getItemStack() {

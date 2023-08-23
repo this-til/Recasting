@@ -60,7 +60,7 @@ public class LightningEntity extends StandardizationAttackEntity {
             float range = 3 * getSize();
             List<Entity> entityList = world.getEntitiesInAABBexcluding(this, new Pos(this).axisAlignedBB(range), entity -> defaultEntityPredicateRegister.canTarget(getShooter(), entity));
             for (Entity entity : entityList) {
-                AttackManager.doAttack(getShooter(), entity, getDamage(), true, true);
+                AttackManager.doAttack(getShooter(), entity, getDamage(), true, true, true);
             }
         }
     }

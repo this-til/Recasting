@@ -30,7 +30,7 @@ import java.util.Set;
 
 @VoluntarilyRegister
 @StaticVoluntarilyAssignment
-public class Entity_DepositItemRegister extends ItemRegister {
+public class EntityDepositItemRegister extends ItemRegister {
 
     @VoluntarilyAssignment
     protected static IItemEntityCapabilityRegister iItemEntity_capabilityRegister;
@@ -50,7 +50,7 @@ public class Entity_DepositItemRegister extends ItemRegister {
     public static class Entity_DepositItem extends Item implements CapabilityEvent.ICustomCapability {
 
         @VoluntarilyAssignment
-        protected static Entity_DepositItemRegister entity_depositItemRegister;
+        protected static EntityDepositItemRegister entity_depositItemRegister;
 
         public Entity_DepositItem(Properties properties) {
             super(properties);

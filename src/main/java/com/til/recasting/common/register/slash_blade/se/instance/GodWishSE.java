@@ -3,15 +3,25 @@ package com.til.recasting.common.register.slash_blade.se.instance;
 import com.til.glowing_fire_glow.GlowingFireGlow;
 import com.til.glowing_fire_glow.common.capability.time_run.TimerCell;
 import com.til.glowing_fire_glow.common.config.ConfigField;
+import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
 import com.til.glowing_fire_glow.common.register.VoluntarilyRegister;
+import com.til.glowing_fire_glow.common.util.ListUtil;
+import com.til.glowing_fire_glow.common.util.MapUtil;
 import com.til.glowing_fire_glow.common.util.math.NumberPack;
 import com.til.recasting.common.capability.ISE;
+import com.til.recasting.common.data.IRecipeInItemPack;
+import com.til.recasting.common.data.IResultPack;
 import com.til.recasting.common.entity.SlashEffectEntity;
 import com.til.recasting.common.entity.SummondSwordEntity;
 import com.til.recasting.common.event.EventSlashBladeDoSlash;
 import com.til.recasting.common.register.entity_type.SlashEffectEntityTypeRegister;
+import com.til.recasting.common.register.recipe.SpecialRecipeSerializerRegister;
 import com.til.recasting.common.register.slash_blade.se.SE_Register;
+import com.til.recasting.common.register.world.item.SE_DepositItemRegister;
+import com.til.recasting.common.register.world.item.SoulItemRegister;
+import mods.flammpfeil.slashblade.init.SBItems;
 import mods.flammpfeil.slashblade.util.VectorHelper;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -44,7 +54,7 @@ public class GodWishSE extends SE_Register {
             return;
         }
         ISE.SE_Pack se_pack = event.pack.getSlashBladePack().getIse().getPack(this);
-        if (!se_pack.tryTime(event.pack.getEntity().world.getGameTime() , (long) cool.of(se_pack.getLevel()))) {
+        if (!se_pack.tryTime(event.pack.getEntity().world.getGameTime(), (long) cool.of(se_pack.getLevel()))) {
             return;
         }
         Vector3d pos = event.pack.getEntity().getPositionVec()
@@ -88,4 +98,47 @@ public class GodWishSE extends SE_Register {
         blackColor = new Color(0, 0, 0, 255).getRGB();
         whiterColor = new Color(255, 255, 255, 255).getRGB();
     }
+
+    @VoluntarilyRegister
+    public static class GodWishSE_Recipe extends SpecialRecipeSerializerRegister.SpecialRecipeRegister {
+
+        @VoluntarilyAssignment
+        protected GodWishSE godWishSE;
+
+        @VoluntarilyAssignment
+        protected SE_DepositItemRegister se_depositItemRegister;
+
+        @VoluntarilyAssignment
+        protected SoulItemRegister.SoulCubeItemRegister soulItemRegister;
+
+        @VoluntarilyAssignment
+        protected FoxWishBasicsSE.BlackFoxWishSE blackFoxWishSE;
+
+        @VoluntarilyAssignment
+        protected FoxWishBasicsSE.WhiteFoxWishSE whiteFoxWishSE;
+
+        @VoluntarilyAssignment
+        protected CrossChopSE crossChopSE;
+
+        @Override
+        protected SpecialRecipeSerializerRegister.SpecialRecipePack defaultSpecialRecipePackDelayed() {
+            return new SpecialRecipeSerializerRegister.SpecialRecipePack(
+                    ListUtil.of(
+                            " E ",
+                            "BAC",
+                            " D "
+                    ),
+                    MapUtil.of(
+                            "A", new IRecipeInItemPack.OfIngredient(Ingredient.fromItems(soulItemRegister.getItem())),
+                            "E", new IRecipeInItemPack.OfIngredient(Ingredient.fromItems(SBItems.proudsoul_crystal)),
+                            "B", new IRecipeInItemPack.OfItemSE(blackFoxWishSE),
+                            "C", new IRecipeInItemPack.OfItemSE(whiteFoxWishSE),
+                            "D", new IRecipeInItemPack.OfItemSE(crossChopSE)
+
+                    ),
+                    new IResultPack.OfItemStack(se_depositItemRegister.mackItemStack(godWishSE))
+            );
+        }
+    }
+
 }

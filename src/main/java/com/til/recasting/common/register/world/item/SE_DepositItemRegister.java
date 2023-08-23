@@ -121,6 +121,7 @@ public class SE_DepositItemRegister extends ItemRegister {
                                 new TranslationTextComponent(StringUtil.formatLang(Recasting.MOD_ID, "basics_success_rate")),
                                 new StringTextComponent(fmt.format(pack.getBasicsSuccessRate()))));
                         //tooltip.add(new TranslationTextComponent(pack.isProtect() ? StringUtil.formatLang(Recasting.MOD_ID, "protect.true") : StringUtil.formatLang(Recasting.MOD_ID, "protect.false")));
+                        tooltip.add(new TranslationTextComponent("recasting.introduce.enchantment_up"));
                     }
             );
         }

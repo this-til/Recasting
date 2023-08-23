@@ -25,7 +25,8 @@ public class AnvilRepairManage implements IWorldComponent {
 
     @VoluntarilyAssignment
     protected AnvilOverallConfigRegister anvilOverallConfigRegister;
-
+    
+    
     @VoluntarilyAssignment
     protected ItemEnchantmentCapabilityRegister itemEnchantmentCapabilityRegister;
 

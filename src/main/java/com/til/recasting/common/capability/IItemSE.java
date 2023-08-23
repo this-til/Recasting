@@ -25,24 +25,6 @@ public interface IItemSE {
     void setBasicsSuccessRate(float successRate);
 
 
-    /***
-     * 尝试升级
-     */
-    default boolean tryUp(SlashBladePack slashBladePack) {
-        ISE.SE_Pack se_pack = slashBladePack.getIse().getPack(getSE());
-        float successRate = getBasicsSuccessRate();
-        int allLevel = 1;
-        for (ISE.SE_Pack value : slashBladePack.getIse().getAllSE().values()) {
-            allLevel += value.getLevel();
-        }
-        successRate = successRate / (allLevel + 1);
-        if (RANDOM.nextDouble() < successRate) {
-            se_pack.setLevel(se_pack.getLevel() + 1);
-            return true;
-        }
-        return false;
-    }
-
     class ItemSE implements IItemSE {
 
         @SaveField

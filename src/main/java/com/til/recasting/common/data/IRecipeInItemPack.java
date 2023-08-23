@@ -203,7 +203,7 @@ public interface IRecipeInItemPack extends Predicate<ItemStack> {
     @StaticVoluntarilyAssignment
     class OfEntity implements IRecipeInItemPack {
         @VoluntarilyAssignment
-        protected static Entity_DepositItemRegister entity_depositItemRegister;
+        protected static EntityDepositItemRegister entity_depositItemRegister;
 
         @VoluntarilyAssignment
         protected static IItemEntityCapabilityRegister entity_capabilityRegister;

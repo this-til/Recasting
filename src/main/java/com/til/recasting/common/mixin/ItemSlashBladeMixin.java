@@ -13,12 +13,20 @@ import com.til.recasting.common.register.slash_blade.SlashBladeRegister;
 import com.til.recasting.common.register.slash_blade.sa.AllSA_Register;
 import com.til.recasting.common.register.slash_blade.sa.SA_Register;
 import com.til.recasting.common.register.slash_blade.se.SE_Register;
+import mods.flammpfeil.slashblade.SlashBlade;
+import mods.flammpfeil.slashblade.entity.BladeItemEntity;
+import mods.flammpfeil.slashblade.event.BladeMaterialTooltips;
+import mods.flammpfeil.slashblade.init.SBItems;
 import mods.flammpfeil.slashblade.item.ItemSlashBlade;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.StringNBT;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
@@ -27,6 +35,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
@@ -38,7 +47,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import javax.annotation.Nullable;
 import java.util.*;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
+
+import static mods.flammpfeil.slashblade.item.ItemSlashBlade.BLADESTATE;
+import static mods.flammpfeil.slashblade.item.ItemSlashBlade.BREAK_ACTION_TIMEOUT;
 
 /**
  * @author til
@@ -175,7 +188,7 @@ public class ItemSlashBladeMixin {
                     target = "Lnet/minecraftforge/common/util/LazyOptional;ifPresent(Lnet/minecraftforge/common/util/NonNullConsumer;)V",
                     opcode = 1
             ),
-    remap = true)
+            remap = true)
     private void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn, CallbackInfo callbackInfo) {
         SlashBladePack slashBladePack = new SlashBladePack(stack);
         if (!slashBladePack.isEffective(SlashBladePack.EffectiveType.isSlashBlade)) {
@@ -236,7 +249,7 @@ public class ItemSlashBladeMixin {
                     target = "Lnet/minecraft/util/NonNullList;addAll(Ljava/util/Collection;)Z",
                     opcode = 1
             ),
-    remap = true)
+            remap = true)
     private void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items, CallbackInfo callbackInfo) {
         List<SlashBladeRegister> slashBladeRegisterList = new ArrayList<>();
         for (SlashBladeRegister slashBladeRegister : GlowingFireGlow.getInstance().getWorldComponent(AllSlashBladeRegister.class).forAll()) {
@@ -283,6 +296,78 @@ public class ItemSlashBladeMixin {
             cir.cancel();
         }
     }
+
+
+/*    *//**
+     * @author
+     * @reason
+     *//*
+    @Overwrite()
+    private Consumer<LivingEntity> getOnBroken(ItemStack stack) {
+        return (user) -> {
+            user.sendBreakAnimation(user.getActiveHand());
+
+            ItemStack soul = new ItemStack(SBItems.proudsoul);
+
+            CompoundNBT blade = stack.write(new CompoundNBT());
+            soul.setTagInfo(BladeMaterialTooltips.BLADE_DATA, blade);
+
+            stack.getCapability(BLADESTATE).ifPresent(s -> {
+                s.getTexture().ifPresent(r -> soul.setTagInfo("Texture", StringNBT.valueOf(r.toString())));
+                s.getModel().ifPresent(r -> soul.setTagInfo("Model", StringNBT.valueOf(r.toString())));
+            });
+
+            ItemEntity itementity = new ItemEntity(user.world, user.getPosX(), user.getPosY(), user.getPosZ(), soul);
+
+            BladeItemEntity e = new BladeItemEntity(SlashBlade.RegistryEvents.BladeItem, user.world) {
+
+                static final String isReleased = "isReleased";
+
+                @Override
+                public boolean onLivingFall(float distance, float damageMultiplier) {
+
+                    CompoundNBT tag = this.getPersistentData();
+
+                    if (!tag.getBoolean(isReleased)) {
+                        this.getPersistentData().putBoolean(isReleased, true);
+
+                        if (this.world instanceof ServerWorld) {
+                            Entity thrower = ((ServerWorld) this.world).getEntityByUuid(this.getThrowerId());
+
+                            if (thrower != null) {
+                                thrower.getPersistentData().remove(BREAK_ACTION_TIMEOUT);
+                            }
+                        }
+                    }
+
+                    return super.onLivingFall(distance, damageMultiplier);
+                }
+            };
+
+            e.copyDataFromOld(itementity);
+            e.init();
+            e.addVelocity(0, 0.4, 0);
+
+            e.setPickupDelay(20 * 2);
+            e.setGlowing(true);
+
+            e.setAir(-1);
+
+            e.setThrowerId(user.getUniqueID());
+
+            user.world.addEntity(e);
+
+            user.getPersistentData().putLong(BREAK_ACTION_TIMEOUT, user.world.getGameTime() + 20 * 5);
+
+            stack.getCapability(BLADESTATE).ifPresent(state -> {
+                if (0 < state.getRefine()) {
+                    state.setRefine(state.getRefine() - 1);
+                    state.doBrokenAction(user);
+                }
+            });
+        };
+    }*/
+
 
     /**
      * @author

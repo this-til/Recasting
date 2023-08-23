@@ -530,7 +530,7 @@ public class SummondSwordEntity extends StandardizationAttackEntity {
     }
 
     public void doAttackEntity(Entity target, boolean isEnd) {
-        AttackManager.doAttack(getShooter(), target, getDamage(), true, true);
+        AttackManager.doAttack(getShooter(), target, getDamage(), true, true, true);
         target.hurtResistantTime = 0;
         target.setMotion(0, 0.1, 0);
         if (isEnd) {
