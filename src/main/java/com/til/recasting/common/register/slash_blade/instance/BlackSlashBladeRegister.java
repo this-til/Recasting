@@ -9,6 +9,7 @@ import com.til.recasting.common.data.IRecipeInItemPack;
 import com.til.recasting.common.data.IResultPack;
 import com.til.recasting.common.register.recipe.SlashBladeRecipeSerializerRegister;
 import com.til.recasting.common.register.slash_blade.SlashBladeRegister;
+import com.til.recasting.common.register.slash_blade.instance.original.NamelessSlashBladeRegister;
 import com.til.recasting.common.register.util.StringFinal;
 import mods.flammpfeil.slashblade.SlashBlade;
 import mods.flammpfeil.slashblade.init.SBItems;

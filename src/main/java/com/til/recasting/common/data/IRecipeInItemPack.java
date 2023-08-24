@@ -264,6 +264,10 @@ public interface IRecipeInItemPack extends Predicate<ItemStack> {
         protected SlashBladePack slashBladePack;
 
 
+        public OfSlashBlade(SlashBladePack slashBladePack) {
+            this(slashBladePack.getItemStack());
+        }
+
         public OfSlashBlade(ItemStack itemStack) {
             this.itemStack = itemStack;
         }

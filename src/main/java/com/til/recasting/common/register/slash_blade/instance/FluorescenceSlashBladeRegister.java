@@ -14,18 +14,22 @@ import com.til.recasting.common.data.UseSlashBladeEntityPack;
 import com.til.recasting.common.data.IRecipeInItemPack;
 import com.til.recasting.common.data.IResultPack;
 import com.til.recasting.common.entity.DriveEntity;
+import com.til.recasting.common.entity.LightningEntity;
 import com.til.recasting.common.entity.SummondSwordEntity;
 import com.til.recasting.common.event.EventDoAttack;
 import com.til.recasting.common.register.back_type.SlashEffectEntityBackTypeRegister;
 import com.til.recasting.common.register.entity_predicate.DefaultEntityPredicateRegister;
 import com.til.recasting.common.register.entity_type.DriveEntityTypeRegister;
+import com.til.recasting.common.register.entity_type.LightningEntityTypeRegister;
 import com.til.recasting.common.register.entity_type.SummondSwordEntityTypeRegister;
 import com.til.recasting.common.register.recipe.SlashBladeRecipeSerializerRegister;
 import com.til.recasting.common.register.slash_blade.SlashBladeRegister;
+import com.til.recasting.common.register.slash_blade.instance.original.NamelessSlashBladeRegister;
 import com.til.recasting.common.register.slash_blade.sa.SA_Register;
 import com.til.recasting.common.register.slash_blade.se.SE_Register;
 import com.til.recasting.common.register.target_selector.DefaultTargetSelectorRegister;
 import com.til.recasting.common.register.util.*;
+import com.til.recasting.common.register.world.item.SoulItemRegister;
 import mods.flammpfeil.slashblade.SlashBlade;
 import mods.flammpfeil.slashblade.init.SBItems;
 import mods.flammpfeil.slashblade.util.KnockBacks;
@@ -193,7 +197,7 @@ public abstract class FluorescenceSlashBladeRegister extends SlashBladeRegister 
             @Override
             public void defaultConfig() {
                 super.defaultConfig();
-                attack = 0.75f;
+                attack = 0.4f;
                 time = 100;
             }
 
@@ -280,7 +284,7 @@ public abstract class FluorescenceSlashBladeRegister extends SlashBladeRegister 
                 super.defaultConfig();
                 range = 8;
                 time = 100;
-                judgementAttack = 0.75f;
+                judgementAttack = 0.4f;
                 attack = 0.15f;
                 number = 12;
             }
@@ -402,6 +406,46 @@ public abstract class FluorescenceSlashBladeRegister extends SlashBladeRegister 
                 time = 100;
             }
         }
+
+        @VoluntarilyRegister
+        public static class Fluorescence_3_SlashBladeRecipeRegister extends SlashBladeRecipeSerializerRegister.SlashBladeRecipeRegister {
+            @VoluntarilyAssignment
+            protected Fluorescence_3_SlashBladeRegister fluorescence_3_slashBladeRegister;
+
+            @VoluntarilyAssignment
+            protected Fluorescence_2_SlashBladeRegister fluorescence_2_slashBladeRegister;
+
+            @VoluntarilyAssignment
+            protected SoulItemRegister.SoulCubeItemRegister soulItemRegister;
+
+            @Override
+            protected SlashBladeRecipeSerializerRegister.SlashBladeRecipeRecipePack defaultConfigSlashBladeRecipeRecipePack() {
+                SlashBladePack fluorescence_2_slashBlade = fluorescence_2_slashBladeRegister.getSlashBladePack();
+                fluorescence_2_slashBlade.getSlashBladeState().setKillCount(1800);
+                fluorescence_2_slashBlade.getSlashBladeState().setRefine(145);
+                EnchantmentHelper.setEnchantments(
+                        MapUtil.of(
+                                Enchantments.UNBREAKING, 4,
+                                Enchantments.MENDING, 1),
+                        fluorescence_2_slashBlade.getItemStack()
+                );
+
+                return new SlashBladeRecipeSerializerRegister.SlashBladeRecipeRecipePack(
+                        ListUtil.of(
+                                "BA ",
+                                " V ",
+                                " AB"
+                        ),
+                        MapUtil.of(
+                                "A", new IRecipeInItemPack.OfIngredient(Ingredient.fromItems(SBItems.proudsoul_crystal)),
+                                "B", new IRecipeInItemPack.OfIngredient(Ingredient.fromItems(soulItemRegister.getItem())),
+                                "V", new IRecipeInItemPack.OfSlashBlade(fluorescence_2_slashBlade)
+                        ),
+                        "V",
+                        new IResultPack.OfSlashBladeRegister(fluorescence_3_slashBladeRegister)
+                );
+            }
+        }
     }
 
     @VoluntarilyRegister
@@ -473,6 +517,43 @@ public abstract class FluorescenceSlashBladeRegister extends SlashBladeRegister 
                 time = 100;
             }
         }
+
+        @VoluntarilyRegister
+        public static class Fluorescence_4_SlashBladeRecipeRegister extends SlashBladeRecipeSerializerRegister.SlashBladeRecipeRegister {
+            @VoluntarilyAssignment
+            protected Fluorescence_4_SlashBladeRegister fluorescence_4_slashBladeRegister;
+
+            @VoluntarilyAssignment
+            protected Fluorescence_3_SlashBladeRegister fluorescence_3_slashBladeRegister;
+
+
+            @VoluntarilyAssignment
+            protected SoulItemRegister.SoulCubeChangeItemRegister soulCubeChangeItemRegister;
+
+            @Override
+            protected SlashBladeRecipeSerializerRegister.SlashBladeRecipeRecipePack defaultConfigSlashBladeRecipeRecipePack() {
+                SlashBladePack fluorescence_3_slashBlade = fluorescence_3_slashBladeRegister.getSlashBladePack();
+                EnchantmentHelper.setEnchantments(
+                        MapUtil.of(
+                                Enchantments.UNBREAKING, 4,
+                                Enchantments.MENDING, 1),
+                        fluorescence_3_slashBlade.getItemStack()
+                );
+                return new SlashBladeRecipeSerializerRegister.SlashBladeRecipeRecipePack(
+                        ListUtil.of(
+                                "A  ",
+                                " V ",
+                                "  A"
+                        ),
+                        MapUtil.of(
+                                "V", new IRecipeInItemPack.OfSlashBlade(fluorescence_3_slashBlade),
+                                "A", new IRecipeInItemPack.OfIngredient(Ingredient.fromItems(soulCubeChangeItemRegister.getItem()))
+                        ),
+                        "V",
+                        new IResultPack.OfSlashBladeRegister(fluorescence_4_slashBladeRegister)
+                );
+            }
+        }
     }
 
     @VoluntarilyRegister
@@ -502,6 +583,40 @@ public abstract class FluorescenceSlashBladeRegister extends SlashBladeRegister 
         @Override
         public int getState() {
             return 6;
+        }
+
+
+        @VoluntarilyRegister
+        public static class Fluorescence_6_SlashBladeSA extends SA_Register {
+
+            @VoluntarilyAssignment
+            protected LightningEntityTypeRegister lightningEntityTypeRegister;
+
+
+
+            @ConfigField
+            protected float attack;
+
+            @ConfigField
+            protected int time;
+
+            @Override
+            public void trigger(UseSlashBladeEntityPack slashBladeEntityPack) {
+                Vector3d vector3d = slashBladeEntityPack.getAttackPos();
+                LightningEntity lightningEntity = new LightningEntity(lightningEntityTypeRegister.getEntityType(), slashBladeEntityPack.getEntity().world, slashBladeEntityPack.getEntity());
+                lightningEntity.setPosition(vector3d.getX(), vector3d.getY(), vector3d.getZ());
+                lightningEntity.setColor(slashBladeEntityPack.getSlashBladePack().getSlashBladeState().getColorCode());
+                lightningEntity.setDamage(attack);
+                lightningEntity.setEffectInstanceList(ListUtil.of(new EffectInstance(Effects.GLOWING, time)));
+                slashBladeEntityPack.getEntity().world.addEntity(lightningEntity);
+            }
+
+            @Override
+            public void defaultConfig() {
+                super.defaultConfig();
+                attack = 1.1f;
+                time = 100;
+            }
         }
     }
 

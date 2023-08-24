@@ -21,6 +21,7 @@ import com.til.recasting.common.register.slash_blade.sa.SA_Register;
 import com.til.recasting.common.register.slash_blade.se.instance.DivinitySE;
 import com.til.recasting.common.register.util.RayTraceUtil;
 import com.til.recasting.common.register.util.StringFinal;
+import mods.flammpfeil.slashblade.SlashBlade;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -172,8 +173,8 @@ public class XingKongSlashBladeRegister extends SlashBladeRegister {
         @Override
         public void defaultConfig() {
             super.defaultConfig();
-            attack = 0.12f;
-            attackNumber = 4;
+            attack = 0.4f;
+            attackNumber = 1;
             life = 100;
             attackRange = 128;
             generateRange = 12;
@@ -212,6 +213,73 @@ public class XingKongSlashBladeRegister extends SlashBladeRegister {
                     new IResultPack.OfSlashBladeRegister(xingKongSlashBladeRegister)
             );
         }
+    }
+
+
+    @VoluntarilyRegister
+    public static class XingKongLambdaSlashBladeRegister extends XingKongSlashBladeRegister {
+        @VoluntarilyAssignment
+        protected XingKongSlashBladeRegister xingKongSlashBladeRegister;
+
+        @VoluntarilyAssignment
+        protected XingKongLambdaSlashBladeSA xingKongLambdaSlashBladeSA;
+
+        @Override
+        protected void init() {
+            super.init();
+            model = new ResourceLocation(getName().getNamespace(), String.join("/", SlashBlade.modid, xingKongSlashBladeRegister.getName().getPath(), "model.obj"));
+            texture = new ResourceLocation(getName().getNamespace(), String.join("/", SlashBlade.modid, xingKongSlashBladeRegister.getName().getPath(), "texture.png"));
+        }
+
+        @Override
+        protected void defaultItemStackConfig(ItemStack itemStack) {
+            super.defaultItemStackConfig(itemStack);
+            slashBladePack.setSA(xingKongLambdaSlashBladeSA);
+        }
+
+        @VoluntarilyRegister
+        public static class XingKongLambdaSlashBladeSA extends XingKongSlashBladeSA {
+            @Override
+            public void defaultConfig() {
+                super.defaultConfig();
+                attack = 0.6f;
+                attackNumber = 2;
+            }
+        }
+
+        @VoluntarilyRegister
+        public static class XingKongLambdaSlashBladeRecipeRegister extends SlashBladeRecipeSerializerRegister.SlashBladeRecipeRegister {
+            @VoluntarilyAssignment
+            protected XingKongLambdaSlashBladeRegister xingKongLambdaSlashBladeRegister;
+
+            @VoluntarilyAssignment
+            protected XingKongSlashBladeRegister xingKongSlashBladeRegister;
+
+            @VoluntarilyAssignment
+            protected DivinitySE.DivinityLambdaSE divinityLambdaSE;
+
+            @Override
+            protected SlashBladeRecipeSerializerRegister.SlashBladeRecipeRecipePack defaultConfigSlashBladeRecipeRecipePack() {
+                SlashBladePack xingKongSlashBlade = xingKongLambdaSlashBladeRegister.getSlashBladePack();
+                xingKongSlashBlade.getSlashBladeState().setKillCount(20000);
+                xingKongSlashBlade.getSlashBladeState().setRefine(3000);
+
+                return new SlashBladeRecipeSerializerRegister.SlashBladeRecipeRecipePack(
+                        ListUtil.of(
+                                "A A",
+                                " V ",
+                                "A A"
+                        ),
+                        MapUtil.of(
+                                "A", new IRecipeInItemPack.OfItemSE(divinityLambdaSE, 7.5f),
+                                "V", new IRecipeInItemPack.OfSlashBlade(xingKongSlashBlade)
+                        ),
+                        "V",
+                        new IResultPack.OfSlashBladeRegister(xingKongLambdaSlashBladeRegister)
+                );
+            }
+        }
+
     }
 
 }

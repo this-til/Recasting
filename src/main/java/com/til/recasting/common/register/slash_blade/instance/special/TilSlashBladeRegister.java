@@ -288,7 +288,7 @@ public class TilSlashBladeRegister extends SlashBladeRegister {
         @VoluntarilyRegister
         public static class TilLambdaSlashBladeRecipeRegister extends SlashBladeRecipeSerializerRegister.SlashBladeRecipeRegister {
             @VoluntarilyAssignment
-            protected TilSlashLambdaBladeRegister tilSlashBladeRegister;
+            protected TilSlashBladeRegister tilSlashBladeRegister;
 
 
             @VoluntarilyAssignment
