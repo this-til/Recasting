@@ -15,7 +15,6 @@ import com.til.recasting.common.register.entity_type.SummondSwordEntityTypeRegis
 import com.til.recasting.common.register.recipe.SlashBladeRecipeSerializerRegister;
 import com.til.recasting.common.register.slash_blade.SlashBladeRegister;
 import com.til.recasting.common.register.slash_blade.sa.SA_Register;
-import com.til.recasting.common.register.slash_blade.sa.instance.HeavenTwelveHitSA;
 import com.til.recasting.common.register.slash_blade.se.instance.BacktrackSE;
 import com.til.recasting.common.register.slash_blade.se.instance.DivinitySE;
 import com.til.recasting.common.register.slash_blade.se.instance.GrowSE;
@@ -155,7 +154,7 @@ public class DragonSlashBladeRegister extends SlashBladeRegister {
             protected StarBladeSlashBladeRegister.StarBlade_4_SlashBladeRegister.StarBlade_4_SA starBlade_4_sa;
 
             @VoluntarilyAssignment
-            protected HeavenTwelveHitSA heavenTwelveHitSA;
+            protected ColorWingSlashBladeRegister.HeavenTwelveHitSA heavenTwelveHitSA;
 
             @Override
             protected SlashBladeRecipeSerializerRegister.SlashBladeRecipeRecipePack defaultConfigSlashBladeRecipeRecipePack() {

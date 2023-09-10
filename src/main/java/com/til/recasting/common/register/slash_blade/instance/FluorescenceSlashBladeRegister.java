@@ -23,12 +23,14 @@ import com.til.recasting.common.register.entity_type.DriveEntityTypeRegister;
 import com.til.recasting.common.register.entity_type.LightningEntityTypeRegister;
 import com.til.recasting.common.register.entity_type.SummondSwordEntityTypeRegister;
 import com.til.recasting.common.register.recipe.SlashBladeRecipeSerializerRegister;
+import com.til.recasting.common.register.recipe.SpecialRecipeSerializerRegister;
 import com.til.recasting.common.register.slash_blade.SlashBladeRegister;
 import com.til.recasting.common.register.slash_blade.instance.original.NamelessSlashBladeRegister;
 import com.til.recasting.common.register.slash_blade.sa.SA_Register;
 import com.til.recasting.common.register.slash_blade.se.SE_Register;
 import com.til.recasting.common.register.target_selector.DefaultTargetSelectorRegister;
 import com.til.recasting.common.register.util.*;
+import com.til.recasting.common.register.world.item.SE_DepositItemRegister;
 import com.til.recasting.common.register.world.item.SoulItemRegister;
 import mods.flammpfeil.slashblade.SlashBlade;
 import mods.flammpfeil.slashblade.init.SBItems;
@@ -112,7 +114,40 @@ public abstract class FluorescenceSlashBladeRegister extends SlashBladeRegister 
         public int getMaxLevel() {
             return 1;
         }
+
+        @VoluntarilyRegister
+        public static class FluorescenceSE_RecipeRegister extends SpecialRecipeSerializerRegister.SpecialRecipeRegister {
+
+            @VoluntarilyAssignment
+            protected SoulItemRegister.SoulCubeItemRegister soulCubeItemRegister;
+
+            @VoluntarilyAssignment
+            protected Fluorescence_1_SlashBladeRegister.Fluorescence_1_SA fluorescence_1_sa;
+
+
+            @VoluntarilyAssignment
+            protected SE_DepositItemRegister se_depositItemRegister;
+
+            @VoluntarilyAssignment
+            protected FluorescenceSE fluorescenceSE1;
+
+            @Override
+            protected SpecialRecipeSerializerRegister.SpecialRecipePack defaultSpecialRecipePackDelayed() {
+                return new SpecialRecipeSerializerRegister.SpecialRecipePack(
+                        ListUtil.of(
+                                " A ",
+                                " B ",
+                                "   "),
+                        MapUtil.of(
+                                "A", new IRecipeInItemPack.OfItemSA(fluorescence_1_sa),
+                                "B", new IRecipeInItemPack.OfIngredient(Ingredient.fromItems(soulCubeItemRegister.getItem()))
+                        ),
+                        new IResultPack.OfItemStack(se_depositItemRegister.mackItemStack(fluorescenceSE1))
+                );
+            }
+        }
     }
+
 
     @VoluntarilyRegister
     public static class Fluorescence_1_SlashBladeRegister extends FluorescenceSlashBladeRegister {
@@ -574,10 +609,14 @@ public abstract class FluorescenceSlashBladeRegister extends SlashBladeRegister 
     @VoluntarilyRegister
     public static class Fluorescence_6_SlashBladeRegister extends FluorescenceSlashBladeRegister {
 
+        @VoluntarilyAssignment
+        public Fluorescence_6_SlashBladeSA fluorescence_6_slashBladeSA;
+
         @Override
         protected void defaultItemStackConfig(ItemStack itemStack) {
             super.defaultItemStackConfig(itemStack);
             slashBladePack.getSlashBladeState().setBaseAttackModifier(4f);
+            slashBladePack.setSA(fluorescence_6_slashBladeSA);
         }
 
         @Override
@@ -591,7 +630,6 @@ public abstract class FluorescenceSlashBladeRegister extends SlashBladeRegister 
 
             @VoluntarilyAssignment
             protected LightningEntityTypeRegister lightningEntityTypeRegister;
-
 
 
             @ConfigField
@@ -618,6 +656,52 @@ public abstract class FluorescenceSlashBladeRegister extends SlashBladeRegister 
                 time = 100;
             }
         }
+
+        @VoluntarilyRegister
+        public static class Fluorescence_6_SlashBladeRecipeRegister extends SlashBladeRecipeSerializerRegister.SlashBladeRecipeRegister {
+
+            @VoluntarilyAssignment
+            protected Fluorescence_6_SlashBladeRegister fluorescence_6_slashBladeRegister;
+
+            @VoluntarilyAssignment
+            protected Fluorescence_1_SlashBladeRegister fluorescence_1_slashBladeRegister;
+
+            @VoluntarilyAssignment
+            protected Fluorescence_1_SlashBladeRegister.Fluorescence_1_SA fluorescence_1_sa;
+
+            @VoluntarilyAssignment
+            protected Fluorescence_2_SlashBladeRegister.Fluorescence_2_SA fluorescence_2_sa;
+
+            @VoluntarilyAssignment
+            protected Fluorescence_3_SlashBladeRegister.Fluorescence_3_SA fluorescence_3_sa;
+
+            @VoluntarilyAssignment
+            protected Fluorescence_4_SlashBladeRegister.Fluorescence_4_SA fluorescence_4_sa;
+
+            @Override
+            protected SlashBladeRecipeSerializerRegister.SlashBladeRecipeRecipePack defaultConfigSlashBladeRecipeRecipePack() {
+                SlashBladePack fluorescence_1 = fluorescence_1_slashBladeRegister.getSlashBladePack();
+                fluorescence_1.getSlashBladeState().setKillCount(2000);
+                fluorescence_1.getSlashBladeState().setRefine(125);
+
+                return new SlashBladeRecipeSerializerRegister.SlashBladeRecipeRecipePack(
+                        ListUtil.of(
+                                " A ",
+                                "BVC",
+                                " D "
+                        ),
+                        MapUtil.of(
+                                "V", new IRecipeInItemPack.OfSlashBlade(fluorescence_1),
+                                "A", new IRecipeInItemPack.OfItemSA(fluorescence_1_sa),
+                                "B", new IRecipeInItemPack.OfItemSA(fluorescence_2_sa),
+                                "C", new IRecipeInItemPack.OfItemSA(fluorescence_3_sa),
+                                "D", new IRecipeInItemPack.OfItemSA(fluorescence_4_sa)),
+                        "V",
+                        new IResultPack.OfItemStack(fluorescence_1.getItemStack())
+                );
+            }
+        }
+
     }
 
 

@@ -7,16 +7,13 @@ import com.til.glowing_fire_glow.common.util.MapUtil;
 import com.til.recasting.common.data.IRecipeInItemPack;
 import com.til.recasting.common.data.IResultPack;
 import com.til.recasting.common.register.recipe.SpecialRecipeSerializerRegister;
-import com.til.recasting.common.register.slash_blade.sa.instance.CloudWheelSA;
+import com.til.recasting.common.register.slash_blade.instance.SilverWingSlashBladeRegister;
 import com.til.recasting.common.register.slash_blade.se.SE_Register;
 import com.til.recasting.common.register.world.item.SE_DepositItemRegister;
 import com.til.recasting.common.register.world.item.SoulItemRegister;
 import mods.flammpfeil.slashblade.init.SBItems;
 import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.BiomeRegistry;
 import net.minecraft.world.biome.Biomes;
-import net.minecraftforge.common.Tags;
 import net.minecraftforge.registries.ForgeRegistries;
 
 @VoluntarilyRegister
@@ -38,7 +35,7 @@ public class DivinitySE extends SE_Register {
             protected DivinitySE divinitySE;
 
             @VoluntarilyAssignment
-            protected CloudWheelSA.CloudWheelStormSA cloudWheelStormSA;
+            protected SilverWingSlashBladeRegister.SilverWingLambdaSlashBladeRegister.CloudWheelStormSA cloudWheelStormSA;
 
             @Override
             protected SpecialRecipeSerializerRegister.SpecialRecipePack defaultSpecialRecipePackDelayed() {

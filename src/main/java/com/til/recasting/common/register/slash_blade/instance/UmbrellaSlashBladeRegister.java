@@ -4,25 +4,33 @@ import com.til.glowing_fire_glow.common.capability.time_run.TimerCell;
 import com.til.glowing_fire_glow.common.config.ConfigField;
 import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
 import com.til.glowing_fire_glow.common.register.VoluntarilyRegister;
+import com.til.glowing_fire_glow.common.util.ListUtil;
+import com.til.glowing_fire_glow.common.util.MapUtil;
 import com.til.glowing_fire_glow.common.util.Pos;
 import com.til.glowing_fire_glow.common.util.ResourceLocationUtil;
-import com.til.glowing_fire_glow.common.util.math.NumberPack;
 import com.til.recasting.common.capability.ISE;
+import com.til.recasting.common.data.IRecipeInItemPack;
+import com.til.recasting.common.data.IResultPack;
+import com.til.recasting.common.data.SlashBladePack;
 import com.til.recasting.common.data.UseSlashBladeEntityPack;
-import com.til.recasting.common.entity.DriveEntity;
 import com.til.recasting.common.entity.JudgementCutEntity;
 import com.til.recasting.common.event.EventDoAttack;
 import com.til.recasting.common.register.entity_predicate.DefaultEntityPredicateRegister;
+import com.til.recasting.common.register.recipe.SlashBladeRecipeSerializerRegister;
 import com.til.recasting.common.register.slash_blade.SlashBladeRegister;
+import com.til.recasting.common.register.slash_blade.instance.original.TukumoSlashBladeRegister;
 import com.til.recasting.common.register.slash_blade.sa.SA_Register;
 import com.til.recasting.common.register.slash_blade.se.SE_Register;
+import com.til.recasting.common.register.slash_blade.se.instance.DivinitySE;
 import com.til.recasting.common.register.target_selector.DefaultTargetSelectorRegister;
 import com.til.recasting.common.register.util.AttackManager;
 import com.til.recasting.common.register.util.JudgementCutManage;
 import com.til.recasting.common.register.util.RayTraceUtil;
+import com.til.recasting.common.register.world.item.SoulItemRegister;
 import mods.flammpfeil.slashblade.SlashBlade;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
@@ -53,8 +61,8 @@ public abstract class UmbrellaSlashBladeRegister extends SlashBladeRegister {
     protected void defaultItemStackConfig(ItemStack itemStack) {
         super.defaultItemStackConfig(itemStack);
         slashBladePack.getSlashBladeState().setEffectColor(new Color(0xC191FF));
-        slashBladePack.getSlashBladeStateSupplement().setDurable(8);
-        slashBladePack.getSlashBladeState().setBaseAttackModifier(6);
+        slashBladePack.getSlashBladeStateSupplement().setDurable(12);
+        slashBladePack.getSlashBladeState().setBaseAttackModifier(5);
         slashBladePack.getIse().getPack(umbrellaSlashBladeSE).setLevel(1);
     }
 
@@ -115,6 +123,44 @@ public abstract class UmbrellaSlashBladeRegister extends SlashBladeRegister {
                 hit = 0.3f;
             }
         }
+
+        @VoluntarilyRegister
+        public static class UmbrellaSlash_1_SlashBladeRecipeRegister extends SlashBladeRecipeSerializerRegister.SlashBladeRecipeRegister {
+            @VoluntarilyAssignment
+            protected UmbrellaSlash_1_BladeRegister umbrellaSlash_1_bladeRegister;
+
+
+            @VoluntarilyAssignment
+            protected TukumoSlashBladeRegister tukumoSlashBladeRegister;
+
+            @VoluntarilyAssignment
+            protected SoulItemRegister.SoulCubeChangeItemRegister soulCubeChangeItemRegister;
+
+            @VoluntarilyAssignment
+            protected SoulItemRegister.SoulCubeItemRegister soulCubeItemRegister;
+
+            @Override
+            protected SlashBladeRecipeSerializerRegister.SlashBladeRecipeRecipePack defaultConfigSlashBladeRecipeRecipePack() {
+                SlashBladePack tukumoSlashBlade = tukumoSlashBladeRegister.getSlashBladePack();
+                tukumoSlashBlade.getSlashBladeState().setKillCount(1500);
+                tukumoSlashBlade.getSlashBladeState().setRefine(150);
+
+                return new SlashBladeRecipeSerializerRegister.SlashBladeRecipeRecipePack(
+                        ListUtil.of(
+                                " A ",
+                                "BVB",
+                                " A "
+                        ),
+                        MapUtil.of(
+                                "V", new IRecipeInItemPack.OfSlashBlade(tukumoSlashBlade),
+                                "A", new IRecipeInItemPack.OfIngredient(Ingredient.fromItems(soulCubeChangeItemRegister.getItem())),
+                                "B", new IRecipeInItemPack.OfIngredient(Ingredient.fromItems(soulCubeItemRegister.getItem()))
+                        ),
+                        "V",
+                        new IResultPack.OfSlashBladeRegister(umbrellaSlash_1_bladeRegister)
+                );
+            }
+        }
     }
 
     @VoluntarilyRegister
@@ -131,7 +177,7 @@ public abstract class UmbrellaSlashBladeRegister extends SlashBladeRegister {
         @Override
         protected void defaultItemStackConfig(ItemStack itemStack) {
             super.defaultItemStackConfig(itemStack);
-            slashBladePack.getSlashBladeState().setBaseAttackModifier(7f);
+            slashBladePack.getSlashBladeState().setBaseAttackModifier(6f);
             slashBladePack.setSA(infiniteDimensionalChoppingSA);
         }
 
@@ -204,6 +250,40 @@ public abstract class UmbrellaSlashBladeRegister extends SlashBladeRegister {
                 delay = 2;
             }
         }
+
+        @VoluntarilyRegister
+        public static class UmbrellaSlash_2_SlashBladeRecipeRegister extends SlashBladeRecipeSerializerRegister.SlashBladeRecipeRegister {
+            @VoluntarilyAssignment
+            protected UmbrellaSlash_1_BladeRegister umbrellaSlash_1_bladeRegister;
+
+            @VoluntarilyAssignment
+            protected UmbrellaSlash_2_BladeRegister umbrellaSlash_2_bladeRegister;
+
+            @VoluntarilyAssignment
+            protected DivinitySE divinitySE;
+
+            @Override
+            protected SlashBladeRecipeSerializerRegister.SlashBladeRecipeRecipePack defaultConfigSlashBladeRecipeRecipePack() {
+                SlashBladePack umbrellaSlashBlade = umbrellaSlash_1_bladeRegister.getSlashBladePack();
+                umbrellaSlashBlade.getSlashBladeState().setKillCount(300);
+                umbrellaSlashBlade.getSlashBladeState().setRefine(300);
+
+                return new SlashBladeRecipeSerializerRegister.SlashBladeRecipeRecipePack(
+                        ListUtil.of(
+                                "  A",
+                                " V ",
+                                "A  "
+                        ),
+                        MapUtil.of(
+                                "V", new IRecipeInItemPack.OfSlashBlade(umbrellaSlashBlade),
+                                "A", new IRecipeInItemPack.OfItemSE(divinitySE, 5f)
+
+                        ),
+                        "V",
+                        new IResultPack.OfSlashBladeRegister(umbrellaSlash_2_bladeRegister)
+                );
+            }
+        }
     }
 
     @VoluntarilyRegister
@@ -264,8 +344,8 @@ public abstract class UmbrellaSlashBladeRegister extends SlashBladeRegister {
         public void defaultConfig() {
             super.defaultConfig();
             cool = 5;
-            attack = 0.01f;
-            attackNumber = 12;
+            attack = 0.2f;
+            attackNumber = 4;
             attackInterval = 20;
         }
     }

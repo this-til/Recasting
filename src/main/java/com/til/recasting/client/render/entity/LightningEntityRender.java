@@ -39,9 +39,11 @@ public class LightningEntityRender extends EntityRenderer<LightningEntity> {
         }
 
         Color color = new Color(entityIn.getColor(), false);
+        //Color color = new Color(0, 0, 255);
         int r = color.getRed();
-        int g = color.getGreen();
         int b = color.getBlue();
+        int g = color.getGreen();
+
 
         float scale = entityIn.getSize();
         matrixStackIn.scale(scale, scale, scale);
@@ -92,10 +94,10 @@ public class LightningEntityRender extends EntityRenderer<LightningEntity> {
                     }
 
 
-                    func_229116_a_(matrix4f, ivertexbuilder, f2, f3, j1, f4, f5, r, g, b, 76, f10, f11, false, false, true, false);
-                    func_229116_a_(matrix4f, ivertexbuilder, f2, f3, j1, f4, f5, r, g, b, 76, f10, f11, true, false, true, true);
-                    func_229116_a_(matrix4f, ivertexbuilder, f2, f3, j1, f4, f5, r, g, b, 76, f10, f11, true, true, false, true);
-                    func_229116_a_(matrix4f, ivertexbuilder, f2, f3, j1, f4, f5, r, g, b, 76, f10, f11, false, true, false, false);
+                    func_229116_a_(matrix4f, ivertexbuilder, f2, f3, j1, f4, f5, r, b, g, 76, f10, f11, false, false, true, false);
+                    func_229116_a_(matrix4f, ivertexbuilder, f2, f3, j1, f4, f5, r, b, g, 76, f10, f11, true, false, true, true);
+                    func_229116_a_(matrix4f, ivertexbuilder, f2, f3, j1, f4, f5, r, b, g, 76, f10, f11, true, true, false, true);
+                    func_229116_a_(matrix4f, ivertexbuilder, f2, f3, j1, f4, f5, r, b, g, 76, f10, f11, false, true, false, false);
                 }
             }
         }

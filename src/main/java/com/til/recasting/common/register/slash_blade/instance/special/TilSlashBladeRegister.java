@@ -1,5 +1,6 @@
 package com.til.recasting.common.register.slash_blade.instance.special;
 
+import com.til.glowing_fire_glow.common.capability.time_run.TimerCell;
 import com.til.glowing_fire_glow.common.config.ConfigField;
 import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
 import com.til.glowing_fire_glow.common.register.VoluntarilyRegister;
@@ -170,23 +171,24 @@ public class TilSlashBladeRegister extends SlashBladeRegister {
             if (!event.pack.getSlashBladePack().getIse().hasSE(this)) {
                 return;
             }
-            event.target.getCapability(starBlinkSELayerCapabilityRegister.getCapability())
-                    .ifPresent(starBlinkSELayer -> {
-                        starBlinkSELayer.setColor(event.pack.getSlashBladePack().getSlashBladeState().getColorCode());
-                        if (!starBlinkSELayer.tryAdd(event.pack.getEntity().world.getGameTime())) {
-                            return;
-                        }
-                        starBlinkSELayer.reset();
-                        AttackManager.doAttack(
-                                event.pack.getEntity(),
-                                event.target,
-                                attack,
-                                true,
-                                true,
-                                false
-                        );
-                        event.target.setMotion(Vector3d.ZERO);
-                    });
+            event.pack.getTimeRun().addTimerCell(new TimerCell(
+                    () -> event.target.getCapability(starBlinkSELayerCapabilityRegister.getCapability())
+                            .ifPresent(starBlinkSELayer -> {
+                                starBlinkSELayer.setColor(event.pack.getSlashBladePack().getSlashBladeState().getColorCode());
+                                if (!starBlinkSELayer.tryAdd(event.pack.getEntity().world.getGameTime())) {
+                                    return;
+                                }
+                                starBlinkSELayer.reset();
+                                AttackManager.doAttack(
+                                        event.pack.getEntity(),
+                                        event.target,
+                                        attack,
+                                        true,
+                                        true,
+                                        true
+                                );
+                                event.target.setMotion(Vector3d.ZERO);
+                            }), 0, 0));
         }
 
 
@@ -194,7 +196,7 @@ public class TilSlashBladeRegister extends SlashBladeRegister {
         public void defaultConfig() {
             super.defaultConfig();
             cool = 0;
-            attack = 1.95f;
+            attack = 1.75f;
         }
 
         public int getCool() {

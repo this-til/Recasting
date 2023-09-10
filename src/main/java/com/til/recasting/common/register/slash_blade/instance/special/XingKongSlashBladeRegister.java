@@ -167,7 +167,7 @@ public class XingKongSlashBladeRegister extends SlashBladeRegister {
             summondSwordEntity.setStartDelay(life);
             summondSwordEntity.setSeep(0);
             slashBladeEntityPack.getEntity().world.addEntity(summondSwordEntity);
-            ONLY_ONE_MAP.put(summondSwordEntity.getEntity(), summondSwordEntity);
+            ONLY_ONE_MAP.put(slashBladeEntityPack.getEntity(), summondSwordEntity);
         }
 
         @Override
@@ -229,6 +229,8 @@ public class XingKongSlashBladeRegister extends SlashBladeRegister {
             super.init();
             model = new ResourceLocation(getName().getNamespace(), String.join("/", SlashBlade.modid, xingKongSlashBladeRegister.getName().getPath(), "model.obj"));
             texture = new ResourceLocation(getName().getNamespace(), String.join("/", SlashBlade.modid, xingKongSlashBladeRegister.getName().getPath(), "texture.png"));
+            summondSwordModel = new ResourceLocation(getName().getNamespace(), String.join("/", StringFinal.SUMMOND_SWORD, xingKongSlashBladeRegister.getName().getPath(), "model.obj"));
+            saModel = new ResourceLocation(getName().getNamespace(), String.join("/", StringFinal.SPECIAL, xingKongSlashBladeRegister.getName().getPath(), "model.obj"));
         }
 
         @Override

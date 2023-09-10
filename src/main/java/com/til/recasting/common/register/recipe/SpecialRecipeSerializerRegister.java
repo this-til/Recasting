@@ -152,7 +152,8 @@ public class SpecialRecipeSerializerRegister extends RecipeSerializerRegister<Sp
                 for (int j = 0; j < craftingInventory.getHeight(); ++j) {
                     int k = i - width;
                     int l = j - height;
-                    int id = this.getRecipeWidth() - k - 1 + l * this.getRecipeWidth() /*: k + l * this.getRecipeWidth()*/;
+                    //int id = this.getRecipeWidth() - k - 1 + l * this.getRecipeWidth() /*: k + l * this.getRecipeWidth()*/;
+                    int id = k + l * this.getRecipeWidth();
                     if (k < 0 || l < 0 || k >= this.getRecipeWidth() || l >= this.getRecipeHeight()) {
                         return false;
                     }

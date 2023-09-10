@@ -159,7 +159,7 @@ public class SlashEffectEntity extends StandardizationAttackEntity {
 
             Vector3d normal3d = new Vector3d(normal.getX(), normal.getY(), normal.getZ());
 
-            BlockRayTraceResult rayResult = this.getEntityWorld().rayTraceBlocks(new RayTraceContext(start.add(normal3d.scale(1.5 * getSize())), start.add(normal3d.scale(3 * getSize())), RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.ANY, null));
+            BlockRayTraceResult rayResult = this.getEntityWorld().rayTraceBlocks(new RayTraceContext(start.add(normal3d.scale(1.5 * getSize())), start.add(normal3d.scale(3 * getSize())), RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, null));
 
             if (rayResult.getType() == RayTraceResult.Type.BLOCK) {
                 FallHandler.spawnLandingParticle(this, rayResult.getHitVec(), normal3d, 3);

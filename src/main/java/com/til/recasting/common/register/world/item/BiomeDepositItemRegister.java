@@ -17,11 +17,13 @@ import com.til.recasting.common.register.recipe.SpecialRecipeSerializerRegister;
 import mods.flammpfeil.slashblade.SlashBlade;
 import mods.flammpfeil.slashblade.init.SBItems;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.*;
 import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Hand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -73,17 +75,29 @@ public class BiomeDepositItemRegister extends ItemRegister {
             capabilityProvider.addCapability(iItemBiome_capabilityRegister.getCapability(), new IItemBiome.ItemBiome());
         }
 
+        @Nonnull
+        @Override
+        public ActionResult<ItemStack> onItemRightClick(@Nonnull World world, PlayerEntity playerEntity, @Nonnull Hand hand) {
+            ItemStack itemStack = playerEntity.getHeldItem(hand);
+            if (hand != Hand.MAIN_HAND) {
+                return ActionResult.resultFail(itemStack);
+            }
+            if (!playerEntity.isSneaking()) {
+                return ActionResult.resultFail(itemStack);
+            }
+            itemStack.getCapability(iItemBiome_capabilityRegister.getCapability()).ifPresent(pack -> {
+                pack.setBiome(world.getBiome(playerEntity.getPosition()));
+            });
+            return ActionResult.resultSuccess(itemStack);
+        }
+
         @Override
         public void addInformation(@Nonnull ItemStack stack, @Nullable World worldIn, @Nonnull List<ITextComponent> tooltip, @Nonnull ITooltipFlag flagIn) {
             super.addInformation(stack, worldIn, tooltip, flagIn);
             stack.getCapability(iItemBiome_capabilityRegister.getCapability()).ifPresent(pack -> {
                 Biome biome = pack.getBiome();
-                tooltip.add(new TranslationTextComponent("Biome:%s",
-                        biome == null || biome.getRegistryName() == null ? "null" : new TranslationTextComponent(StringUtil.formatLang(
-                                "biome",
-                                biome.getRegistryName().getNamespace(),
-                                biome.getRegistryName().getPath()
-                        ))));
+                tooltip.add(new TranslationTextComponent("Biome:%s", biome == null || biome.getRegistryName() == null ? "null" : new TranslationTextComponent(StringUtil.formatLang("biome", biome.getRegistryName().getNamespace(), biome.getRegistryName().getPath()))));
+                tooltip.add(new TranslationTextComponent("recasting.introduce.biome"));
             });
         }
 
@@ -93,10 +107,7 @@ public class BiomeDepositItemRegister extends ItemRegister {
                 return;
             }
             items.add(biome_depositItemRegister.mackItemStack(null));
-            ForgeRegistries.BIOMES.getValues()
-                    .stream()
-                    .sorted(Comparator.comparing(a -> a.getRegistryName().toString()))
-                    .forEach(biome -> items.add(biome_depositItemRegister.mackItemStack(biome)));
+            ForgeRegistries.BIOMES.getValues().stream().sorted(Comparator.comparing(a -> a.getRegistryName().toString())).forEach(biome -> items.add(biome_depositItemRegister.mackItemStack(biome)));
         }
     }
 
@@ -111,20 +122,7 @@ public class BiomeDepositItemRegister extends ItemRegister {
 
         @Override
         protected SpecialRecipeSerializerRegister.SpecialRecipePack defaultSpecialRecipePackDelayed() {
-            return new SpecialRecipeSerializerRegister.SpecialRecipePack(
-                    ListUtil.of(
-                            "AAA",
-                            "BVC",
-                            "AAA"
-                    ),
-                    MapUtil.of(
-                            "A", new IRecipeInItemPack.OfIngredient(Ingredient.fromItems(SBItems.proudsoul)),
-                            "B", new IRecipeInItemPack.OfIngredient(Ingredient.fromItems(Items.COMPASS)),
-                            "C", new IRecipeInItemPack.OfIngredient(Ingredient.fromItems(Items.CLOCK)),
-                            "V", new IRecipeInItemPack.OfIngredient(Ingredient.fromItems(soulCubeItemRegister.getItem()))
-                    ),
-                    new IResultPack.OfItemStack(biome_depositItemRegister.mackItemStack(null))
-            );
+            return new SpecialRecipeSerializerRegister.SpecialRecipePack(ListUtil.of("AAA", "BVC", "AAA"), MapUtil.of("A", new IRecipeInItemPack.OfIngredient(Ingredient.fromItems(SBItems.proudsoul)), "B", new IRecipeInItemPack.OfIngredient(Ingredient.fromItems(Items.COMPASS)), "C", new IRecipeInItemPack.OfIngredient(Ingredient.fromItems(Items.CLOCK)), "V", new IRecipeInItemPack.OfIngredient(Ingredient.fromItems(soulCubeItemRegister.getItem()))), new IResultPack.OfItemStack(biome_depositItemRegister.mackItemStack(null)));
         }
     }
 }

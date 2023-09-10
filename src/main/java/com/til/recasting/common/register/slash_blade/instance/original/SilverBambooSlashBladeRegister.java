@@ -33,7 +33,7 @@ public class SilverBambooSlashBladeRegister extends SlashBladeRegister {
     protected void defaultItemStackConfig(ItemStack itemStack) {
         super.defaultItemStackConfig(itemStack);
         slashBladePack.getSlashBladeState().setTranslationKey("item.slashblade.simple.silverbamboo");
-        slashBladePack.getSlashBladeState().setBaseAttackModifier(1.5f);
+        slashBladePack.getSlashBladeState().setBaseAttackModifier(5f);
         slashBladePack.getSlashBladeState().setDestructable(true);
         slashBladePack.getSlashBladeState().setColorCode(new Color(-13421569).getRGB());
     }

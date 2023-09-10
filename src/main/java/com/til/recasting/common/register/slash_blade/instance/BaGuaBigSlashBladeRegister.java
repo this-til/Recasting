@@ -18,6 +18,8 @@ import com.til.recasting.common.register.entity_type.MatrixEntityTypeRegister;
 import com.til.recasting.common.register.entity_type.SummondSwordEntityTypeRegister;
 import com.til.recasting.common.register.recipe.SlashBladeRecipeSerializerRegister;
 import com.til.recasting.common.register.slash_blade.SlashBladeRegister;
+import com.til.recasting.common.register.slash_blade.instance.original.FoxBlackSlashBladeRegister;
+import com.til.recasting.common.register.slash_blade.instance.original.FoxWhiteSlashBladeRegister;
 import com.til.recasting.common.register.slash_blade.sa.SA_Register;
 import com.til.recasting.common.register.util.StringFinal;
 import com.til.recasting.common.register.world.item.SoulItemRegister;
@@ -197,6 +199,12 @@ public class BaGuaBigSlashBladeRegister extends SlashBladeRegister {
         @VoluntarilyAssignment
         protected SoulItemRegister.SoulCubeItemRegister soulCubeItemRegister;
 
+        @VoluntarilyAssignment
+        protected FoxWhiteSlashBladeRegister.FoxWhiteLambdaSlashBladeRegister foxWhiteLambdaSlashBladeRegister;
+
+        @VoluntarilyAssignment
+        protected FoxBlackSlashBladeRegister.FoxBlackLambdaSlashBladeRegister foxBlackLambdaSlashBladeRegister;
+
         @Override
         protected SlashBladeRecipeSerializerRegister.SlashBladeRecipeRecipePack defaultConfigSlashBladeRecipeRecipePack() {
 
@@ -204,15 +212,25 @@ public class BaGuaBigSlashBladeRegister extends SlashBladeRegister {
             baGuaSlashBlade.getSlashBladeState().setKillCount(1500);
             baGuaSlashBlade.getSlashBladeState().setRefine(150);
 
+            SlashBladePack foxWhiteLambdaSlashBlade = foxWhiteLambdaSlashBladeRegister.getSlashBladePack();
+            foxWhiteLambdaSlashBlade.getSlashBladeState().setKillCount(1000);
+            foxWhiteLambdaSlashBlade.getSlashBladeState().setRefine(50);
+
+            SlashBladePack foxBlackLambdaSlashBlade = foxBlackLambdaSlashBladeRegister.getSlashBladePack();
+            foxBlackLambdaSlashBlade.getSlashBladeState().setKillCount(1000);
+            foxBlackLambdaSlashBlade.getSlashBladeState().setRefine(50);
+
             return new SlashBladeRecipeSerializerRegister.SlashBladeRecipeRecipePack(
                     ListUtil.of(
-                            " A ",
+                            " AC",
                             "BVB",
-                            " A "
+                            "DA "
                     ),
                     MapUtil.of(
                             "A", new IRecipeInItemPack.OfIngredient(Ingredient.fromItems(soulCubeItemRegister.getItem())),
                             "B", new IRecipeInItemPack.OfIngredient(Ingredient.fromItems(soulCubeChangeItemRegister.getItem())),
+                            "C", new IRecipeInItemPack.OfSlashBlade(foxWhiteLambdaSlashBlade),
+                            "D", new IRecipeInItemPack.OfSlashBlade(foxBlackLambdaSlashBlade),
                             "V", new IRecipeInItemPack.OfSlashBlade(baGuaSlashBlade.getItemStack())
                     ),
                     "V",

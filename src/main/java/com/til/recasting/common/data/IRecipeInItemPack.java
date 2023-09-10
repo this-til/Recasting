@@ -88,6 +88,9 @@ public interface IRecipeInItemPack extends Predicate<ItemStack> {
 
         @Override
         public boolean test(ItemStack itemStack) {
+            if (itemStack.isEmpty()) {
+                return false;
+            }
             return getOfIngredient().test(itemStack);
         }
     }
@@ -121,7 +124,9 @@ public interface IRecipeInItemPack extends Predicate<ItemStack> {
 
         @Override
         public boolean test(ItemStack itemStack) {
-
+            if (itemStack.isEmpty()) {
+                return false;
+            }
             Optional<IItemSE> itemSEOptional = itemStack.getCapability(itemSE_capabilityRegister.getCapability()).resolve();
             if (!itemSEOptional.isPresent()) {
                 return false;
@@ -130,7 +135,7 @@ public interface IRecipeInItemPack extends Predicate<ItemStack> {
             if (!iItemSE.getSE().equals(se_register)) {
                 return false;
             }
-            if (iItemSE.getBasicsSuccessRate() - successRate > 0.01) {
+            if (iItemSE.getBasicsSuccessRate() - successRate < -0.01) {
                 return false;
             }
             return true;
@@ -150,6 +155,15 @@ public interface IRecipeInItemPack extends Predicate<ItemStack> {
 
         protected float successRate;
 
+        public OfItemEnchantment(Enchantment enchantment) {
+            this.enchantment = enchantment;
+        }
+
+        public OfItemEnchantment(Enchantment enchantment, float successRate) {
+            this.enchantment = enchantment;
+            this.successRate = successRate;
+        }
+
         @Override
         public Ingredient toIngredient() {
             return Ingredient.fromStacks(enchantment_depositItemRegister.mackItemStack(enchantment, successRate));
@@ -157,6 +171,9 @@ public interface IRecipeInItemPack extends Predicate<ItemStack> {
 
         @Override
         public boolean test(ItemStack itemStack) {
+            if (itemStack.isEmpty()) {
+                return false;
+            }
             Optional<IItemEnchantment> itemSEOptional = itemStack.getCapability(itemEnchantmentCapabilityRegister.getCapability()).resolve();
             if (!itemSEOptional.isPresent()) {
                 return false;
@@ -165,7 +182,7 @@ public interface IRecipeInItemPack extends Predicate<ItemStack> {
             if (!enchantment.equals(this.enchantment)) {
                 return false;
             }
-            if (itemSEOptional.get().getBasicsSuccessRate() - successRate > 0.01) {
+            if (itemSEOptional.get().getBasicsSuccessRate() - successRate < -0.01) {
                 return false;
             }
             return true;
@@ -195,6 +212,9 @@ public interface IRecipeInItemPack extends Predicate<ItemStack> {
 
         @Override
         public boolean test(ItemStack itemStack) {
+            if (itemStack.isEmpty()) {
+                return false;
+            }
             Optional<IItemSA> itemSAOptional = itemStack.getCapability(itemSA_capabilityRegister.getCapability()).resolve();
             return itemSAOptional.map(iItemSA -> iItemSA.getSA().equals(sa_register)).orElse(false);
         }
@@ -223,6 +243,9 @@ public interface IRecipeInItemPack extends Predicate<ItemStack> {
 
         @Override
         public boolean test(ItemStack itemStack) {
+            if (itemStack.isEmpty()) {
+                return false;
+            }
             return itemStack.getCapability(entity_capabilityRegister.getCapability()).resolve().map(entityPack -> entityPack.getEntityType().equals(entityType)).orElse(false);
         }
     }
@@ -319,6 +342,9 @@ public interface IRecipeInItemPack extends Predicate<ItemStack> {
 
         @Override
         public boolean test(ItemStack itemStack) {
+            if (itemStack.isEmpty()) {
+                return false;
+            }
             if (ofSlashBlade == null) {
                 ofSlashBlade = new OfSlashBlade(slashBladeRegister.getSlashBladePack().getItemStack());
             }

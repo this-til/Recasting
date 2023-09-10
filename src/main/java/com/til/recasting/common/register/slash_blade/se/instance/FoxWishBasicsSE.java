@@ -3,12 +3,19 @@ package com.til.recasting.common.register.slash_blade.se.instance;
 import com.til.glowing_fire_glow.common.config.ConfigField;
 import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
 import com.til.glowing_fire_glow.common.register.VoluntarilyRegister;
+import com.til.glowing_fire_glow.common.util.ListUtil;
+import com.til.glowing_fire_glow.common.util.MapUtil;
 import com.til.glowing_fire_glow.common.util.math.NumberPack;
 import com.til.recasting.common.capability.ISE;
+import com.til.recasting.common.data.IRecipeInItemPack;
+import com.til.recasting.common.data.IResultPack;
 import com.til.recasting.common.entity.SummondSwordEntity;
 import com.til.recasting.common.event.EventSlashBladeDoSlash;
 import com.til.recasting.common.register.entity_type.SummondSwordEntityTypeRegister;
+import com.til.recasting.common.register.recipe.SpecialRecipeSerializerRegister;
 import com.til.recasting.common.register.slash_blade.se.SE_Register;
+import com.til.recasting.common.register.world.item.SE_DepositItemRegister;
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.util.SoundEvents;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
@@ -36,7 +43,7 @@ public abstract class FoxWishBasicsSE extends SE_Register {
             return;
         }
         ISE.SE_Pack se_pack = event.pack.getSlashBladePack().getIse().getPack(this);
-        if (!se_pack.tryTime(event.pack.getEntity().world.getGameTime() , (long) cool.of(se_pack.getLevel()))) {
+        if (!se_pack.tryTime(event.pack.getEntity().world.getGameTime(), (long) cool.of(se_pack.getLevel()))) {
             return;
         }
         int n = (int) attackNumber.of(se_pack.getLevel());
@@ -67,6 +74,38 @@ public abstract class FoxWishBasicsSE extends SE_Register {
      */
     @VoluntarilyRegister
     public static class BlackFoxWishSE extends FoxWishBasicsSE {
+
+        @VoluntarilyRegister
+        public static class BlackFoxWishSE_RecipeRegister extends SpecialRecipeSerializerRegister.SpecialRecipeRegister {
+
+            @VoluntarilyAssignment
+            protected SE_DepositItemRegister se_depositItemRegister;
+
+            @VoluntarilyAssignment
+            protected BlackFoxWishSE blackFoxWishSE;
+
+
+            @VoluntarilyAssignment
+            protected MomentSE momentSE;
+
+
+            @Override
+            protected SpecialRecipeSerializerRegister.SpecialRecipePack defaultSpecialRecipePackDelayed() {
+                return new SpecialRecipeSerializerRegister.SpecialRecipePack(
+                        ListUtil.of(
+                                "  A",
+                                " V ",
+                                "A  "
+                        ),
+                        MapUtil.of(
+                                "A", new IRecipeInItemPack.OfItemEnchantment(Enchantments.SMITE),
+                                "V", new IRecipeInItemPack.OfItemSE(momentSE)
+                        ),
+                        new IResultPack.OfItemStack(se_depositItemRegister.mackItemStack(blackFoxWishSE))
+                );
+            }
+        }
+
     }
 
     /***
@@ -79,6 +118,35 @@ public abstract class FoxWishBasicsSE extends SE_Register {
         public void defaultConfig() {
             super.defaultConfig();
             color = new Color(255, 255, 255, 255).getRGB();
+        }
+
+        @VoluntarilyRegister
+        public static class WhiteFoxWishSE_RecipeRegister extends SpecialRecipeSerializerRegister.SpecialRecipeRegister {
+
+            @VoluntarilyAssignment
+            protected SE_DepositItemRegister se_depositItemRegister;
+
+            @VoluntarilyAssignment
+            protected WhiteFoxWishSE whiteFoxWishSE;
+
+            @VoluntarilyAssignment
+            protected MomentSE momentSE;
+
+            @Override
+            protected SpecialRecipeSerializerRegister.SpecialRecipePack defaultSpecialRecipePackDelayed() {
+                return new SpecialRecipeSerializerRegister.SpecialRecipePack(
+                        ListUtil.of(
+                                "  A",
+                                " V ",
+                                "A  "
+                        ),
+                        MapUtil.of(
+                                "A", new IRecipeInItemPack.OfItemEnchantment(Enchantments.BANE_OF_ARTHROPODS),
+                                "V", new IRecipeInItemPack.OfItemSE(momentSE)
+                        ),
+                        new IResultPack.OfItemStack(se_depositItemRegister.mackItemStack(whiteFoxWishSE))
+                );
+            }
         }
     }
 }

@@ -32,7 +32,7 @@ public class BambooSlashBladeRegister extends SlashBladeRegister {
     protected void defaultItemStackConfig(ItemStack itemStack) {
         super.defaultItemStackConfig(itemStack);
         slashBladePack.getSlashBladeState().setTranslationKey("item.slashblade.simple.bamboo");
-        slashBladePack.getSlashBladeState().setBaseAttackModifier(1f);
+        slashBladePack.getSlashBladeState().setBaseAttackModifier(4f);
         slashBladePack.getSlashBladeState().setDestructable(true);
         slashBladePack.getSlashBladeState().setColorCode(new Color(-13421569).getRGB());
     }
