@@ -10,7 +10,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraftforge.entity.PartEntity;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import java.util.Comparator;
@@ -50,9 +49,9 @@ public class LockOnManagerManage implements IWorldComponent {
 
         List<Entity> entityList = HitAssessment.getTargettableEntitiesWithinAABB(player.world, player, player, 32);
         Entity foundEntity = entityList.stream().min(Comparator.comparingDouble(e -> e.getDistanceSq(player))).orElse(null);
-        if (foundEntity instanceof PartEntity) {
+        /*if (foundEntity instanceof PartEntity) {
             foundEntity = ((PartEntity<?>) foundEntity).getParent();
-        }
+        }*/
         useSlashBladeEntityPack.getSlashBladePack().getSlashBladeState().setTargetEntityId(foundEntity);
     }
 

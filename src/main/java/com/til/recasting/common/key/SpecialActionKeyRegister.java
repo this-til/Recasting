@@ -10,7 +10,6 @@ import com.til.recasting.common.register.back_type.SummondSwordBackTypeRegister;
 import com.til.recasting.common.register.entity_type.SummondSwordEntityTypeRegister;
 import com.til.recasting.common.register.overall_config.SlayerStyleArtsOverallConfigRegister;
 import com.til.recasting.common.register.util.RayTraceUtil;
-import mods.flammpfeil.slashblade.ability.Untouchable;
 import mods.flammpfeil.slashblade.item.ItemSlashBlade;
 import mods.flammpfeil.slashblade.util.InputCommand;
 import net.minecraft.entity.CreatureEntity;
@@ -54,7 +53,7 @@ public class SpecialActionKeyRegister extends KeyRegister {
     @Override
     public void pressedServer(NetworkEvent.Context context) {
         context.enqueueWork(() -> {
-            ServerPlayerEntity serverPlayerEntity = context.getSender();
+            PlayerEntity serverPlayerEntity = context.getSender();
             if (serverPlayerEntity == null) {
                 return;
             }
@@ -158,7 +157,7 @@ public class SpecialActionKeyRegister extends KeyRegister {
             player.getHeldItemMainhand().getCapability(ItemSlashBlade.BLADESTATE)
                     .ifPresent(state -> state.updateComboSeq(player, state.getComboRootAir()));
 
-            Untouchable.setUntouchable(player, 10);
+            //Untouchable.setUntouchable(player, 10);
         }
 
         ServerWorld worldIn = (ServerWorld) entityIn.world;

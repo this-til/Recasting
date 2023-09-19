@@ -32,7 +32,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.entity.PartEntity;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -511,9 +510,9 @@ public class SummondSwordEntity extends StandardizationAttackEntity {
         Entity targetEntity = entityRayTraceResult.getEntity();
 
         Entity hits = targetEntity;
-        if (targetEntity instanceof PartEntity) {
+       /* if (targetEntity instanceof PartEntity) {
             hits = ((PartEntity<?>) targetEntity).getParent();
-        }
+        }*/
         if (pierce != null && pierce.contains(targetEntity.getEntityId())) {
             return;
         }
