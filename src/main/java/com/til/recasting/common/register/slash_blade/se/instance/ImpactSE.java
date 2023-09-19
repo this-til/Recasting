@@ -20,7 +20,6 @@ import com.til.recasting.common.register.util.RayTraceUtil;
 import com.til.recasting.common.register.world.item.SE_DepositItemRegister;
 import mods.flammpfeil.slashblade.init.SBItems;
 import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.eventbus.api.SubscribeEvent;

@@ -2,7 +2,6 @@ package com.til.recasting.common.register.util;
 
 import com.til.glowing_fire_glow.common.main.IWorldComponent;
 import com.til.recasting.common.data.SlashBladePack;
-import mods.flammpfeil.slashblade.item.ItemSlashBlade;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.ToolType;
 import net.minecraftforge.event.AnvilUpdateEvent;

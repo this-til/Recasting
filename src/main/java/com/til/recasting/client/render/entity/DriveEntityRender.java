@@ -5,20 +5,10 @@ import com.til.glowing_fire_glow.common.register.StaticVoluntarilyAssignment;
 import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
 import com.til.recasting.client.register.render_type.LuminousRenderTypeRegister;
 import com.til.recasting.common.entity.DriveEntity;
-import mods.flammpfeil.slashblade.client.renderer.model.BladeModelManager;
-import mods.flammpfeil.slashblade.client.renderer.model.obj.WavefrontObject;
-import mods.flammpfeil.slashblade.client.renderer.util.BladeRenderState;
-import mods.flammpfeil.slashblade.client.renderer.util.MSAutoCloser;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3f;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-
-import javax.annotation.Nullable;
-import java.awt.*;
 
 @OnlyIn(Dist.CLIENT)
 @StaticVoluntarilyAssignment

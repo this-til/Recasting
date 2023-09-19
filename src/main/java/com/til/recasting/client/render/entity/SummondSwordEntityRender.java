@@ -4,7 +4,6 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.til.glowing_fire_glow.common.register.StaticVoluntarilyAssignment;
 import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
 import com.til.recasting.client.register.render_type.LuminousRenderTypeRegister;
-import com.til.recasting.client.util.RenderStateManage;
 import com.til.recasting.common.entity.SummondSwordEntity;
 import mods.flammpfeil.slashblade.client.renderer.model.BladeModelManager;
 import mods.flammpfeil.slashblade.client.renderer.model.obj.WavefrontObject;

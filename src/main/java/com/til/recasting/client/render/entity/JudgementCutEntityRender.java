@@ -2,7 +2,6 @@ package com.til.recasting.client.render.entity;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.til.recasting.common.entity.JudgementCutEntity;
-import mods.flammpfeil.slashblade.SlashBlade;
 import mods.flammpfeil.slashblade.client.renderer.model.BladeModelManager;
 import mods.flammpfeil.slashblade.client.renderer.model.obj.WavefrontObject;
 import mods.flammpfeil.slashblade.client.renderer.util.BladeRenderState;

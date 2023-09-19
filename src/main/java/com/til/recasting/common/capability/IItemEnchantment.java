@@ -1,7 +1,6 @@
 package com.til.recasting.common.capability;
 
 import com.til.glowing_fire_glow.common.save.SaveField;
-import com.til.recasting.common.data.SlashBladePack;
 import net.minecraft.enchantment.Enchantment;
 
 import java.util.Random;

@@ -1,15 +1,10 @@
 package com.til.recasting.common.register.util;
 
 import com.til.glowing_fire_glow.common.main.IWorldComponent;
-import mods.flammpfeil.slashblade.init.SBItems;
 import mods.flammpfeil.slashblade.item.BladeStandItem;
-import net.minecraft.item.Item;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * @author til

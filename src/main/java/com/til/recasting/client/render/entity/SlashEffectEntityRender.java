@@ -3,7 +3,6 @@ package com.til.recasting.client.render.entity;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.til.glowing_fire_glow.common.register.StaticVoluntarilyAssignment;
 import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
-import com.til.recasting.client.register.entity_render.LightningEntityRenderType;
 import com.til.recasting.client.register.render_type.LuminousRenderTypeRegister;
 import com.til.recasting.common.entity.SlashEffectEntity;
 import mods.flammpfeil.slashblade.client.renderer.model.BladeModelManager;

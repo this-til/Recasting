@@ -1,7 +1,6 @@
 package com.til.recasting.common.register.slash_blade.se.instance;
 
 import com.til.glowing_fire_glow.GlowingFireGlow;
-import com.til.glowing_fire_glow.common.capability.time_run.TimerCell;
 import com.til.glowing_fire_glow.common.config.ConfigField;
 import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
 import com.til.glowing_fire_glow.common.register.VoluntarilyRegister;
@@ -12,7 +11,6 @@ import com.til.recasting.common.capability.ISE;
 import com.til.recasting.common.data.IRecipeInItemPack;
 import com.til.recasting.common.data.IResultPack;
 import com.til.recasting.common.entity.SlashEffectEntity;
-import com.til.recasting.common.entity.SummondSwordEntity;
 import com.til.recasting.common.event.EventSlashBladeDoSlash;
 import com.til.recasting.common.register.entity_type.SlashEffectEntityTypeRegister;
 import com.til.recasting.common.register.recipe.SpecialRecipeSerializerRegister;
@@ -22,7 +20,6 @@ import com.til.recasting.common.register.world.item.SoulItemRegister;
 import mods.flammpfeil.slashblade.init.SBItems;
 import mods.flammpfeil.slashblade.util.VectorHelper;
 import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 

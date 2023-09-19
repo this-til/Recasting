@@ -4,9 +4,7 @@ import com.til.glowing_fire_glow.common.capability.back.BackRunPack;
 import com.til.glowing_fire_glow.common.capability.back.IBackRunPack;
 import com.til.glowing_fire_glow.common.register.StaticVoluntarilyAssignment;
 import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
-import com.til.glowing_fire_glow.common.register.back_type.BackTypeRegister;
 import com.til.glowing_fire_glow.common.register.capability.capabilitys.BackRunPackCapabilityRegister;
-import com.til.recasting.Recasting;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -17,8 +15,6 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
-import net.minecraft.potion.PotionUtils;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
@@ -30,7 +26,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @StaticVoluntarilyAssignment
 public abstract class StandardizationAttackEntity extends Entity {

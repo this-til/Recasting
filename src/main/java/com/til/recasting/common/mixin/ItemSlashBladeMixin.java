@@ -4,29 +4,21 @@ import com.til.glowing_fire_glow.GlowingFireGlow;
 import com.til.glowing_fire_glow.common.register.RegisterBasics;
 import com.til.glowing_fire_glow.common.util.StringUtil;
 import com.til.recasting.common.capability.ISE;
-import com.til.recasting.common.data.SlashBladePack;
 import com.til.recasting.common.data.IRecipeInItemPack;
 import com.til.recasting.common.data.IResultPack;
+import com.til.recasting.common.data.SlashBladePack;
 import com.til.recasting.common.register.recipe.SlashBladeRecipeSerializerRegister;
 import com.til.recasting.common.register.slash_blade.AllSlashBladeRegister;
 import com.til.recasting.common.register.slash_blade.SlashBladeRegister;
 import com.til.recasting.common.register.slash_blade.sa.AllSA_Register;
 import com.til.recasting.common.register.slash_blade.sa.SA_Register;
 import com.til.recasting.common.register.slash_blade.se.SE_Register;
-import mods.flammpfeil.slashblade.SlashBlade;
-import mods.flammpfeil.slashblade.entity.BladeItemEntity;
-import mods.flammpfeil.slashblade.event.BladeMaterialTooltips;
-import mods.flammpfeil.slashblade.init.SBItems;
 import mods.flammpfeil.slashblade.item.ItemSlashBlade;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.StringNBT;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
@@ -35,7 +27,6 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
@@ -47,11 +38,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import javax.annotation.Nullable;
 import java.util.*;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
-
-import static mods.flammpfeil.slashblade.item.ItemSlashBlade.BLADESTATE;
-import static mods.flammpfeil.slashblade.item.ItemSlashBlade.BREAK_ACTION_TIMEOUT;
 
 /**
  * @author til

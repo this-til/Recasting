@@ -5,9 +5,7 @@ import com.til.glowing_fire_glow.common.capability.synchronous.ISynchronousManag
 import com.til.glowing_fire_glow.common.main.IWorldComponent;
 import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
 import com.til.glowing_fire_glow.common.register.capability.capabilitys.SynchronousManageCapabilityRegister;
-import com.til.glowing_fire_glow.common.register.capability.synchronous.SynchronousCapabilityRegister;
 import com.til.recasting.Recasting;
-import com.til.recasting.client.capability.render.ChaosLayerCapabilityRenderRegister;
 import com.til.recasting.common.register.capability.ChaosLayerCapabilityRegister;
 import com.til.recasting.common.register.capability.ISlashBladeStateSupplementCapabilityRegister;
 import com.til.recasting.common.register.capability.SE_CapabilityRegister;

@@ -1,10 +1,7 @@
 package com.til.recasting.common.register.util;
 
-import com.til.glowing_fire_glow.GlowingFireGlow;
-import com.til.glowing_fire_glow.common.capability.back.IBackRunPack;
 import com.til.glowing_fire_glow.common.register.StaticVoluntarilyAssignment;
 import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
-import com.til.glowing_fire_glow.common.register.back_type.BackTypeRegister;
 import com.til.recasting.common.entity.SlashEffectEntity;
 import com.til.recasting.common.register.back_type.SlashEffectEntityBackTypeRegister;
 import mods.flammpfeil.slashblade.util.KnockBacks;

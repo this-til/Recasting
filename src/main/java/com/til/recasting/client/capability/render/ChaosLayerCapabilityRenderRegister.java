@@ -7,9 +7,7 @@ import com.til.glowing_fire_glow.common.register.VoluntarilyRegister;
 import com.til.recasting.client.register.render_type.LuminousRenderTypeRegister;
 import com.til.recasting.common.entity.SummondSwordEntity;
 import com.til.recasting.common.register.capability.ChaosLayerCapabilityRegister;
-import com.til.recasting.common.register.capability.StarBlinkSE_LayerCapabilityRegister;
 import com.til.recasting.common.register.slash_blade.instance.BaGuaBigSlashBladeRegister;
-import com.til.recasting.common.register.slash_blade.instance.special.TilSlashBladeRegister;
 import mods.flammpfeil.slashblade.client.renderer.model.BladeModelManager;
 import mods.flammpfeil.slashblade.client.renderer.model.obj.WavefrontObject;
 import mods.flammpfeil.slashblade.client.renderer.util.BladeRenderState;
@@ -21,8 +19,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3f;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-
-import java.awt.*;
 
 @OnlyIn(Dist.CLIENT)
 @VoluntarilyRegister

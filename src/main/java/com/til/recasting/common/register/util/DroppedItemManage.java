@@ -2,10 +2,8 @@ package com.til.recasting.common.register.util;
 
 import com.til.glowing_fire_glow.common.main.IWorldComponent;
 import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
-import com.til.glowing_fire_glow.common.register.VoluntarilyRegister;
 import com.til.recasting.common.data.SlashBladePack;
 import com.til.recasting.common.data.UseSlashBladeEntityPack;
-import com.til.recasting.common.entity.LightningEntity;
 import com.til.recasting.common.register.overall_config.DroppedItemOverallConfigRegister;
 import com.til.recasting.common.register.world.item.EnchantmentDepositItemRegister;
 import com.til.recasting.common.register.world.item.EntityDepositItemRegister;
@@ -15,17 +13,14 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 public class DroppedItemManage implements IWorldComponent {
 

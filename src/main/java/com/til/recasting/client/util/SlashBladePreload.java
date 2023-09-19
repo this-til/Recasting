@@ -3,17 +3,13 @@ package com.til.recasting.client.util;
 import com.til.glowing_fire_glow.common.main.IWorldComponent;
 import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
 import com.til.recasting.client.register.overall_config.PreloadOverallConfigRegister;
-import com.til.recasting.common.data.SlashBladePack;
 import com.til.recasting.common.register.slash_blade.AllSlashBladeRegister;
 import com.til.recasting.common.register.slash_blade.SlashBladeRegister;
 import mods.flammpfeil.slashblade.client.renderer.model.BladeModelManager;
-import mods.flammpfeil.slashblade.client.renderer.model.obj.WavefrontObject;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.eventbus.api.EventPriority;
-import net.minecraftforge.eventbus.api.IEventBus;
 
 @OnlyIn(Dist.CLIENT)
 public class SlashBladePreload implements IWorldComponent {

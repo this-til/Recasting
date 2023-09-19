@@ -23,7 +23,6 @@ import com.til.recasting.common.register.util.RayTraceUtil;
 import com.til.recasting.common.register.util.StringFinal;
 import mods.flammpfeil.slashblade.SlashBlade;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Vector3d;

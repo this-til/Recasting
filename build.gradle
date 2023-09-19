@@ -16,7 +16,7 @@ plugins {
 apply plugin: 'org.spongepowered.mixin'
 
 group = 'Recasting'
-version = '1.0.3'
+version = '1.0.4'
 
 java {
     archivesBaseName = 'Recasting'

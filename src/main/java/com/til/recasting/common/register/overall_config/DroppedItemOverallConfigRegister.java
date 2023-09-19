@@ -4,8 +4,6 @@ import com.til.glowing_fire_glow.common.config.ConfigField;
 import com.til.glowing_fire_glow.common.register.VoluntarilyRegister;
 import com.til.glowing_fire_glow.common.register.overall_config.OverallConfigRegister;
 
-import java.util.List;
-
 @VoluntarilyRegister
 public class DroppedItemOverallConfigRegister extends OverallConfigRegister {
 

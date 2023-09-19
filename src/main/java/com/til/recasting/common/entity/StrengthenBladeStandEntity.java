@@ -18,7 +18,6 @@ import com.til.recasting.common.register.slash_blade.se.SE_Register;
 import com.til.recasting.common.register.world.item.SA_DepositItemRegister;
 import com.til.recasting.common.register.world.item.SoulItemRegister;
 import mods.flammpfeil.slashblade.entity.BladeStandEntity;
-import mods.flammpfeil.slashblade.init.SBItems;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityType;

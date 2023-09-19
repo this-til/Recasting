@@ -4,7 +4,6 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.til.glowing_fire_glow.client.register.capability.render.CapabilityRenderRegister;
 import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
 import com.til.glowing_fire_glow.common.register.VoluntarilyRegister;
-import com.til.recasting.client.register.entity_render.LightningEntityRenderType;
 import com.til.recasting.client.register.render_type.LuminousRenderTypeRegister;
 import com.til.recasting.common.entity.SummondSwordEntity;
 import com.til.recasting.common.register.capability.StarBlinkSE_LayerCapabilityRegister;
@@ -16,13 +15,10 @@ import mods.flammpfeil.slashblade.client.renderer.util.MSAutoCloser;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3f;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-
-import java.awt.*;
 
 @OnlyIn(Dist.CLIENT)
 @VoluntarilyRegister

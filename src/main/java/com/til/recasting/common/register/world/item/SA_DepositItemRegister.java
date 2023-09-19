@@ -23,8 +23,8 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Comparator;
+import java.util.List;
 
 @StaticVoluntarilyAssignment
 @VoluntarilyRegister(priority = 10)

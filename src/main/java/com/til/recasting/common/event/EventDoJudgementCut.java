@@ -2,7 +2,6 @@ package com.til.recasting.common.event;
 
 import com.til.recasting.common.data.UseSlashBladeEntityPack;
 import com.til.recasting.common.entity.JudgementCutEntity;
-import mods.flammpfeil.slashblade.entity.EntityJudgementCut;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.vector.Vector3d;
 

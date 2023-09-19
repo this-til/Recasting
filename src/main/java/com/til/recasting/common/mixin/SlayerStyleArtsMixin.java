@@ -4,8 +4,6 @@ import mods.flammpfeil.slashblade.ability.SlayerStyleArts;
 import mods.flammpfeil.slashblade.event.InputCommandEvent;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.gen.Invoker;
 
 @Mixin(value = SlayerStyleArts.class, remap = false)
 public class SlayerStyleArtsMixin {

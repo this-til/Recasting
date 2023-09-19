@@ -1,7 +1,5 @@
 package com.til.recasting.common.mixin;
 
-import com.til.glowing_fire_glow.GlowingFireGlow;
-import com.til.recasting.common.register.back_type.SlashEffectEntityBackTypeRegister;
 import com.til.recasting.common.register.util.BackRunPackUtil;
 import mods.flammpfeil.slashblade.entity.EntitySlashEffect;
 import mods.flammpfeil.slashblade.util.AttackManager;

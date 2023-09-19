@@ -5,7 +5,6 @@ import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
 import com.til.glowing_fire_glow.common.register.VoluntarilyRegister;
 import com.til.glowing_fire_glow.common.util.ListUtil;
 import com.til.glowing_fire_glow.common.util.MapUtil;
-import com.til.recasting.common.capability.ISE;
 import com.til.recasting.common.data.IRecipeInItemPack;
 import com.til.recasting.common.data.IResultPack;
 import com.til.recasting.common.data.SlashBladePack;
