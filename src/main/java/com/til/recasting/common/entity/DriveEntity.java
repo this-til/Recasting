@@ -1,6 +1,11 @@
 package com.til.recasting.common.entity;
 
 import com.til.glowing_fire_glow.common.register.StaticVoluntarilyAssignment;
+import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
+import com.til.glowing_fire_glow.common.util.ListUtil;
+import com.til.recasting.common.register.attack_type.instance.DriveSwordAttackType;
+import com.til.recasting.common.register.util.AttackManager;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.network.datasync.DataParameter;
@@ -14,8 +19,13 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+import java.util.List;
+
 @StaticVoluntarilyAssignment
 public class DriveEntity extends SlashEffectEntity {
+
+    @VoluntarilyAssignment
+    protected static DriveSwordAttackType driveSwordAttackType;
 
     protected static final DataParameter<Float> SEEP = EntityDataManager.createKey(DriveEntity.class, DataSerializers.FLOAT);
 
@@ -70,6 +80,27 @@ public class DriveEntity extends SlashEffectEntity {
         double my = motionVec.y;
         double mz = motionVec.z;
         this.setPosition(this.getPosX() + mx, this.getPosY() + my, this.getPosZ() + mz);
+    }
+
+    @Override
+    protected void onAttack() {
+        boolean forceHit = true;
+        List<Entity> hits = AttackManager.areaAttack(
+                getShooter(),
+                this,
+                entity -> {
+                    backRunPack.runBack(attackBackTypeRegister, a -> a.attack(this, entity));
+                    affectEntity(entity, 1);
+                },
+                getSize() * 4, getDamage(),
+                forceHit,
+                false,
+                true,
+                alreadyHits,
+                ListUtil.of(driveSwordAttackType));
+        if (!isMultipleAttack()) {
+            alreadyHits.addAll(hits);
+        }
     }
 
     protected void hitBlock(RayTraceResult rayTraceResult) {

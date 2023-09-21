@@ -7,6 +7,7 @@ import com.til.recasting.common.entity.SlashEffectEntity;
 import com.til.recasting.common.event.EventDoAttack;
 import com.til.recasting.common.event.EventSlashBladeAreaAttack;
 import com.til.recasting.common.event.EventSlashBladeDoSlash;
+import com.til.recasting.common.register.attack_type.AttackType;
 import com.til.recasting.common.register.entity_type.SlashEffectEntityTypeRegister;
 import mods.flammpfeil.slashblade.ability.ArrowReflector;
 import mods.flammpfeil.slashblade.ability.TNTExtinguisher;
@@ -70,10 +71,30 @@ public class AttackManager {
         playerIn.world.addEntity(jc);
     }
 
-    public static List<Entity> areaAttack(LivingEntity playerIn, Entity slashEffectEntity, Consumer<LivingEntity> beforeHit, float range, float ratio, boolean forceHit, boolean resetHit, boolean mute, @Nullable List<Entity> exclude) {
+    public static List<Entity> areaAttack(
+            LivingEntity playerIn,
+            Entity slashEffectEntity,
+            Consumer<LivingEntity> beforeHit,
+            float range,
+            float ratio,
+            boolean forceHit,
+            boolean resetHit,
+            boolean mute,
+            @Nullable List<Entity> exclude,
+            List<AttackType> attackTypeList) {
         UseSlashBladeEntityPack useSlashBladeEntityPack = new UseSlashBladeEntityPack(playerIn);
         if (useSlashBladeEntityPack.isEffective(SlashBladePack.EffectiveType.canUse)) {
-            EventSlashBladeAreaAttack eventSlashBladeAreaAttack = new EventSlashBladeAreaAttack(useSlashBladeEntityPack, slashEffectEntity, beforeHit, range, ratio, forceHit, resetHit, mute, exclude);
+            EventSlashBladeAreaAttack eventSlashBladeAreaAttack = new EventSlashBladeAreaAttack(
+                    useSlashBladeEntityPack,
+                    slashEffectEntity,
+                    beforeHit,
+                    range,
+                    ratio,
+                    forceHit,
+                    resetHit,
+                    mute,
+                    exclude,
+                    attackTypeList);
             MinecraftForge.EVENT_BUS.post(eventSlashBladeAreaAttack);
             range = eventSlashBladeAreaAttack.range;
             beforeHit = eventSlashBladeAreaAttack.beforeHit;
@@ -82,6 +103,7 @@ public class AttackManager {
             resetHit = eventSlashBladeAreaAttack.resetHit;
             mute = eventSlashBladeAreaAttack.mute;
             exclude = eventSlashBladeAreaAttack.exclude;
+            attackTypeList = eventSlashBladeAreaAttack.attackTypeList;
         }
 
         List<Entity> founds;
@@ -94,7 +116,7 @@ public class AttackManager {
             if (entity instanceof LivingEntity) {
                 beforeHit.accept((LivingEntity) entity);
             }
-            doAttack(playerIn, entity, modifiedRatio, forceHit, resetHit, true);
+            doAttack(playerIn, entity, modifiedRatio, forceHit, resetHit, true, attackTypeList);
         }
         if (!mute) {
             playerIn.world.playSound(null, playerIn.getPosX(), playerIn.getPosY(), playerIn.getPosZ(), SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, SoundCategory.PLAYERS, 0.5F, 0.4F / (playerIn.getRNG().nextFloat() * 0.4F + 0.8F));
@@ -103,7 +125,7 @@ public class AttackManager {
     }
 
 
-    public static void doAttack(LivingEntity attacker, Entity target, float modifiedRatio, boolean forceHit, boolean resetHit, boolean postEvent) {
+    public static void doAttack(LivingEntity attacker, Entity target, float modifiedRatio, boolean forceHit, boolean resetHit, boolean postEvent, List<AttackType> attackTypeList) {
         if (modifiedRatio == 0) {
             return;
         }
@@ -112,7 +134,7 @@ public class AttackManager {
             return;
         }
         if (postEvent) {
-            EventDoAttack eventDoAttack = new EventDoAttack(useSlashBladeEntityPack, target, modifiedRatio, forceHit, resetHit);
+            EventDoAttack eventDoAttack = new EventDoAttack(useSlashBladeEntityPack, target, modifiedRatio, forceHit, resetHit, attackTypeList);
             MinecraftForge.EVENT_BUS.post(eventDoAttack);
             modifiedRatio = eventDoAttack.modifiedRatio;
             forceHit = eventDoAttack.forceHit;

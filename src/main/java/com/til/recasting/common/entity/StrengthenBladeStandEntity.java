@@ -174,7 +174,7 @@ public class StrengthenBladeStandEntity extends BladeStandEntity {
                     for (ISE.SE_Pack value : slashBladePack.getIse().getAllSE().values()) {
                         allLevel += value.getLevel();
                     }
-                    successRate = successRate / (allLevel + 1);
+                    successRate = successRate / (allLevel * 0.1f + 1);
                     if (RANDOM.nextDouble() < successRate) {
                         se_pack.setLevel(se_pack.getLevel() + 1);
                         setDisplayedItem(slashBladePack.getItemStack());

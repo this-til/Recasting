@@ -323,7 +323,8 @@ public abstract class UmbrellaSlashBladeRegister extends SlashBladeRegister {
                                             attack,
                                             true,
                                             true,
-                                            false
+                                            false,
+                                            ListUtil.of()
                                     );
                                     event.target.setMotion(Vector3d.ZERO);
                                 },

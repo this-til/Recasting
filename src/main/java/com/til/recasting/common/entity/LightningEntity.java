@@ -2,7 +2,9 @@ package com.til.recasting.common.entity;
 
 import com.til.glowing_fire_glow.common.register.StaticVoluntarilyAssignment;
 import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
+import com.til.glowing_fire_glow.common.util.ListUtil;
 import com.til.glowing_fire_glow.common.util.Pos;
+import com.til.recasting.common.register.attack_type.instance.LightningAttackType;
 import com.til.recasting.common.register.entity_predicate.DefaultEntityPredicateRegister;
 import com.til.recasting.common.register.util.AttackManager;
 import net.minecraft.entity.Entity;
@@ -22,6 +24,9 @@ public class LightningEntity extends StandardizationAttackEntity {
 
     @VoluntarilyAssignment
     protected static DefaultEntityPredicateRegister defaultEntityPredicateRegister;
+
+    @VoluntarilyAssignment
+    protected static LightningAttackType lightningAttackType;
 
     protected long boltVertex;
     protected boolean isInit;
@@ -55,7 +60,7 @@ public class LightningEntity extends StandardizationAttackEntity {
             float range = 3 * getSize();
             List<Entity> entityList = world.getEntitiesInAABBexcluding(this, new Pos(this).axisAlignedBB(range), entity -> defaultEntityPredicateRegister.canTarget(getShooter(), entity));
             for (Entity entity : entityList) {
-                AttackManager.doAttack(getShooter(), entity, getDamage(), true, true, true);
+                AttackManager.doAttack(getShooter(), entity, getDamage(), true, true, true, ListUtil.of(lightningAttackType));
                 if (entity instanceof  LivingEntity) {
                     affectEntity(((LivingEntity) entity), 1);   
                 }

@@ -50,6 +50,7 @@ public class SpecialActionKeyRegister extends KeyRegister {
     protected final static EnumSet<InputCommand> FOWERD_SPRINT_SNEAK = EnumSet.of(InputCommand.FORWARD, InputCommand.SNEAK);
     protected final static EnumSet<InputCommand> MOVE = EnumSet.of(InputCommand.FORWARD, InputCommand.BACK, InputCommand.LEFT, InputCommand.RIGHT);
 
+
     @Override
     public void pressedServer(NetworkEvent.Context context) {
         context.enqueueWork(() -> {
@@ -118,12 +119,13 @@ public class SpecialActionKeyRegister extends KeyRegister {
 
 
     protected void transmit(UseSlashBladeEntityPack useSlashBladeEntityPack, @Nullable Entity targetEntity) {
-        @Nullable Entity target;
-        if (targetEntity != null && targetEntity.getParts() != null && 0 < targetEntity.getParts().length) {
+        // 兼容网易版
+        @Nullable Entity target = targetEntity;
+        /*if (targetEntity != null && targetEntity.getParts() != null && 0 < targetEntity.getParts().length) {
             target = targetEntity.getParts()[0];
         } else {
             target = targetEntity;
-        }
+        }*/
         SummondSwordEntity summondSwordEntity = new SummondSwordEntity(
                 summondSwordEntityTypeRegister.getEntityType(),
                 useSlashBladeEntityPack.getEntity().world,

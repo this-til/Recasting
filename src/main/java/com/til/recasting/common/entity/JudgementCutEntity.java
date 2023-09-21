@@ -2,6 +2,8 @@ package com.til.recasting.common.entity;
 
 import com.til.glowing_fire_glow.common.register.StaticVoluntarilyAssignment;
 import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
+import com.til.glowing_fire_glow.common.util.ListUtil;
+import com.til.recasting.common.register.attack_type.instance.JudgementCutAttackType;
 import com.til.recasting.common.register.back_type.JudgementCutBackTypeRegister;
 import com.til.recasting.common.register.util.AttackManager;
 import com.til.recasting.common.register.util.HitAssessment;
@@ -37,6 +39,9 @@ public class JudgementCutEntity extends StandardizationAttackEntity {
 
     @VoluntarilyAssignment
     protected static JudgementCutBackTypeRegister.JudgementCutDeathBackTypeRegister judgementCutDeathBackTypeRegister;
+
+    @VoluntarilyAssignment
+    protected static JudgementCutAttackType judgementCutAttackType;
 
 
     protected static final DataParameter<Integer> ATTACK_INTERVAL = EntityDataManager.createKey(JudgementCutEntity.class, DataSerializers.VARINT);
@@ -127,7 +132,8 @@ public class JudgementCutEntity extends StandardizationAttackEntity {
                         false,
                         true,
                         true,
-                        excludeEntity);
+                        excludeEntity,
+                        ListUtil.of(judgementCutAttackType));
             }
 
            /* final int count = 3;

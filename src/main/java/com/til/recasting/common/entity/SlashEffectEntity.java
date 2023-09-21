@@ -3,6 +3,8 @@ package com.til.recasting.common.entity;
 import com.google.common.collect.Lists;
 import com.til.glowing_fire_glow.common.register.StaticVoluntarilyAssignment;
 import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
+import com.til.glowing_fire_glow.common.util.ListUtil;
+import com.til.recasting.common.register.attack_type.instance.SlashBladeAttackType;
 import com.til.recasting.common.register.back_type.SlashEffectEntityBackTypeRegister;
 import com.til.recasting.common.register.overall_config.SlashEffectEntityOverallConfigRegister;
 import com.til.recasting.common.register.util.AttackManager;
@@ -43,6 +45,9 @@ public class SlashEffectEntity extends StandardizationAttackEntity {
 
     @VoluntarilyAssignment
     protected static SlashEffectEntityOverallConfigRegister slashEffectEntityOverallConfigRegister;
+
+    @VoluntarilyAssignment
+    protected static SlashBladeAttackType slashBladeAttackType;
 
     static private final ResourceLocation DEFAULT_MODEL_NAME = new ResourceLocation(SlashBlade.modid, "model/util/slash.obj");
     static private final ResourceLocation DEFAULT_TEXTURE_NAME = new ResourceLocation(SlashBlade.modid, "model/util/slash.png");
@@ -170,23 +175,28 @@ public class SlashEffectEntity extends StandardizationAttackEntity {
 
         if (!this.world.isRemote) {
             if (this.ticksExisted % attackInterval() == 0) {
-                boolean forceHit = true;
-                List<Entity> hits = AttackManager.areaAttack(
-                        getShooter(),
-                        this,
-                        entity -> {
-                            backRunPack.runBack(attackBackTypeRegister, a -> a.attack(this, entity));
-                            affectEntity(entity, 1);
-                        },
-                        getSize() * 4, getDamage(),
-                        forceHit,
-                        false,
-                        true,
-                        alreadyHits);
-                if (!isMultipleAttack()) {
-                    alreadyHits.addAll(hits);
-                }
+                onAttack();
             }
+        }
+    }
+
+    protected void onAttack() {
+        boolean forceHit = true;
+        List<Entity> hits = AttackManager.areaAttack(
+                getShooter(),
+                this,
+                entity -> {
+                    backRunPack.runBack(attackBackTypeRegister, a -> a.attack(this, entity));
+                    affectEntity(entity, 1);
+                },
+                getSize() * 4, getDamage(),
+                forceHit,
+                false,
+                true,
+                alreadyHits,
+                ListUtil.of(slashBladeAttackType));
+        if (!isMultipleAttack()) {
+            alreadyHits.addAll(hits);
         }
     }
 

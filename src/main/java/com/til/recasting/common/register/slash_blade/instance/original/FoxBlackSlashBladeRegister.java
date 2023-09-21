@@ -95,7 +95,7 @@ public class FoxBlackSlashBladeRegister extends SlashBladeRegister {
         }
 
         @VoluntarilyRegister
-        public static class FoxBlackSlashBladeRecipeRegister extends SlashBladeRecipeSerializerRegister.SlashBladeRecipeRegister {
+        public static class FoxBlackLambdaSlashBladeRecipeRegister extends SlashBladeRecipeSerializerRegister.SlashBladeRecipeRegister {
             @VoluntarilyAssignment
             protected FoxBlackSlashBladeRegister foxBlackSlashBladeRegister;
             @VoluntarilyAssignment

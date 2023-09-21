@@ -2,7 +2,9 @@ package com.til.recasting.common.entity;
 
 import com.til.glowing_fire_glow.common.register.StaticVoluntarilyAssignment;
 import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
+import com.til.glowing_fire_glow.common.util.ListUtil;
 import com.til.recasting.Recasting;
+import com.til.recasting.common.register.attack_type.instance.SummondSwordAttackType;
 import com.til.recasting.common.register.back_type.SummondSwordBackTypeRegister;
 import com.til.recasting.common.register.entity_predicate.DefaultEntityPredicateRegister;
 import com.til.recasting.common.register.util.AttackManager;
@@ -54,6 +56,9 @@ public class SummondSwordEntity extends StandardizationAttackEntity {
 
     @VoluntarilyAssignment
     public static SummondSwordBackTypeRegister.SummondSwordAttackEndBackTypeRegister attackEndBackTypeRegister;
+
+    @VoluntarilyAssignment
+    public static SummondSwordAttackType summondSwordAttackType;
 
 
     public static final ResourceLocation DEFAULT_MODEL_NAME = new ResourceLocation(SlashBlade.modid, "model/util/ss.obj");
@@ -529,7 +534,7 @@ public class SummondSwordEntity extends StandardizationAttackEntity {
     }
 
     public void doAttackEntity(Entity target, boolean isEnd) {
-        AttackManager.doAttack(getShooter(), target, getDamage(), true, true, true);
+        AttackManager.doAttack(getShooter(), target, getDamage(), true, true, true, ListUtil.of(summondSwordAttackType));
         target.hurtResistantTime = 0;
         target.setMotion(0, 0.1, 0);
         if (isEnd) {

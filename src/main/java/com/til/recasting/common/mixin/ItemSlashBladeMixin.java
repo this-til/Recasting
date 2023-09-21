@@ -245,13 +245,30 @@ public class ItemSlashBladeMixin {
             }
             slashBladeRegisterList.add(slashBladeRegister);
         }
-        slashBladeRegisterList = slashBladeRegisterList.stream().sorted(Comparator.comparing(RegisterBasics::getName)).collect(Collectors.toList());
+        slashBladeRegisterList = slashBladeRegisterList
+                .stream()
+                .sorted(Comparator.comparing(r -> r.getName().getNamespace()))
+                .sorted((a, b) -> {
+                    if (a.getName().getNamespace().equals(b.getName().getNamespace())) {
+                        return a.getName().getPath().compareTo(b.getName().getPath());
+                    }
+                    return 0;
+                })
+                .collect(Collectors.toList());
         for (SlashBladeRegister slashBladeRegister : slashBladeRegisterList) {
             items.add(slashBladeRegister.getSlashBladePack().getItemStack());
         }
 
         List<SlashBladeRecipeSerializerRegister.SlashBladeRecipeRegister> slashBladeRecipeRegisterList = new ArrayList<>(GlowingFireGlow.getInstance().getWorldComponent(SlashBladeRecipeSerializerRegister.AllSlashBladeRecipeRegister.class).forAll());
-        slashBladeRecipeRegisterList = slashBladeRecipeRegisterList.stream().sorted(Comparator.comparing(RegisterBasics::getName)).collect(Collectors.toList());
+        slashBladeRecipeRegisterList = slashBladeRecipeRegisterList.stream()
+                .sorted(Comparator.comparing(RegisterBasics::getName))
+                .sorted((a, b) -> {
+                    if (a.getName().getNamespace().equals(b.getName().getNamespace())) {
+                        return a.getName().getPath().compareTo(b.getName().getPath());
+                    }
+                    return 0;
+                })
+                .collect(Collectors.toList());
         for (SlashBladeRecipeSerializerRegister.SlashBladeRecipeRegister slashBladeRecipeRegister : slashBladeRecipeRegisterList) {
             for (Map.Entry<String, IRecipeInItemPack> stringIRecipeInItemPackEntry : slashBladeRecipeRegister.getSlashBladeRecipeRecipePack().key.entrySet()) {
                 if (stringIRecipeInItemPackEntry.getValue() instanceof IRecipeInItemPack.OfSlashBlade) {
@@ -285,7 +302,7 @@ public class ItemSlashBladeMixin {
     }
 
 
-/*    *//**
+    /*    *//**
      * @author
      * @reason
      *//*

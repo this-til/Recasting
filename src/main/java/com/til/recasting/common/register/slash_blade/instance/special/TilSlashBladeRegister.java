@@ -185,7 +185,8 @@ public class TilSlashBladeRegister extends SlashBladeRegister {
                                         attack,
                                         true,
                                         true,
-                                        true
+                                        true,
+                                        ListUtil.of()
                                 );
                                 event.target.setMotion(Vector3d.ZERO);
                             }), 0, 0));
