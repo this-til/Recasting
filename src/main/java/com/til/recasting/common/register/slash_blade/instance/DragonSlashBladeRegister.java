@@ -124,8 +124,8 @@ public class DragonSlashBladeRegister extends SlashBladeRegister {
         @Override
         protected void init() {
             super.init();
-            model = new ResourceLocation(getName().getNamespace(), String.join("/", SlashBlade.modid, dragonSlashBladeRegister.getName().getPath(), "model.obj"));
-            texture = new ResourceLocation(getName().getNamespace(), String.join("/", SlashBlade.modid, dragonSlashBladeRegister.getName().getPath(), "texture.png"));
+            //model = new ResourceLocation(getName().getNamespace(), String.join("/", SlashBlade.modid, dragonSlashBladeRegister.getName().getPath(), "model.obj"));
+            //texture = new ResourceLocation(getName().getNamespace(), String.join("/", SlashBlade.modid, dragonSlashBladeRegister.getName().getPath(), "texture.png"));
         }
 
         @Override
