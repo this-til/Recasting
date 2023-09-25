@@ -33,7 +33,17 @@ import java.util.function.Consumer;
 public class AttackManager {
 
 
-    public static void doSlash(LivingEntity playerIn, float roll, int colorCode, Vector3d centerOffset, boolean mute, boolean thump, float damage, float basicsRange, @Nullable Consumer<SlashEffectEntity> advanceOperation) {
+    public static void doSlash(
+            LivingEntity playerIn,
+            float roll,
+            int colorCode,
+            Vector3d centerOffset,
+            boolean mute,
+            boolean thump,
+            float damage,
+            float basicsRange,
+            @Nullable Consumer<SlashEffectEntity> advanceOperation
+    ) {
         if (playerIn.world.isRemote) {
             return;
         }

@@ -11,6 +11,7 @@ import com.til.recasting.Recasting;
 import com.til.recasting.common.capability.CapabilityEvent;
 import com.til.recasting.common.capability.IItemSE;
 import com.til.recasting.common.register.capability.ItemSE_CapabilityRegister;
+import com.til.recasting.common.register.overall_config.Up_SE_OverallConfigRegister;
 import com.til.recasting.common.register.slash_blade.se.AllSE_Register;
 import com.til.recasting.common.register.slash_blade.se.SE_Register;
 import com.til.recasting.common.register.util.StringFinal;
@@ -43,6 +44,9 @@ public class SE_DepositItemRegister extends ItemRegister {
 
     @VoluntarilyAssignment
     protected static AllSE_Register allSE_register;
+
+    @VoluntarilyAssignment
+    protected static Up_SE_OverallConfigRegister up_se_overallConfigRegister;
 
 
     @ConfigField
@@ -121,7 +125,7 @@ public class SE_DepositItemRegister extends ItemRegister {
                                 new TranslationTextComponent(StringUtil.formatLang(Recasting.MOD_ID, "basics_success_rate")),
                                 new StringTextComponent(fmt.format(pack.getBasicsSuccessRate()))));
                         //tooltip.add(new TranslationTextComponent(pack.isProtect() ? StringUtil.formatLang(Recasting.MOD_ID, "protect.true") : StringUtil.formatLang(Recasting.MOD_ID, "protect.false")));
-                        tooltip.add(new TranslationTextComponent("recasting.introduce.se_up"));
+                        tooltip.add(new TranslationTextComponent("recasting.introduce.se_up", fmt.format(up_se_overallConfigRegister.getProbabilityFactor())));
                         tooltip.add(new TranslationTextComponent("recasting.introduce.se_up_2"));
                     }
             );

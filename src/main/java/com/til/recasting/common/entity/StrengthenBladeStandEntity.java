@@ -12,6 +12,7 @@ import com.til.recasting.common.register.capability.ItemSA_CapabilityRegister;
 import com.til.recasting.common.register.capability.ItemSE_CapabilityRegister;
 import com.til.recasting.common.register.entity_type.StrengthenBladeStandEntityTypeRegister;
 import com.til.recasting.common.register.overall_config.Copy_SA_OverallConfigRegister;
+import com.til.recasting.common.register.overall_config.Up_SE_OverallConfigRegister;
 import com.til.recasting.common.register.slash_blade.sa.AllSA_Register;
 import com.til.recasting.common.register.slash_blade.sa.SA_Register;
 import com.til.recasting.common.register.slash_blade.se.SE_Register;
@@ -67,6 +68,9 @@ public class StrengthenBladeStandEntity extends BladeStandEntity {
 
     @VoluntarilyAssignment
     protected static Copy_SA_OverallConfigRegister copy_sa_overallConfigRegister;
+
+    @VoluntarilyAssignment
+    protected static Up_SE_OverallConfigRegister up_se_overallConfigRegister;
 
     protected final static Random RANDOM = new Random();
 
@@ -174,7 +178,7 @@ public class StrengthenBladeStandEntity extends BladeStandEntity {
                     for (ISE.SE_Pack value : slashBladePack.getIse().getAllSE().values()) {
                         allLevel += value.getLevel();
                     }
-                    successRate = successRate / (allLevel * 0.1f + 1);
+                    successRate = successRate / (allLevel * up_se_overallConfigRegister.getProbabilityFactor() + 1);
                     if (RANDOM.nextDouble() < successRate) {
                         se_pack.setLevel(se_pack.getLevel() + 1);
                         setDisplayedItem(slashBladePack.getItemStack());

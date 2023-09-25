@@ -69,7 +69,25 @@ public class UseSlashBladeEntityPack {
      * 获取伤害比例
      */
     public double getDamageRatio(double basics) {
-        return basics * (1 + getRank().level / (7f / attackOverallConfigRegister.getRankMaxAttackBonus())) * (1 + getSlashBladePack().getSlashBladeState().getRefine() * attackOverallConfigRegister.getRefineAttackBonus());
+
+        float add = 1;
+        add += getRank().level / (7f / attackOverallConfigRegister.getRankMaxAttackBonus());
+        add += getSlashBladePack().getSlashBladeState().getRefine() * attackOverallConfigRegister.getRefineAttackBonus();
+
+        if (getSlashBladePack().getSlashBladeState().getKillCount() > 1000) {
+            add += attackOverallConfigRegister.getThousandKillReward();
+        }
+        if (getSlashBladePack().getSlashBladeState().getKillCount() > 10000) {
+            add += attackOverallConfigRegister.getTenThousandKillReward();
+        }
+        if (getSlashBladePack().getSlashBladeState().getRefine() > 1000) {
+            add += attackOverallConfigRegister.getThousandRefineReward();
+        }
+        if (getSlashBladePack().getSlashBladeState().getRefine() > 10000) {
+            add += attackOverallConfigRegister.getTenThousandRefineReward();
+        }
+
+        return basics * add;
     }
 
     public Vector3d getAttackPos() {

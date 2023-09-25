@@ -103,6 +103,9 @@
   "recasting.xing_kong_lambda_slash_blade_register": "^星空的刀",
   "recasting.xing_kong_lambda_slash_blade_sa": "^星空龙吟",
   "recasting.xing_kong_lambda_slash_blade_sa.introduce": "召唤一个水龙头，持续发射幻影剑进行攻击",
+  "recasting.physics_sword_slash_blade_register": "物理学圣剑",
+  "recasting.dharma_stick_slash_blade_register": "法棍",
+  "recasting.hoe_slash_blade_register": "锄头",
   "item.slashblade.ex.fox.white.lambda": "^狐月刀「白狐」",
   "item.slashblade.ex.fox.black.lambda": "^狐月刀「黑狐」",
   "recasting.default_sa": "次元斩",
@@ -188,7 +191,7 @@
   "recasting.introduce.blade_stand_6": "当有刀时并且手上物品为se结晶时将进行se升级操作",
   "recasting.introduce.blade_stand_7": "当有刀时并且手上物品为附魔结晶时将进行附魔升级操作",
   "recasting.introduce.sa_copy": "复制sa时需要刀的锻造大于{0}，杀敌数大于{1}，同时只有{2}的概率成功，但是无论成功与否都将消耗{3}的锻造数",
-  "recasting.introduce.se_up": "升级se时成功率根据基础成功率除已经拥有的所有se等级只和",
+  "recasting.introduce.se_up": "升级se时成功率根据基础成功率除已经拥有的所有se等级子合的{0}",
   "recasting.introduce.se_up_2": "在铁砧内合并两个sa结晶能增加成功率",
   "recasting.introduce.enchantment_up": "在铁砧内合并两个结晶能增加成功率",
   "recasting.introduce.biome": "蹲下加右键标记当前的生物群系"
