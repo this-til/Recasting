@@ -36,6 +36,9 @@ public class ImpactSE extends SE_Register {
     @ConfigField
     protected NumberPack attack;
 
+    @ConfigField
+    protected int interval;
+
     @VoluntarilyAssignment
     protected SummondSwordEntityTypeRegister summondSwordEntityTypeRegister;
 
@@ -51,7 +54,9 @@ public class ImpactSE extends SE_Register {
         if (event.pack.getEntity().getRNG().nextDouble() >= probability.of(se_pack.getLevel())) {
             return;
         }
-
+        if (!se_pack.tryTime(event.pack.getEntity().world.getGameTime(), interval)) {
+            return;
+        }
         event.pack.getTimeRun().addTimerCell(new TimerCell(
                 () -> {
                     if (!event.target.isAlive()) {
@@ -61,10 +66,15 @@ public class ImpactSE extends SE_Register {
                     event.pack.getSlashBladePack().getSlashBladeStateSupplement().decorate(summondSwordEntity);
                     Vector3d pos = RayTraceUtil.getPosition(event.target);
                     summondSwordEntity.lookAt(pos, false);
-                    summondSwordEntity.setPosition(pos.getX(), pos.getY(), pos.getZ());
+                    summondSwordEntity.setPositionAndRotation(
+                            pos.getX(),
+                            pos.getY(),
+                            pos.getZ(),
+                            event.pack.getEntity().getRNG().nextFloat() * 360,
+                            event.pack.getEntity().getRNG().nextFloat() * 360);
                     summondSwordEntity.setColor(event.pack.getSlashBladePack().getSlashBladeState().getColorCode());
                     summondSwordEntity.setDamage((float) attack.of(se_pack.getLevel()));
-                    summondSwordEntity.setMaxDelay(100);
+                    summondSwordEntity.setMaxDelay(40);
                     summondSwordEntity.doForceHitEntity(event.target);
                     event.pack.getEntity().world.addEntity(summondSwordEntity);
                 }, 0, 0
@@ -77,6 +87,7 @@ public class ImpactSE extends SE_Register {
         super.defaultConfig();
         probability = new NumberPack(0, 0.07);
         attack = new NumberPack(0, 0.1);
+        interval = 2;
     }
 
     @VoluntarilyRegister
