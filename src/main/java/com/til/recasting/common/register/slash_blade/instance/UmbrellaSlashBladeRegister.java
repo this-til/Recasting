@@ -344,9 +344,9 @@ public abstract class UmbrellaSlashBladeRegister extends SlashBladeRegister {
         @Override
         public void defaultConfig() {
             super.defaultConfig();
-            cool = 5;
-            attack = 0.2f;
-            attackNumber = 4;
+            cool = 2;
+            attack = 0.1f;
+            attackNumber = 12;
             attackInterval = 20;
         }
     }
