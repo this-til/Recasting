@@ -122,6 +122,7 @@ public class SpecialRecipeSerializerRegister extends RecipeSerializerRegister<Sp
             super(idIn, groupIn, recipeWidthIn, recipeHeightIn, null, specialPack.result.getOutItemStack());
             this.serializer = serializer;
             this.recipeItems = recipeItemsIn;
+            this.specialPack = specialPack;
         }
 
         @Override

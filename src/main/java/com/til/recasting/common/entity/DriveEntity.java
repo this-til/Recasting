@@ -41,6 +41,7 @@ public class DriveEntity extends SlashEffectEntity {
             updateMotion(1);
             lookAt(getMotion(), true, true);
         }
+        setAttackInterval(1);
     }
 
     @Override
@@ -112,11 +113,6 @@ public class DriveEntity extends SlashEffectEntity {
     @Override
     protected boolean useBlockParticle() {
         return false;
-    }
-
-    @Override
-    protected int attackInterval() {
-        return 1;
     }
 
     @Override

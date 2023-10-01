@@ -10,6 +10,7 @@ import net.minecraft.entity.boss.dragon.EnderDragonEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,7 +22,7 @@ public class HitAssessment {
     @VoluntarilyAssignment
     protected static DefaultEntityPredicateRegister defaultEntityPredicateRegister;
 
-    public static List<Entity> getTargettableEntitiesWithinAABB(World world, LivingEntity shooter, Entity owner, double reach) {
+    public static List<Entity> getTargettableEntitiesWithinAABB(World world, @Nullable LivingEntity shooter, Entity owner, double reach) {
         AxisAlignedBB aabb = owner.getBoundingBox().grow(reach);
 
         List<Entity> list1 = Lists.newArrayList();

@@ -113,10 +113,13 @@ public class PlanetEntity extends DriveEntity {
         if (world.isRemote) {
             return;
         }
-        int es = (int) getSize() * 4 * 2;
-        for (int i = 0; i < es; i++) {
-            Vector3d pos = getPositionVec().add(RandomUtil.nextVector3dInCircles(getShooter().getRNG(), getSize() * 4 - 2));
-            ((ServerWorld) this.world).spawnParticle(ParticleTypes.EXPLOSION_EMITTER, pos.getX(), pos.getY(), pos.getZ(), 1, 0, 0, 0, 0);
+        Entity shooter = getShooter();
+        if (shooter != null) {
+            int es = (int) getSize() * 4 * 2;
+            for (int i = 0; i < es; i++) {
+                Vector3d pos = getPositionVec().add(RandomUtil.nextVector3dInCircles(getShooter().getRNG(), getSize() * 4 - 2));
+                ((ServerWorld) this.world).spawnParticle(ParticleTypes.EXPLOSION_EMITTER, pos.getX(), pos.getY(), pos.getZ(), 1, 0, 0, 0, 0);
+            }
         }
         this.world.playSound(null, getPosX(), getPosY(), getPosZ(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 4.0F, 2 * (1.0F + (this.world.rand.nextFloat() - this.world.rand.nextFloat()) * 0.2F) * 0.7F);
         List<Entity> founds = world.getEntitiesInAABBexcluding(this, new Pos(this).axisAlignedBB(getSize() * 4), entity -> defaultEntityPredicateRegister.canTarget(getShooter(), entity));

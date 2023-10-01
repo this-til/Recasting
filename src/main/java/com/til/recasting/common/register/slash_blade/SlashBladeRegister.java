@@ -7,6 +7,7 @@ import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
 import com.til.glowing_fire_glow.common.util.Delayed;
 import com.til.glowing_fire_glow.common.util.StringUtil;
 import com.til.recasting.common.data.SlashBladePack;
+import com.til.recasting.common.register.util.StringFinal;
 import mods.flammpfeil.slashblade.SlashBlade;
 import mods.flammpfeil.slashblade.init.SBItems;
 import net.minecraft.item.ItemStack;
@@ -47,8 +48,8 @@ public abstract class SlashBladeRegister extends RegisterBasics {
 
     @Override
     protected void init() {
-        model = new ResourceLocation(getName().getNamespace(), String.join("/", SlashBlade.modid, getName().getPath(), "model.obj"));
-        texture = new ResourceLocation(getName().getNamespace(), String.join("/", SlashBlade.modid, getName().getPath(), "texture.png"));
+        model = new ResourceLocation(getName().getNamespace(), String.join("/", SlashBlade.modid, getName().getPath(), StringFinal.MODEL));
+        texture = new ResourceLocation(getName().getNamespace(), String.join("/", SlashBlade.modid, getName().getPath(), StringFinal.TEXTURE));
     }
 
     protected void defaultItemStackConfig(ItemStack itemStack) {

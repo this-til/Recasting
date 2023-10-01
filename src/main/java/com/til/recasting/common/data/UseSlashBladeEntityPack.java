@@ -17,6 +17,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.math.vector.Vector3d;
 
+import javax.annotation.Nullable;
+
 /**
  * @author til
  */
@@ -43,8 +45,12 @@ public class UseSlashBladeEntityPack {
 
     protected boolean basicEffective;
 
-    public UseSlashBladeEntityPack(LivingEntity entity) {
+    public UseSlashBladeEntityPack(@Nullable LivingEntity entity) {
         this.entity = entity;
+        if (entity == null) {
+            basicEffective = false;
+            return;
+        }
         try {
             concentrationRank = entity.getCapability(ConcentrationRankCapabilityProvider.RANK_POINT).orElse(null);
             iInputState = entity.getCapability(InputStateCapabilityProvider.INPUT_STATE).orElse(null);

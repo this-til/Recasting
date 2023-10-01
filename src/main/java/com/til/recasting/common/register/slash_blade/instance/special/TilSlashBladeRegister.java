@@ -4,6 +4,7 @@ import com.til.glowing_fire_glow.common.capability.time_run.TimerCell;
 import com.til.glowing_fire_glow.common.config.ConfigField;
 import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
 import com.til.glowing_fire_glow.common.register.VoluntarilyRegister;
+import com.til.glowing_fire_glow.common.util.GlowingFireGlowColor;
 import com.til.glowing_fire_glow.common.util.ListUtil;
 import com.til.glowing_fire_glow.common.util.MapUtil;
 import com.til.glowing_fire_glow.common.util.Pos;
@@ -17,6 +18,7 @@ import com.til.recasting.common.register.back_type.JudgementCutBackTypeRegister;
 import com.til.recasting.common.register.capability.StarBlinkSE_LayerCapabilityRegister;
 import com.til.recasting.common.register.entity_predicate.DefaultEntityPredicateRegister;
 import com.til.recasting.common.register.entity_type.StellarRotationEntityTypeRegister;
+import com.til.recasting.common.register.particle.AttackParticleRegister;
 import com.til.recasting.common.register.recipe.SlashBladeRecipeSerializerRegister;
 import com.til.recasting.common.register.slash_blade.SlashBladeRegister;
 import com.til.recasting.common.register.slash_blade.instance.VoidSwordSlashBladeRegister;
@@ -24,6 +26,7 @@ import com.til.recasting.common.register.slash_blade.sa.SA_Register;
 import com.til.recasting.common.register.slash_blade.se.SE_Register;
 import com.til.recasting.common.register.slash_blade.se.instance.DivinitySE;
 import com.til.recasting.common.register.util.AttackManager;
+import com.til.recasting.common.register.util.StringFinal;
 import mods.flammpfeil.slashblade.SlashBlade;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
@@ -47,10 +50,13 @@ public class TilSlashBladeRegister extends SlashBladeRegister {
 
     protected ResourceLocation seModel;
 
+    protected ResourceLocation seAttackParticle;
+
     @Override
     protected void init() {
         super.init();
-        seModel = new ResourceLocation(getName().getNamespace(), String.join("/", "special", getName().getPath(), "model.obj"));
+        seModel = new ResourceLocation(getName().getNamespace(), String.join("/", StringFinal.SPECIAL, getName().getPath(), StringFinal.MODEL));
+        seAttackParticle = new ResourceLocation(getName().getNamespace(), String.join("/", StringFinal.PARTICLE, getName().getPath(), StringFinal.TEXTURE));
     }
 
     @Override
@@ -152,6 +158,12 @@ public class TilSlashBladeRegister extends SlashBladeRegister {
         @VoluntarilyAssignment
         protected StarBlinkSE_LayerCapabilityRegister starBlinkSELayerCapabilityRegister;
 
+        @VoluntarilyAssignment
+        protected TilSlashBladeRegister tilSlashBladeRegister;
+
+        @VoluntarilyAssignment
+        protected AttackParticleRegister attackParticleRegister;
+
         @ConfigField
         protected int cool;
 
@@ -179,6 +191,12 @@ public class TilSlashBladeRegister extends SlashBladeRegister {
                                     return;
                                 }
                                 starBlinkSELayer.reset();
+                                attackParticleRegister.add(
+                                        event.pack.getEntity().getEntityWorld(),
+                                        new GlowingFireGlowColor(event.pack.getSlashBladePack().getSlashBladeState().getColorCode()),
+                                        1,
+                                        tilSlashBladeRegister.seAttackParticle,
+                                        new Pos(event.target));
                                 AttackManager.doAttack(
                                         event.pack.getEntity(),
                                         event.target,

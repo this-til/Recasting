@@ -55,6 +55,7 @@ public class SlashEffectEntity extends StandardizationAttackEntity {
     protected static final DataParameter<Float> ROTATION_OFFSET = EntityDataManager.createKey(SlashEffectEntity.class, DataSerializers.FLOAT);
     protected static final DataParameter<Boolean> MULTIPLE_ATTACK = EntityDataManager.createKey(SlashEffectEntity.class, DataSerializers.BOOLEAN);
     protected static final DataParameter<Boolean> THUMP = EntityDataManager.createKey(SlashEffectEntity.class, DataSerializers.BOOLEAN);
+    protected static final DataParameter<Integer> ATTACK_INTERVAL = EntityDataManager.createKey(SlashEffectEntity.class, DataSerializers.VARINT);
 
 
     protected final List<Entity> alreadyHits = Lists.newArrayList();
@@ -85,6 +86,7 @@ public class SlashEffectEntity extends StandardizationAttackEntity {
         this.dataManager.register(ROTATION_OFFSET, 0.0f);
         this.dataManager.register(MULTIPLE_ATTACK, false);
         this.dataManager.register(THUMP, false);
+        this.dataManager.register(ATTACK_INTERVAL, 2);
     }
 
     public void lookAt(Vector3d target, boolean isDistance) {
@@ -153,6 +155,10 @@ public class SlashEffectEntity extends StandardizationAttackEntity {
 
         }
 
+        if (getShooter() == null) {
+            return;
+        }
+
         if (useBlockParticle() && !getShooter().isWet() && ticksExisted < (getMaxLifeTime() * 0.75)) {
             Vector3d start = this.getPositionVec();
             Vector4f normal = new Vector4f(1, 0, 0, 1);
@@ -174,7 +180,7 @@ public class SlashEffectEntity extends StandardizationAttackEntity {
         }
 
         if (!this.world.isRemote) {
-            if (this.ticksExisted % attackInterval() == 0) {
+            if (this.ticksExisted % getAttackInterval() == 0) {
                 onAttack();
             }
         }
@@ -205,8 +211,12 @@ public class SlashEffectEntity extends StandardizationAttackEntity {
         return slashEffectEntityOverallConfigRegister.isUseBlockParticle();
     }
 
-    protected int attackInterval() {
-        return 2;
+    public int getAttackInterval() {
+        return this.getDataManager().get(ATTACK_INTERVAL);
+    }
+
+    public void setAttackInterval(int attackInterval) {
+        this.getDataManager().set(ATTACK_INTERVAL, attackInterval);
     }
 
     public float getRotationOffset() {

@@ -25,7 +25,10 @@ public abstract class LikeOriginalEntityPredicateRegister extends EntityPredicat
     protected boolean isLivingEntity;
 
     @Override
-    public boolean canTarget(@Nullable Entity attacker, Entity target) {
+    public boolean canTarget(@Nullable Entity attacker, @Nullable Entity target) {
+        if (target == null) {
+            return false;
+        }
         if (attacker == target) {
             return false;
         }

@@ -5,6 +5,7 @@ public class StringFinal {
     public static final String SUMMOND_SWORD = "summond_sword";
     public static final String JUDGEMENT_CUT = "judgement_cut";
     public static final String SPECIAL = "special";
+    public static final String PARTICLE = "particle";
 
     public static final String MODEL = "model.obj";
     public static final String MODEL_LAMBDA = "model_lambda.obj";

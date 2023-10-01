@@ -139,6 +139,7 @@ public abstract class StandardizationAttackEntity extends Entity {
         this.effectInstanceList = effectInstanceList;
     }
 
+    @Nullable
     public LivingEntity getShooter() {
         if (this.shooter == null) {
             int id = this.dataManager.get(SHOOTING_ENTITY_ID);
