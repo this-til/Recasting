@@ -39,14 +39,14 @@ public class AttackSmallParticleClientRegister extends ParticleClientRegister<At
     protected Random random = new Random();
 
     @Override
-    public void run(ParticleContext particleContext, ClientWorld world, Pos start, @Nullable Pos end, GlowingFireGlowColor color, double density, @Nullable ResourceLocation resourceLocation) {
+    public void run(ParticleContext particleContext, ClientWorld world, Pos start, @Nullable Pos end, GlowingFireGlowColor[] color, double density, @Nullable ResourceLocation resourceLocation) {
         for (int i = 0; i < number * density; i++) {
             Vector3d move = RandomUtil.nextVector3dOnCircles(random, 1).scale(this.move.of(random.nextFloat()));//RandomUtil.nextVector3d(random).scale(this.move);
             particleContext.addParticle(new DefaultParticle(world)
                     .setPos(start.x, start.y, start.z)
                     .setMove(move.x, move.y, move.z)
                     .setLifeTime((int) life.of(random.nextFloat()))
-                    .setColor(color)
+                    .setColor(color.length > 0 ? color[0] : GlowingFireGlowColor.DEFAULT)
                     .setSize((float) size.of(random.nextFloat()))
                     .setSizeChangeType(DefaultParticle.SizeChangeType.SQUARE_SIN)
                     .setParticleCollide(false)

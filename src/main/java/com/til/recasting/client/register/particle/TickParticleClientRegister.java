@@ -33,11 +33,11 @@ public class TickParticleClientRegister extends ParticleClientRegister<TickParti
     protected Random random = new Random();
 
     @Override
-    public void run(ParticleContext particleContext, ClientWorld world, Pos start, @Nullable Pos end, GlowingFireGlowColor color, double density, @Nullable ResourceLocation resourceLocation) {
+    public void run(ParticleContext particleContext, ClientWorld world, Pos start, @Nullable Pos end, GlowingFireGlowColor[] color, double density, @Nullable ResourceLocation resourceLocation) {
         particleContext.addParticle(new DefaultParticle(world)
                 .setPos(start.x, start.y, start.z)
                 .setLifeTime((int) life.of(random.nextFloat()))
-                .setColor(color)
+                .setColor(color.length > 0 ? color[0] : GlowingFireGlowColor.DEFAULT)
                 .setSize((float) size.of(random.nextFloat()))
                 .setTextureName(resourceLocation)
         );

@@ -1,0 +1,21 @@
+package com.til.recasting.common.register.capability;
+
+import com.til.glowing_fire_glow.common.register.VoluntarilyRegister;
+import com.til.glowing_fire_glow.common.register.capability.OriginalCapabilityRegister;
+import com.til.glowing_fire_glow.common.save.SaveField;
+
+@VoluntarilyRegister
+public class ElectrificationCapabilityRegister extends OriginalCapabilityRegister<ElectrificationCapabilityRegister.Electrification> {
+    public static class Electrification {
+        @SaveField
+        protected long expireTime;
+
+        public boolean has(long time) {
+            return time >= expireTime;
+        }
+
+        public void up(long time) {
+            this.expireTime = time;
+        }
+    }
+}

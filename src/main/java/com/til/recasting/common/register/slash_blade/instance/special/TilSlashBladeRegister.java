@@ -193,7 +193,7 @@ public class TilSlashBladeRegister extends SlashBladeRegister {
                                 starBlinkSELayer.reset();
                                 attackParticleRegister.add(
                                         event.pack.getEntity().getEntityWorld(),
-                                        new GlowingFireGlowColor(event.pack.getSlashBladePack().getSlashBladeState().getColorCode()),
+                                        new GlowingFireGlowColor[]{new GlowingFireGlowColor(event.pack.getSlashBladePack().getSlashBladeState().getColorCode())},
                                         1,
                                         tilSlashBladeRegister.seAttackParticle,
                                         new Pos(event.target));

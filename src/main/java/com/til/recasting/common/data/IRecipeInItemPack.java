@@ -5,6 +5,7 @@ import com.google.gson.annotations.JsonAdapter;
 import com.til.glowing_fire_glow.common.register.StaticVoluntarilyAssignment;
 import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
 import com.til.glowing_fire_glow.common.util.gson.AcceptTypeJson;
+import com.til.glowing_fire_glow.common.util.gson.type_adapter.factory.EmptyTypeAdapterFactory;
 import com.til.glowing_fire_glow.common.util.gson.type_adapter.factory.ForgeRegistryItemTypeAdapterFactory;
 import com.til.recasting.common.capability.IItemEnchantment;
 import com.til.recasting.common.capability.IItemSA;
@@ -283,7 +284,8 @@ public interface IRecipeInItemPack extends Predicate<ItemStack> {
 
         protected ItemStack itemStack;
 
-        @Expose
+        @JsonAdapter(EmptyTypeAdapterFactory.class)
+        @Nullable
         protected SlashBladePack slashBladePack;
 
 
@@ -324,7 +326,7 @@ public interface IRecipeInItemPack extends Predicate<ItemStack> {
 
         protected SlashBladeRegister slashBladeRegister;
 
-        @Expose
+        @JsonAdapter(EmptyTypeAdapterFactory.class)
         @Nullable
         protected OfSlashBlade ofSlashBlade;
 

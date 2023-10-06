@@ -34,14 +34,14 @@ public class AttackParticleClientRegister extends ParticleClientRegister<AttackP
     protected AttackSmallParticleClientRegister attackSmallParticleClientRegister;
 
     @Override
-    public void run(ParticleContext particleContext, ClientWorld world, Pos start, @Nullable Pos end, GlowingFireGlowColor color, double density, @Nullable ResourceLocation resourceLocation) {
+    public void run(ParticleContext particleContext, ClientWorld world, Pos start, @Nullable Pos end, GlowingFireGlowColor[] color, double density, @Nullable ResourceLocation resourceLocation) {
         particleContext.addParticle(new DefaultParticle(world)
                 .setPos(start.x, start.y, start.z)
                 .setSize(size)
                 .setSizeChangeType(DefaultParticle.SizeChangeType.SQUARE_SIN)
                 .setParticleCollide(false)
                 .setLifeTime(life)
-                .setColor(color)
+                .setColor(color.length > 0 ? color[0] : GlowingFireGlowColor.DEFAULT)
                 .setTextureName(resourceLocation));
         attackSmallParticleClientRegister.run(particleContext, world, start, end, color, density, resourceLocation);
     }

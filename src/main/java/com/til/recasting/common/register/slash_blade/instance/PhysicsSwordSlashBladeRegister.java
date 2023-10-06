@@ -8,6 +8,8 @@ import com.til.recasting.common.data.IRecipeInItemPack;
 import com.til.recasting.common.data.IResultPack;
 import com.til.recasting.common.register.recipe.SpecialRecipeSerializerRegister;
 import com.til.recasting.common.register.slash_blade.SlashBladeRegister;
+import com.til.recasting.common.register.slash_blade.sa.SA_Register;
+import com.til.recasting.common.register.slash_blade.sa.instance.EndingYanSakuraSA;
 import com.til.recasting.common.register.world.item.SoulItemRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -16,10 +18,14 @@ import net.minecraft.item.crafting.Ingredient;
 @VoluntarilyRegister
 public class PhysicsSwordSlashBladeRegister extends SlashBladeRegister {
 
+    @VoluntarilyAssignment
+    protected EndingYanSakuraSA endingYanSakuraSA;
+
     @Override
     protected void defaultItemStackConfig(ItemStack itemStack) {
         super.defaultItemStackConfig(itemStack);
         slashBladePack.getSlashBladeState().setBaseAttackModifier(6f);
+        slashBladePack.setSA(endingYanSakuraSA);
     }
 
     @VoluntarilyRegister

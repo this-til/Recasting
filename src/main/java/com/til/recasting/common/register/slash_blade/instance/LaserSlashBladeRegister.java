@@ -65,8 +65,8 @@ public abstract class LaserSlashBladeRegister extends SlashBladeRegister {
         public void defaultConfig() {
             super.defaultConfig();
             attack = 0.2f;
-            interval = 20;
-            seep = 0.1f;
+            interval = 10;
+            seep = 0.4f;
             life = 200;
             range = 16;
         }
@@ -120,7 +120,7 @@ public abstract class LaserSlashBladeRegister extends SlashBladeRegister {
             public void trigger(UseSlashBladeEntityPack slashBladeEntityPack) {
                 super.trigger(slashBladeEntityPack);
                 attack = 0.3f;
-                interval = 10;
+                interval = 5;
                 range = 20;
             }
         }
@@ -152,7 +152,7 @@ public abstract class LaserSlashBladeRegister extends SlashBladeRegister {
             public void trigger(UseSlashBladeEntityPack slashBladeEntityPack) {
                 super.trigger(slashBladeEntityPack);
                 attack = 0.4f;
-                interval = 5;
+                interval = 2;
                 range = 24;
             }
         }
