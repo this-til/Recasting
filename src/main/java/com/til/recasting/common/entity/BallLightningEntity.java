@@ -1,6 +1,7 @@
 package com.til.recasting.common.entity;
 
 import com.til.glowing_fire_glow.common.capability.time_run.TimerCell;
+import com.til.glowing_fire_glow.common.config.ConfigField;
 import com.til.glowing_fire_glow.common.register.StaticVoluntarilyAssignment;
 import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
 import com.til.glowing_fire_glow.common.register.capability.capabilitys.TimeRunCapabilityRegister;
@@ -12,6 +13,7 @@ import com.til.glowing_fire_glow.common.util.Pos;
 import com.til.glowing_fire_glow.common.util.RandomUtil;
 import com.til.recasting.common.data.UseSlashBladeEntityPack;
 import com.til.recasting.common.register.attack_type.instance.LightningAttackType;
+import com.til.recasting.common.register.capability.ElectrificationCapabilityRegister;
 import com.til.recasting.common.register.entity_predicate.DefaultEntityPredicateRegister;
 import com.til.recasting.common.register.util.AttackManager;
 import com.til.recasting.common.register.util.HitAssessment;
@@ -43,6 +45,11 @@ public class BallLightningEntity extends DriveEntity {
     @VoluntarilyAssignment
     protected static LightningSeepOverallConfigRegister lightningSeepOverallConfigRegister;
 
+    @VoluntarilyAssignment
+    protected static ElectrificationCapabilityRegister electrificationCapabilityRegister;
+
+    protected int time;
+
 
     public BallLightningEntity(EntityType<? extends SlashEffectEntity> entityTypeIn, World worldIn, LivingEntity shooting) {
         super(entityTypeIn, worldIn, shooting);
@@ -54,7 +61,7 @@ public class BallLightningEntity extends DriveEntity {
         if (!world.isRemote) {
             return;
         }
-        float size  = getSize() / 10;
+        float size = getSize() / 10;
         lightningParticleRegister.add(
                 world,
                 new GlowingFireGlowColor[]{new GlowingFireGlowColor(getColor())},
@@ -106,12 +113,20 @@ public class BallLightningEntity extends DriveEntity {
                             true,
                             ListUtil.of(lightningAttackType)
                     );
+                    attackEntity.getCapability(electrificationCapabilityRegister.getCapability())
+                            .ifPresent(e -> {
+                                e.setColor(getColor());
+                                e.up(entity.world.getGameTime() + time);
+                            });
+
                 },
                 (int) (lightningSeepOverallConfigRegister.getSeep() * s.distance(entityPos)),
                 0)));
 
     }
 
-
-
+    public BallLightningEntity setTime(int time) {
+        this.time = time;
+        return this;
+    }
 }

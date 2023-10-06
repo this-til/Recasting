@@ -3,10 +3,17 @@ package com.til.recasting.common.register.slash_blade.instance;
 import com.til.glowing_fire_glow.common.config.ConfigField;
 import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
 import com.til.glowing_fire_glow.common.register.VoluntarilyRegister;
+import com.til.glowing_fire_glow.common.register.overall_config.OverallConfigRegister;
+import com.til.glowing_fire_glow.common.register.particle_register.particle_registers.LightningParticleRegister;
+import com.til.glowing_fire_glow.common.util.GlowingFireGlowColor;
+import com.til.glowing_fire_glow.common.util.Pos;
+import com.til.glowing_fire_glow.common.util.RandomUtil;
 import com.til.glowing_fire_glow.common.util.ResourceLocationUtil;
-import com.til.glowing_fire_glow.common.util.math.NumberPack;
 import com.til.recasting.common.data.UseSlashBladeEntityPack;
 import com.til.recasting.common.entity.BallLightningEntity;
+import com.til.recasting.common.event.EventDoAttack;
+import com.til.recasting.common.register.attack_type.instance.LightningAttackType;
+import com.til.recasting.common.register.capability.ElectrificationCapabilityRegister;
 import com.til.recasting.common.register.entity_type.BallLightningEntityTypeRegister;
 import com.til.recasting.common.register.slash_blade.SlashBladeRegister;
 import com.til.recasting.common.register.slash_blade.sa.SA_Register;
@@ -14,6 +21,9 @@ import com.til.recasting.common.register.util.StringFinal;
 import mods.flammpfeil.slashblade.SlashBlade;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+
+import java.util.Random;
 
 
 public abstract class LaserSlashBladeRegister extends SlashBladeRegister {
@@ -43,6 +53,9 @@ public abstract class LaserSlashBladeRegister extends SlashBladeRegister {
         @ConfigField
         protected float range;
 
+        @ConfigField
+        protected int time;
+
         @VoluntarilyAssignment
         protected BallLightningEntityTypeRegister ballLightningEntityTypeRegister;
 
@@ -58,6 +71,7 @@ public abstract class LaserSlashBladeRegister extends SlashBladeRegister {
             ballLightningEntity.setMaxLifeTime(life);
             ballLightningEntity.setSize(range);
             ballLightningEntity.setAttackInterval(interval);
+            ballLightningEntity.setTime(time);
             slashBladeEntityPack.getEntity().world.addEntity(ballLightningEntity);
         }
 
@@ -69,7 +83,71 @@ public abstract class LaserSlashBladeRegister extends SlashBladeRegister {
             seep = 0.4f;
             life = 200;
             range = 16;
+            time = 40;
         }
+
+        @VoluntarilyRegister
+        public static class LaserSlashBlade_SA_OverallConfigRegister extends OverallConfigRegister {
+            @ConfigField
+            protected float addAttack;
+
+            @ConfigField
+            protected float additionalAttack;
+
+            @ConfigField
+            protected float probability;
+
+            @ConfigField
+            protected int abatement;
+
+
+            @VoluntarilyAssignment
+            protected ElectrificationCapabilityRegister electrificationCapabilityRegister;
+
+            @VoluntarilyAssignment
+            protected LightningAttackType lightningAttackType;
+
+            @VoluntarilyAssignment
+            protected LightningParticleRegister lightningParticleRegister;
+
+            protected Random random = new Random();
+
+
+            @SubscribeEvent
+            protected void onEvent(EventDoAttack event) {
+                event.target.getCapability(electrificationCapabilityRegister.getCapability())
+                        .ifPresent(e -> {
+                            if (!e.has(event.target.world.getGameTime())) {
+                                return;
+                            }
+                            if (random.nextFloat() < probability) {
+                                event.modifiedRatio *= (additionalAttack + 1);
+                            }
+                            if (event.attackTypeList.contains(lightningAttackType)) {
+                                event.modifiedRatio *= (addAttack + 1);
+                                lightningParticleRegister.add(
+                                        event.target.getEntityWorld(),
+                                        new GlowingFireGlowColor[]{new GlowingFireGlowColor(e.getColor())},
+                                        0,
+                                        null,
+                                        new Pos(event.target).add(new Pos(RandomUtil.nextVector3dInCircles(random, 5))),
+                                        new Pos(event.target)
+                                );
+                                e.up(e.getExpireTime() - abatement);
+                            }
+                        });
+            }
+
+            @Override
+            public void defaultConfig() {
+                super.defaultConfig();
+                addAttack = 1;
+                additionalAttack = 0.3f;
+                probability = 0.3333f;
+                abatement = 10;
+            }
+        }
+
     }
 
     @VoluntarilyRegister
@@ -122,6 +200,7 @@ public abstract class LaserSlashBladeRegister extends SlashBladeRegister {
                 attack = 0.3f;
                 interval = 5;
                 range = 20;
+                time = 80;
             }
         }
     }
@@ -154,6 +233,7 @@ public abstract class LaserSlashBladeRegister extends SlashBladeRegister {
                 attack = 0.4f;
                 interval = 2;
                 range = 24;
+                time = 120;
             }
         }
     }

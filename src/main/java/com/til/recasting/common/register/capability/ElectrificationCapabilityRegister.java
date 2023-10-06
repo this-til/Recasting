@@ -10,12 +10,28 @@ public class ElectrificationCapabilityRegister extends OriginalCapabilityRegiste
         @SaveField
         protected long expireTime;
 
+        @SaveField
+        protected int color;
+
         public boolean has(long time) {
-            return time >= expireTime;
+            return time <= expireTime;
         }
 
         public void up(long time) {
             this.expireTime = time;
+        }
+
+        public int getColor() {
+            return color;
+        }
+
+        public long getExpireTime() {
+            return expireTime;
+        }
+
+        public Electrification setColor(int color) {
+            this.color = color;
+            return this;
         }
     }
 }

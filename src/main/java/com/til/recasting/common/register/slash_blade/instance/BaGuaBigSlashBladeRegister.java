@@ -169,7 +169,7 @@ public class BaGuaBigSlashBladeRegister extends SlashBladeRegister {
             life = 200;
             size = 16;
             maxLayer = 16;
-            increasedAttack = new NumberPack(0, 0.02);
+            increasedAttack = new NumberPack(0, 0.03);
             duration = 12;
         }
 

@@ -6,10 +6,7 @@ import com.til.glowing_fire_glow.common.main.IWorldComponent;
 import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
 import com.til.glowing_fire_glow.common.register.capability.capabilitys.SynchronousManageCapabilityRegister;
 import com.til.recasting.Recasting;
-import com.til.recasting.common.register.capability.ChaosLayerCapabilityRegister;
-import com.til.recasting.common.register.capability.ISlashBladeStateSupplementCapabilityRegister;
-import com.til.recasting.common.register.capability.SE_CapabilityRegister;
-import com.til.recasting.common.register.capability.StarBlinkSE_LayerCapabilityRegister;
+import com.til.recasting.common.register.capability.*;
 import com.til.recasting.common.register.slash_blade.se.AllSE_Register;
 import mods.flammpfeil.slashblade.item.ItemSlashBlade;
 import net.minecraft.entity.Entity;
@@ -45,6 +42,9 @@ public class CapabilityEvent implements IWorldComponent {
 
     @VoluntarilyAssignment
     protected SynchronousManageCapabilityRegister synchronousManageCapabilityRegister;
+
+    @VoluntarilyAssignment
+    protected ElectrificationCapabilityRegister electrificationCapabilityRegister;
 
 
     @SubscribeEvent
@@ -84,6 +84,7 @@ public class CapabilityEvent implements IWorldComponent {
         Supplier<ISynchronousManage> synchronousManageSupplier = synchronousManageCapabilityRegister.supplierCapability(event.getObject());
         capabilityProvider.addCapability(starBlinkSELayerCapabilityRegister.getCapability(), new StarBlinkSE_LayerCapabilityRegister.StarBlinkSE_Layer(synchronousManageSupplier));
         capabilityProvider.addCapability(chaosLayerCapabilityRegister.getCapability(), new ChaosLayerCapabilityRegister.ChaosLayer(synchronousManageSupplier));
+        capabilityProvider.addCapability(electrificationCapabilityRegister.getCapability(), new ElectrificationCapabilityRegister.Electrification());
         event.addCapability(CAPABILITY, capabilityProvider);
     }
 
