@@ -5,24 +5,32 @@ import com.til.glowing_fire_glow.common.register.VoluntarilyAssignment;
 import com.til.glowing_fire_glow.common.register.VoluntarilyRegister;
 import com.til.glowing_fire_glow.common.register.overall_config.OverallConfigRegister;
 import com.til.glowing_fire_glow.common.register.particle_register.particle_registers.LightningParticleRegister;
-import com.til.glowing_fire_glow.common.util.GlowingFireGlowColor;
-import com.til.glowing_fire_glow.common.util.Pos;
-import com.til.glowing_fire_glow.common.util.RandomUtil;
-import com.til.glowing_fire_glow.common.util.ResourceLocationUtil;
+import com.til.glowing_fire_glow.common.util.*;
+import com.til.recasting.common.data.IRecipeInItemPack;
+import com.til.recasting.common.data.IResultPack;
+import com.til.recasting.common.data.SlashBladePack;
 import com.til.recasting.common.data.UseSlashBladeEntityPack;
 import com.til.recasting.common.entity.BallLightningEntity;
 import com.til.recasting.common.event.EventDoAttack;
 import com.til.recasting.common.register.attack_type.instance.LightningAttackType;
 import com.til.recasting.common.register.capability.ElectrificationCapabilityRegister;
 import com.til.recasting.common.register.entity_type.BallLightningEntityTypeRegister;
+import com.til.recasting.common.register.recipe.SlashBladeRecipeSerializerRegister;
 import com.til.recasting.common.register.slash_blade.SlashBladeRegister;
 import com.til.recasting.common.register.slash_blade.sa.SA_Register;
+import com.til.recasting.common.register.slash_blade.se.instance.OverpressureSE;
 import com.til.recasting.common.register.util.StringFinal;
 import mods.flammpfeil.slashblade.SlashBlade;
+import mods.flammpfeil.slashblade.init.SBItems;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
+import java.util.List;
 import java.util.Random;
 
 
@@ -172,6 +180,37 @@ public abstract class LaserSlashBladeRegister extends SlashBladeRegister {
         @VoluntarilyRegister
         public static class LaserSlashBlade_1_SA extends LaserSlashBlade_SA {
         }
+
+        public static class LaserSlashBlade_1_SlashBladeRecipeRegister extends SlashBladeRecipeSerializerRegister.SlashBladeRecipeRegister {
+            @VoluntarilyAssignment
+            protected FluorescenceSlashBladeRegister.Fluorescence_6_SlashBladeRegister fluorescence_6_slashBladeRegister;
+
+            @VoluntarilyAssignment
+            protected Laser_1_SlashBladeRegister laser_1_slashBladeRegister;
+
+            @Override
+            protected SlashBladeRecipeSerializerRegister.SlashBladeRecipeRecipePack defaultConfigSlashBladeRecipeRecipePack() {
+                SlashBladePack fluorescence_6 = fluorescence_6_slashBladeRegister.getSlashBladePack();
+                fluorescence_6.getSlashBladeState().setKillCount(1500);
+                fluorescence_6.getSlashBladeState().setRefine(325);
+                EnchantmentHelper.setEnchantments(MapUtil.of(Enchantments.CHANNELING, 1, Enchantments.PIERCING, 4), fluorescence_6.getItemStack());
+                return new SlashBladeRecipeSerializerRegister.SlashBladeRecipeRecipePack(
+                        ListUtil.of(
+                                " CA",
+                                "BVB",
+                                "AC "
+                        ),
+                        MapUtil.of(
+                                "A", new IRecipeInItemPack.OfIngredient(Ingredient.fromItems(SBItems.proudsoul_ingot)),
+                                "B", new IRecipeInItemPack.OfItemEnchantment(Enchantments.CHANNELING, 8),
+                                "C", new IRecipeInItemPack.OfItemEnchantment(Enchantments.PIERCING, 8),
+                                "V", new IRecipeInItemPack.OfSlashBlade(fluorescence_6)
+                        ),
+                        "V",
+                        new IResultPack.OfSlashBladeRegister(laser_1_slashBladeRegister)
+                );
+            }
+        }
     }
 
     @VoluntarilyRegister
@@ -201,6 +240,40 @@ public abstract class LaserSlashBladeRegister extends SlashBladeRegister {
                 interval = 5;
                 range = 20;
                 time = 80;
+            }
+        }
+
+        @VoluntarilyRegister
+        public static class LaserSlashBlade_2_SlashBladeRecipeRegister extends SlashBladeRecipeSerializerRegister.SlashBladeRecipeRegister {
+            @VoluntarilyAssignment
+            protected Laser_1_SlashBladeRegister laser_1_slashBladeRegister;
+
+            @VoluntarilyAssignment
+            protected Laser_2_SlashBladeRegister laser_2_slashBladeRegister;
+
+            @VoluntarilyAssignment
+            protected OverpressureSE overpressureSE;
+
+            @Override
+            protected SlashBladeRecipeSerializerRegister.SlashBladeRecipeRecipePack defaultConfigSlashBladeRecipeRecipePack() {
+                SlashBladePack laser_1 = laser_1_slashBladeRegister.getSlashBladePack();
+                laser_1.getSlashBladeState().setKillCount(3000);
+                laser_1.getSlashBladeState().setRefine(625);
+                laser_1.getIse().getPack(overpressureSE).setLevel(5);
+                EnchantmentHelper.setEnchantments(MapUtil.of(Enchantments.CHANNELING, 1, Enchantments.PIERCING, 4), laser_1.getItemStack());
+                return new SlashBladeRecipeSerializerRegister.SlashBladeRecipeRecipePack(
+                        ListUtil.of(
+                                "  A",
+                                " V ",
+                                "A  "
+                        ),
+                        MapUtil.of(
+                                "A", new IRecipeInItemPack.OfItemSE(overpressureSE, 6),
+                                "V", new IRecipeInItemPack.OfSlashBlade(laser_1)
+                        ),
+                        "V",
+                        new IResultPack.OfSlashBladeRegister(laser_2_slashBladeRegister)
+                );
             }
         }
     }
@@ -236,6 +309,41 @@ public abstract class LaserSlashBladeRegister extends SlashBladeRegister {
                 time = 120;
             }
         }
+
+        @VoluntarilyRegister
+        public static class LaserSlashBlade_2_SlashBladeRecipeRegister extends SlashBladeRecipeSerializerRegister.SlashBladeRecipeRegister {
+            @VoluntarilyAssignment
+            protected Laser_1_SlashBladeRegister laser_1_slashBladeRegister;
+
+            @VoluntarilyAssignment
+            protected Laser_2_SlashBladeRegister laser_2_slashBladeRegister;
+
+            @VoluntarilyAssignment
+            protected OverpressureSE overpressureSE;
+
+            @Override
+            protected SlashBladeRecipeSerializerRegister.SlashBladeRecipeRecipePack defaultConfigSlashBladeRecipeRecipePack() {
+                SlashBladePack laser_1 = laser_1_slashBladeRegister.getSlashBladePack();
+                laser_1.getSlashBladeState().setKillCount(6000);
+                laser_1.getSlashBladeState().setRefine(1225);
+                laser_1.getIse().getPack(overpressureSE).setLevel(5);
+                EnchantmentHelper.setEnchantments(MapUtil.of(Enchantments.CHANNELING, 1, Enchantments.PIERCING, 4), laser_1.getItemStack());
+                return new SlashBladeRecipeSerializerRegister.SlashBladeRecipeRecipePack(
+                        ListUtil.of(
+                                "  A",
+                                " V ",
+                                "A  "
+                        ),
+                        MapUtil.of(
+                                "A", new IRecipeInItemPack.OfItemSE(overpressureSE, 16),
+                                "V", new IRecipeInItemPack.OfSlashBlade(laser_1)
+                        ),
+                        "V",
+                        new IResultPack.OfSlashBladeRegister(laser_2_slashBladeRegister)
+                );
+            }
+        }
+
     }
 
 

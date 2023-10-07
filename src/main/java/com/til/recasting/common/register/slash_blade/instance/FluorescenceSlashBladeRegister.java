@@ -697,7 +697,7 @@ public abstract class FluorescenceSlashBladeRegister extends SlashBladeRegister 
                                 "C", new IRecipeInItemPack.OfItemSA(fluorescence_3_sa),
                                 "D", new IRecipeInItemPack.OfItemSA(fluorescence_4_sa)),
                         "V",
-                        new IResultPack.OfItemStack(fluorescence_1.getItemStack())
+                        new IResultPack.OfSlashBladeRegister(fluorescence_6_slashBladeRegister)
                 );
             }
         }
