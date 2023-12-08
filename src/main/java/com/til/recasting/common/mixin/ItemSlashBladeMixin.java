@@ -181,7 +181,7 @@ public class ItemSlashBladeMixin {
         if (!slashBladePack.isEffective(SlashBladePack.EffectiveType.isSlashBlade)) {
             return;
         }
-        tooltip.add(new TranslationTextComponent("key:%s", slashBladePack.getSlashBladeState().getTranslationKey()));
+        tooltip.add(new TranslationTextComponent("key:%s", new TranslationTextComponent(slashBladePack.getSlashBladeState().getTranslationKey())));
         tooltip.add(new StringTextComponent(""));
 
 

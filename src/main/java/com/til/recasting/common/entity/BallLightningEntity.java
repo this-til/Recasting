@@ -14,12 +14,14 @@ import com.til.glowing_fire_glow.common.util.RandomUtil;
 import com.til.recasting.common.data.UseSlashBladeEntityPack;
 import com.til.recasting.common.register.attack_type.instance.LightningAttackType;
 import com.til.recasting.common.register.capability.ElectrificationCapabilityRegister;
+import com.til.recasting.common.register.effect.ElectrificationEffectRegister;
 import com.til.recasting.common.register.entity_predicate.DefaultEntityPredicateRegister;
 import com.til.recasting.common.register.util.AttackManager;
 import com.til.recasting.common.register.util.HitAssessment;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.potion.EffectInstance;
 import net.minecraft.world.World;
 
 import java.util.List;
@@ -46,7 +48,11 @@ public class BallLightningEntity extends DriveEntity {
     protected static LightningSeepOverallConfigRegister lightningSeepOverallConfigRegister;
 
     @VoluntarilyAssignment
+    @Deprecated
     protected static ElectrificationCapabilityRegister electrificationCapabilityRegister;
+
+    @VoluntarilyAssignment
+    protected static ElectrificationEffectRegister electrificationEffectRegister;
 
     protected int time;
 
@@ -113,11 +119,18 @@ public class BallLightningEntity extends DriveEntity {
                             true,
                             ListUtil.of(lightningAttackType)
                     );
-                    attackEntity.getCapability(electrificationCapabilityRegister.getCapability())
+
+                    if (attackEntity instanceof LivingEntity) {
+                        ((LivingEntity) attackEntity).addPotionEffect(new EffectInstance(electrificationEffectRegister.getEffect(), time));
+                    }
+
+
+                    /*attackEntity.getCapability(electrificationCapabilityRegister.getCapability())
                             .ifPresent(e -> {
                                 e.setColor(getColor());
                                 e.up(entity.world.getGameTime() + time);
-                            });
+                            });*/
+
 
                 },
                 (int) (lightningSeepOverallConfigRegister.getSeep() * s.distance(entityPos)),

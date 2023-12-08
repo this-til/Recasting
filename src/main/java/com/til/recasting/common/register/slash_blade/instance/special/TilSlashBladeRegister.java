@@ -343,4 +343,9 @@ public class TilSlashBladeRegister extends SlashBladeRegister {
 
 
     }
+
+    @VoluntarilyRegister
+    public static class TilPillowSlashLambdaBladeRegister extends SlashBladeRegister {
+
+    }
 }

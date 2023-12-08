@@ -44,6 +44,7 @@ public class CapabilityEvent implements IWorldComponent {
     protected SynchronousManageCapabilityRegister synchronousManageCapabilityRegister;
 
     @VoluntarilyAssignment
+    @Deprecated
     protected ElectrificationCapabilityRegister electrificationCapabilityRegister;
 
 
@@ -84,7 +85,7 @@ public class CapabilityEvent implements IWorldComponent {
         Supplier<ISynchronousManage> synchronousManageSupplier = synchronousManageCapabilityRegister.supplierCapability(event.getObject());
         capabilityProvider.addCapability(starBlinkSELayerCapabilityRegister.getCapability(), new StarBlinkSE_LayerCapabilityRegister.StarBlinkSE_Layer(synchronousManageSupplier));
         capabilityProvider.addCapability(chaosLayerCapabilityRegister.getCapability(), new ChaosLayerCapabilityRegister.ChaosLayer(synchronousManageSupplier));
-        capabilityProvider.addCapability(electrificationCapabilityRegister.getCapability(), new ElectrificationCapabilityRegister.Electrification());
+        //capabilityProvider.addCapability(electrificationCapabilityRegister.getCapability(), new ElectrificationCapabilityRegister.Electrification());
         event.addCapability(CAPABILITY, capabilityProvider);
     }
 

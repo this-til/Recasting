@@ -14,6 +14,7 @@ import com.til.recasting.common.entity.BallLightningEntity;
 import com.til.recasting.common.event.EventDoAttack;
 import com.til.recasting.common.register.attack_type.instance.LightningAttackType;
 import com.til.recasting.common.register.capability.ElectrificationCapabilityRegister;
+import com.til.recasting.common.register.effect.ElectrificationEffectRegister;
 import com.til.recasting.common.register.entity_type.BallLightningEntityTypeRegister;
 import com.til.recasting.common.register.recipe.SlashBladeRecipeSerializerRegister;
 import com.til.recasting.common.register.slash_blade.SlashBladeRegister;
@@ -25,8 +26,10 @@ import mods.flammpfeil.slashblade.init.SBItems;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.potion.EffectInstance;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
@@ -105,12 +108,12 @@ public abstract class LaserSlashBladeRegister extends SlashBladeRegister {
             @ConfigField
             protected float probability;
 
-            @ConfigField
-            protected int abatement;
-
+            @VoluntarilyAssignment
+            @Deprecated
+            protected ElectrificationCapabilityRegister electrificationCapabilityRegister;
 
             @VoluntarilyAssignment
-            protected ElectrificationCapabilityRegister electrificationCapabilityRegister;
+            protected ElectrificationEffectRegister electrificationEffectRegister;
 
             @VoluntarilyAssignment
             protected LightningAttackType lightningAttackType;
@@ -123,27 +126,28 @@ public abstract class LaserSlashBladeRegister extends SlashBladeRegister {
 
             @SubscribeEvent
             protected void onEvent(EventDoAttack event) {
-                event.target.getCapability(electrificationCapabilityRegister.getCapability())
-                        .ifPresent(e -> {
-                            if (!e.has(event.target.world.getGameTime())) {
-                                return;
-                            }
-                            if (random.nextFloat() < probability) {
-                                event.modifiedRatio *= (additionalAttack + 1);
-                            }
-                            if (event.attackTypeList.contains(lightningAttackType)) {
-                                event.modifiedRatio *= (addAttack + 1);
-                                lightningParticleRegister.add(
-                                        event.target.getEntityWorld(),
-                                        new GlowingFireGlowColor[]{new GlowingFireGlowColor(e.getColor())},
-                                        0,
-                                        null,
-                                        new Pos(event.target).add(new Pos(RandomUtil.nextVector3dInCircles(random, 5))),
-                                        new Pos(event.target)
-                                );
-                                e.up(e.getExpireTime() - abatement);
-                            }
-                        });
+
+                if (!(event.target instanceof LivingEntity)) {
+                    return;
+                }
+                EffectInstance effectInstance =((LivingEntity) event.target).getActivePotionEffect(electrificationEffectRegister.getEffect());
+                if (effectInstance == null) {
+                    return;
+                }
+                if (random.nextFloat() < probability) {
+                    event.modifiedRatio *= (additionalAttack + 1);
+                }
+                if (event.attackTypeList.contains(lightningAttackType)) {
+                    event.modifiedRatio *= (addAttack + 1);
+                    lightningParticleRegister.add(
+                            event.target.getEntityWorld(),
+                            new GlowingFireGlowColor[]{new GlowingFireGlowColor(event.pack.getSlashBladePack().getSlashBladeState().getColorCode())},
+                            0,
+                            null,
+                            new Pos(event.target).add(new Pos(RandomUtil.nextVector3dInCircles(random, 5))),
+                            new Pos(event.target)
+                    );
+                }
             }
 
             @Override
@@ -152,7 +156,6 @@ public abstract class LaserSlashBladeRegister extends SlashBladeRegister {
                 addAttack = 1;
                 additionalAttack = 0.3f;
                 probability = 0.3333f;
-                abatement = 10;
             }
         }
 

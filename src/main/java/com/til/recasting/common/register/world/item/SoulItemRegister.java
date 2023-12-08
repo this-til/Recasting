@@ -93,7 +93,7 @@ public abstract class SoulItemRegister extends ItemRegister {
                     iTextComponents.add(new TranslationTextComponent("recasting.introduce.sa_copy",
                             copySaOverallConfigRegister.getMinRefine(),
                             copySaOverallConfigRegister.getMinKill(),
-                            copySaOverallConfigRegister.getGetSuccessRate(),
+                            fmt.format(copySaOverallConfigRegister.getGetSuccessRate()),
                             fmt.format(copySaOverallConfigRegister.getLossRefine())));
                 }
             };

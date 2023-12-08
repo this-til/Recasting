@@ -5,7 +5,9 @@ import com.til.glowing_fire_glow.common.register.capability.OriginalCapabilityRe
 import com.til.glowing_fire_glow.common.save.SaveField;
 
 @VoluntarilyRegister
+@Deprecated
 public class ElectrificationCapabilityRegister extends OriginalCapabilityRegister<ElectrificationCapabilityRegister.Electrification> {
+    @Deprecated
     public static class Electrification {
         @SaveField
         protected long expireTime;
